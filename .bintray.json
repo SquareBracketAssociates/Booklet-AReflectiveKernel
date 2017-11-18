@@ -3,7 +3,7 @@
         "name": "booklet-Reflective",
         "repo": "wip",
         "subject": "squarebracketassociates",
-        "desc": "Smacc",
+        "desc": "A reflective kernel",
         "licenses": ["MIT"],
         "website_url": "https://github.com/SquareBracketAssociates/Booklet-AReflectiveKernel",
         "issue_tracker_url": "https://github.com/SquareBracketAssociates/Booklet-AReflectiveKernel/issues",
