@@ -1,4 +1,3 @@
-# BuildingObjectLanguages
-A book on various object models.
+# A simple reflective object kernel
 
-Builds are available at https://ci.inria.fr/pharo-contribution/view/Books/job/BuildingLanguageKernels/
+This book explains the design of a simple reflective kernel and its consequences. The design is illustrated by proposing to the reader to implement step by step this kernel in Pharo.
