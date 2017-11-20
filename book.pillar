@@ -1,4 +1,4 @@
-This book explain the design and the consequence of having a self-described reflective minimal kernel such as ObjVlisp.
+This book explains the design and the consequence of having a self-described reflective minimal kernel such as ObjVlisp.
 
 Doing so we will learn about objects, object creation instantiation, message lookup, delegation, inheritance and much more. 
 
