@@ -10,7 +10,7 @@ ${inputFile:Chapters/ObjV/ObjV.pillar}$
 
 !! Selected definitions
 
-Smith was the first to introduce reflection in a programming language with 3Lisp ${cite:Smith84}$. He defines reflection as:
+Smith was the first to introduce reflection in a programming language with 3Lisp ${cite:Smit84a}$. He defines reflection as:
 
 - An entity's integral ability to represent, operate on, and otherwise deal with itself in the same way that it represents, operates on and deals with its primary subject matter.
 

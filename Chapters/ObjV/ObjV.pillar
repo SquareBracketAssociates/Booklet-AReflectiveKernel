@@ -179,7 +179,7 @@ RawObjTest >> testPrimitiveStructureObjIVs
  
 +Using offset to access information.>file://figures/AccessObjName.pdf|width=60|label=fig:offset+
  
-Figure *@fig:offse* shows how offsets are used to access in an controlled manner the raw objclass information. 
+Figure *@fig:offset* shows how offsets are used to access in an controlled manner the raw objclass information. 
 
 Implement the primitives that are missing to run the following tests ==testPrimitiveStructureObjClassId==,
  ==testPrimitiveStructureObjIVs==, ==testPrimitiveStructureObjKeywords==, 
@@ -223,7 +223,7 @@ Now we will be ready to manipulate objInstances via proper API. We will now use 
 
 !!! Accessing object instance variable values
 
-+Instance variable offset asked to the class.>file://figures/offsetFromClass.pdf|width=60|label=fig:offset+
++Instance variable offset asked to the class.>file://figures/offsetFromClass.pdf|width=60|label=fig:offset2+
 
 
 In the protocol =='iv management'== define a method called ==offsetFromClassOfInstanceVariable: aSymbol== that returns the offset of the instance variable represented by the symbol given in parameter. It returns 0 if the variable is not defined. Look at the tests ==#testIVOffset== of the class ==ObjTest==. (Hints: Use the Pharo method ==indexOf:==). Pay attention that such primitive is applied to an objClass as shown in the test.
@@ -238,10 +238,10 @@ ObjText >> testIVOffset
 
 Make sure that you execute the test method: ==testIVOffset==
 
-+Instance variable offset asked to the instance itself.>file://figures/offsetFromObject.pdf|width=60|label=fig:offset2+
++Instance variable offset asked to the instance itself.>file://figures/offsetFromObject.pdf|width=60|label=fig:offset3+
 
 Using the preceeding method, define in the protocol =='iv management'==
-# the method ==offsetFromObjectOfInstanceVariable: aSymbol== that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset2*).
+# the method ==offsetFromObjectOfInstanceVariable: aSymbol== that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset3*).
 # the method ==valueOfInstanceVariable: aSymbol== that returns the value of this instance variable in the given object as shown in the test below.   
 
 The following test illustrates the expected behavior
