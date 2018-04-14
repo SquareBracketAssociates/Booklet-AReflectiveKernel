@@ -110,7 +110,7 @@ The values of such instance variables are specific to each instance.
 Figure *@fig:Ref-Instances* shows that instances of ==Workstation== have two values: a name and a next node. 
 
 
-+Instances of ==Workstation== have two values: their names and their next node.>file://figures/Ref-Instances.png|width=60|label=fig:Ref-Instances+
++Instances of ==Workstation== have two values: their names and their next node.>file://figures/Ref-Instances.pdf|width=60|label=fig:Ref-Instances+
 
 In addition we should note that an object has a pointer to its class. As we will see when we will come to inheritance,  every object possesses an instance variable class (inherited from ==Object==) that points to its class. 
 
