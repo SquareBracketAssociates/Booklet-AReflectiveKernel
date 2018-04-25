@@ -77,7 +77,9 @@ Since classes are objects, ''when we want to stress that classes are objects'' w
 
 !!!! Handling infinite recursion
 
-A class is an object therefore instance of another class its metaclass that is an object too instance of a metametaclass that is an object too instance of another a metametametaclass...... To stop this potential infinite recursion, ObjVlisp uses similar to solutions proposed in many meta circular systems: one instance is instance of itself. 
+A class is an object. Thus it is an instance of another class, its metaclass. This metaclass is an object too, instance of a metametaclass that is an object too instance of another a metametametaclass...... To stop this potential infinite recursion, ObjVlisp uses similar to solutions proposed in many meta circular systems: one instance is instance of itself. 
+
+ A class is an object. Thus, it is an instance of another class, its metaclass. This metaclass is an object as well, instance of a metametaclass which is itself an instance of another a metametametaclass...
 
 In ObjVLisp: 
 - ==Class== is the initial class and metaclass,
@@ -189,7 +191,7 @@ Sending a message is a two step process as shown by Figure *@fig:ToSteps*
 # Method lookup: the method corresponding to the selector is looked up in the class of the receiver and its superclasses.
 # Method execution: the method is applied to the receiver. It means that ==self== or ==this== in the method will be bound to the receiver.  
 
-Conceptually sending a message can be described by the following function composition:
+Conceptually, sending a message can be described by the following function composition:
 
 [[[
 sending a message (receiver argument)

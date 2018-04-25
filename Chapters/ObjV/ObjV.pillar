@@ -1,8 +1,6 @@
 !!Building a minimal reflective class-based kernel
 
-The objectives of this chapter is to help you step by step to implement the ObjVlisp model explained
-in the previous chapter. ObjVlisp was designed by P. Cointe who got inspired by the kernel  of Smalltalk-78. 
-It has explicit metaclasses and it is composed of two classes ==Object== and ==Class==.
+The objectives of this chapter is to help you to implement step by step the ObjVlisp model explained in the previous chapter. ObjVlisp was designed by P. Cointe who got inspired by the kernel  of Smalltalk-78. It has explicit metaclasses and it is composed of two classes ==Object== and ==Class==.
 
 !!! Objectives
 During the previous chapter, you saw the main points of the ObjVLisp model, now you 
@@ -225,24 +223,27 @@ Now we will be ready to manipulate objInstances via proper API. We will now use 
 
 +Instance variable offset asked to the class.>file://figures/offsetFromClass.pdf|width=60|label=fig:offset2+
 
-
-In the protocol =='iv management'== define a method called ==offsetFromClassOfInstanceVariable: aSymbol== that returns the offset of the instance variable represented by the symbol given in parameter. It returns 0 if the variable is not defined. Look at the tests ==#testIVOffset== of the class ==ObjTest==. (Hints: Use the Pharo method ==indexOf:==). Pay attention that such primitive is applied to an objClass as shown in the test.
+!!!! A first simple method.
+The following test illustrate the behavior of the message ==offsetFromClassOfInstanceVariable:==
 
 [[[
-ObjText >> testIVOffset
+ObjTest >> testIVOffset
    "(self  selector: #testIVOffset) run"
 
    self assert: ((pointClass offsetFromClassOfInstanceVariable: #x) = 2).
    self assert: ((pointClass offsetFromClassOfInstanceVariable: #lulu) = 0)
 ]]]
 
+!!!! Your job. 
+In the protocol =='iv management'== define a method called ==offsetFromClassOfInstanceVariable: aSymbol== that returns the offset of the instance variable represented by the symbol given in parameter. It returns 0 if the variable is not defined. Look at the tests ==#testIVOffset== of the class ==ObjTest==. 
+
+Hints: Use the Pharo method ==indexOf:==. Pay attention that such a primitive is applied to an objClass as shown in the test.
+
 Make sure that you execute the test method: ==testIVOffset==
 
 +Instance variable offset asked to the instance itself.>file://figures/offsetFromObject.pdf|width=60|label=fig:offset3+
 
-Using the preceeding method, define in the protocol =='iv management'==
-# the method ==offsetFromObjectOfInstanceVariable: aSymbol== that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset3*).
-# the method ==valueOfInstanceVariable: aSymbol== that returns the value of this instance variable in the given object as shown in the test below.   
+!!!! A second simple method.
 
 The following test illustrates the expected behavior
 
@@ -253,6 +254,13 @@ ObjTest >> testIVOffsetAndValue
    self assert: ((aPoint offsetFromObjectOfInstanceVariable: #x) = 2).
    self assert: ((aPoint valueOfInstanceVariable: #x) = 10)
 ]]]
+
+
+!!!! Your job. 
+Using the preceeding method, define in the protocol =='iv management'==
+# the method ==offsetFromObjectOfInstanceVariable: aSymbol== that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset3*).
+# the method ==valueOfInstanceVariable: aSymbol== that returns the value of this instance variable in the given object as shown in the test below.   
+
 
 Note that for the method ==offsetFromObjectOfInstanceVariable:== you can check that the instance variable exists in the class of the object and else raise an error using the Pharo method ==error:==.
 
@@ -267,10 +275,7 @@ We now define all the primitives that allow us to allocate and initialize an obj
 # the allocation is a class method that returns a nearly empty structure, nearly empty because the instance represented by the structure should at least knows its class and 
 # the initialization of an instance is an instance method that given a newly allocated instance and a list of initialization arguments fill the instance.
 
-!!! Instance allocation
-
-!!!! Your job. 
-In the protocol =='instance allocation'== implement the primitive called ==allocateAnInstance== that sent to an ''objClass'' returns a new instance whose instance variable values are nil and whose objClassId represents the objClass. 
+!!!! Instance allocation
 
 As shown in the class ==ObjTest==, if the class ==ObjPoint== has two instance variables: ==ObjPoint allocateAnInstance== returns ==#(#ObjPoint nil nil)==.
 
@@ -285,6 +290,11 @@ ObjTest >> testAllocate
    self assert: (newInstance at: 3) isNil.
    self assert: (newInstance objClass = pointClass)
 ]]]
+
+
+!!!! Your job. 
+In the protocol =='instance allocation'== implement the primitive called ==allocateAnInstance== that sent to an ''objClass'' returns a new instance whose instance variable values are nil and whose objClassId represents the objClass. 
+
 
 Make sure that you execute the test method: ==testAllocate== 
 
