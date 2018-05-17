@@ -177,8 +177,6 @@ Figure *@fig:ClassClassAsObject* describes the class ==Class== itself. Indeed it
 Figure *@fig:Instanceshier* describes a typical situation of terminal instances, class and metaclasses when looked at them using an object perspective.
 We see three level of instances: terminal objects, instances of ==Workstation==, ==Workstation== and ==Point== classes which are instances of ==Class== and the metaclass ==Class== which is instance of itself.
 
-
-
 +Sending a message is two step process: method lookup and execution.>file://figures/InheritanceDiagram-sendingMessage.pdf|width=45|label=fig:ToSteps+
 
 

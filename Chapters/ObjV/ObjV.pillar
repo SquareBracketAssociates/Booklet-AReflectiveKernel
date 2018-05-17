@@ -477,7 +477,7 @@ Based on this primitive we can express ==send:withArguments:== and ==super:withA
 
 [[[
 Obj >> send: selector withArguments: arguments 
-   "send the message whose selector is <selector> to the receiver. The arguments of the messages are an array <arguments>. The method is lookep up in the class of the receiver. self is an objObject or a objClass."
+   "send the message whose selector is <selector> to the receiver. The arguments of the messages are an array <arguments>. The method is looked up in the class of the receiver. self is an objObject or a objClass."
 
    ^ self basicSend: selector withArguments: arguments from:  self objClass
 ]]]
@@ -665,7 +665,7 @@ Obj class >> manuallyCreateObjClass
 For this purpose, you have to implement/read all the primitives that
 compose it.
 
-!!! Your job. 
+!!!! Your job. 
 At the class level in the protocol =='bootstrap objClass manual'== read or implement:
 the primitive ==manualObjClassStructure== that returns an objObject that represents the class ==ObjClass==. 
 
@@ -729,10 +729,8 @@ Read carefully the following remarks below and the code.
 Now you are in the situation where you can create the first real and normal class of the system: the class ==ObjObject==. To do  that you send the message ==new== to class ==ObjClass== specifying that the class you are creating is named ==#ObjObject== and 
 only have one instance variable called ==class==. Then you will add the methods defining the behavior shared by all the objects. 
 
-!!!! Your job.
-Implement/read the following methods:
-
-- the primitive ==objObjectStructure== that creates the ==ObjObject== by invoking the ==new== message to the class ==ObjClass==:
+!!!! Your job: objObjectStructure
+Implement/read the following primitive ==objObjectStructure== that creates the ==ObjObject== by invoking the ==new== message to the class ==ObjClass==:
 
 [[[ 
 Obj class >> objObjectStructure
@@ -743,6 +741,8 @@ Obj class >> objObjectStructure
 ]]]
 
 The class ==ObjObject== is named ==ObjObject==, has only one instance variable ==class== and does not have a superclass because it is the inheritance graph root.
+
+!!!! Your job: createObjObject
 
 Now implement the primitive ==createObjObject== that calls ==objObjectStructure== to obtain the ==objObject== representing
 ==objObject== class and define methods in it. To help you we give here the beginning of such a method
@@ -759,7 +759,7 @@ Obj class >> createObjObject
    ^ objObject
 ]]]
 
-Implement the following method in ==ObjObject==
+Implement the following methods in ==ObjObject==
 - the objMethod ==class== that given an objInstance returns its class (the objInstance that represents the class). 
 - the objMethod ==isClass== that returns false.
 - the objMethod ==isMetaClass== that returns false.
@@ -767,18 +767,17 @@ Implement the following method in ==ObjObject==
 - the objMethod ==getIV== that takes the receiver and an attribute name, aSymbol, and returns its value for the receiver. 
 - the objMethod ==setIV== that takes the receiver, an attribute name and a value and sets the value of the given attribute to the given value. 
 - the objMethod ==initialize== that takes the receiver and an initargs-list and initializes the receiver according to the specification given by the  initargs-list. Note that here the ==initialize== method only fill  the instance according to the specification given by the initargs-list. Compare with the ==initialize== method defined on ==ObjClass==. 
-       
 
 Make sure that you read and execute the test method: ==testCreateObjObjectStructure==
 
 In particular notice that this class does not implement the class method ==new== because it is not a metaclass but does implement the instance method ==initialize== because any object should be initialized. 
 
-!!!! Your job. 
+!!!! Your job: run the tests
 - Make sure that you read and execute the test method: ==testCreateObjObjectMessage==
 - Make sure that you read and execute the test method: ==testCreateObjObjectInstanceMessage==
 
 
-!!!Creation of ObjClass
+!!! Creation of ObjClass
 
 Following the same approach, you can now recreate completely the class ==ObjClass==. The primitive ==createObjClass== is responsible to create the final class ==ObjClass==. So you will implement it and define all the primitive it needs. Now we only define what is specific to classes, the rest is inherited from the superclass of the class ==ObjClass==, the class ==ObjObject==.
 
@@ -824,7 +823,7 @@ Obj class >> createObjClass
    ^ objClass
 ]]]
 
-
+Also define the following methods: 
 - the objMethod ==isClass== that returns true. 
 - the objMethod ==isMetaclass== that returns true.
 
@@ -888,10 +887,11 @@ Note the following points:
 - The locally specified instance variables now are just the instance variables that  describe a class. The instance variable ==class== is inherited from ==ObjObject==.
 - The ==initialize== method now does a super send to invoke the initialization performed by ==ObjObject==.
 
+
+!!!First User Classes: ObjPoint
 Now that ObjVLisp is created and we can start to program some classes. 
 Implement the class ==ObjPoint== and ==ObjColoredPoint==. Here is a possible implementation.
 
-!!!First User Classes: ObjPoint
 You can choose to implement it at the class level of the class Obj or even better in class named ==ObjPointTest==.
 
 Pay attention that your scenario covers the following aspects: 
