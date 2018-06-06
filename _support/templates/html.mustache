@@ -8,6 +8,8 @@
 <link href="{{base_url}}/_support/html/css/font-awesome.min.css" rel="stylesheet">
 <link href="{{base_url}}/_support/html/css/nucleus.css" rel="stylesheet">
 <link href="{{base_url}}/_support/html/css/flex.css" rel="stylesheet">
+<link rel="stylesheet" href="{{base_url}}/_support/html/highlightjs/styles/default.css">
+<link rel="stylesheet" href="{{base_url}}/_support/html/css/highlight-commands.css">
 <link rel="stylesheet" href="{{base_url}}/_support/html/css/bootstrap.min.css">
 <script src="{{base_url}}/_support/html/js/jquery-2.x.min.js"></script>
 <script src="{{base_url}}/_support/html/highlightjs/highlight.pack.js"></script>
@@ -18,7 +20,7 @@
   <body>
     <header>
   <div class="logo">
-    <a class="baselink" href="{{base_url}}/">{{site_name}}</a>
+    <a class="baselink" href="{{base_url}}">{{site_name}}</a>
   </div>
   <div class="burger"><a href="javascript:void(0);" style="font-size:15px;">&#9776;</a></div>
   
@@ -32,7 +34,7 @@
 	    	</a>
         </li>
 
-		{{# toc.children }}
+		{{# toc.children}}
 		  <li class="dd-item {{# hasChildren}} haschildren {{/ hasChildren}}">
 			<div>
 			  <a href="{{parent.parent.base_url}}{{href}}">
@@ -62,7 +64,7 @@
 			  </ul>
 		  
 		  </li>
-		{{/ toc.children }}
+		{{/ toc.children}}
     </ul>
   </aside>
 
@@ -87,15 +89,12 @@
 
 <script src="{{base_url}}/_support/html/js/clipboard.min.js"></script>
 
-
-<link rel="stylesheet" href="{{base_url}}/_support/html/highlightjs/styles/default.css">
-<link rel="stylesheet" href="{{base_url}}/_support/html/css/highlight-commands.css">
 <link href="{{base_url}}/_support/html/css/featherlight.min.css" rel="stylesheet">
 <script src="{{base_url}}/_support/html/js/featherlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script src="{{base_url}}/_support/html/js/flex.js"></script>
 <!-- Prettify annotated paragraphs-->
-    <script src="{{base_url}}/_support/html/js/annotated-paragraphs.js"></script>
+    <script src="{{base_url}}_support/html/js/annotated-paragraphs.js"></script>
 
   </body>
 </html>

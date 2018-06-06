@@ -13,18 +13,20 @@ smalltalk:
 env:
   matrix:
   - JOB=test TYPE=System ARCHETYPE=book OUTPUT=pdf
-  - JOB=test TYPE=System ARCHETYPE=docDockBook OUTPUT=html
+  - JOB=test TYPE=System ARCHETYPE=book OUTPUT=html
 
 install:
   # Pillar installation
-  - git clone https://github.com/pillar-markup/pillar.git  # Clone pillar
-  - cd pillar && ./scripts/build.sh && cd ..                              # Run pillar build script. Pillar will be built in `pwd`/build!
-  - . pillar/scripts/ci/ensure_latex.sh                                   # Install latex
-  - ./pillar/scripts/ci/ensure_book_dependencies.sh                       # Install latex dependencies required by pillar
+  - git clone https://github.com/pillar-markup/pillar.git .pillar -b dev-7  # Clone pillar
+  - cd .pillar && ./scripts/build.sh && cd ..                              # Run pillar build script. Pillar will be built in `pwd`/build!
+  - .pillar/scripts/ci/ensure_latex.sh                                   # Install latex
+  - .pillar/scripts/ci/ensure_book_dependencies.sh                       # Install latex dependencies required by pillar
   
 script:
   - ./pillar/build/pillar build pdf
   - ./pillar/build/pillar build html
+  - cd _result/html && touch .nojekyll && cd ..
+
 deploy:
 - provider: bintray
   file: .bintray.json
@@ -34,6 +36,14 @@ deploy:
   user: ducasse
   key:
     secure: qJIAOqcm3Q7btvUV3ryCvSwgIgDnz4yVAChYvzFcIHW8NWmlvZmUQXHy6MuHCiv1r3QUz0xrLQQML+qD25GSRMSAUZ32Eeeuda33C3IvLQm8l3qp55f8MfnFsX232++09qU+mtzvJNpo8D9ojLqccP2TsugSi1GIXTURWCvg5bcP2LPWpsNomCmHtyFJwfp9WlxGlx0GSgqi36aeeqfqEZqXFlpoA2WL7Wz7ZbesO+6p/bd0KeHIJSpkKurbCw37g10nJziJ01R4b9fkoACVD3/GdPk6wNkHk9hoQbJUM/C9BHt22DFKMh4VAgTOUizv+rh63D9Tst+TPyW4B34UqhSInj1N0N8rfymWiUL8WPkC8IeBuTEo1nEI5VGgGpYjbHeK1kSdyi89UCOzOPah05OdFtc3NWOYXzqK8pTeNt+JEqd0Ay83zEuE9ccpwDN33KuUkj6Vgl6n0KCQ6TPPEXX5yYoGfJ7K3clk7QRmXfOVJUfzYkp37xer3QhGMKyJ1/ZIMYW2SzPHffidRtSzi6+tSPQKN/ey3aQKlXYcj5lS8s0NVha8kN+/OjfvLfRc7viqVCIjSJl3IYjQRz/QLBDLLYAwdHHsiHcrna2FLRM4HQLUp41eox37BuGLeeVkxS7ypan+bDamYL5XA4+gcOhiDBbavwRiMaUXXkKrN3E=
+
+- provider: pages
+  skip-cleanup: true
+  github-token: $GH_TOKEN
+  keep-history: true
+  local_dir: _result/html
+  on:
+    branch: master
 
 - provider: releases
   file: build/book.spiral.pdf
