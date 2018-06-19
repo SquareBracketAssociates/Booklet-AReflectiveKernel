@@ -112,7 +112,7 @@ dictionary holding the defined classes. This dictionary acts as the namespace fo
 
 With such methods we can write code like the following one that looks for the class of the class ==ObjPoint==. 
 
-[[[
+[[[testcase=true
 Obj giveClassNamed: #ObjPoint
 >>> #(#ObjClass 'ObjPoint' #ObjObject #(class x y) #(:x :y) ... )
 ]]]
@@ -121,7 +121,7 @@ To make class access less heavy, we also implemented a shortcut:
 We trap messages not understood sent to ==Obj== and look into the defined class dictionary. 
 Since ==ObjPoint== is an unknown message, this same code is then written as:
 
-[[[
+[[[testcase=true
 Obj ObjPoint
 >>> #(#ObjClass 'ObjPoint' #ObjObject #(class x y) #(:x :y) ... )
 ]]]
