@@ -3,9 +3,9 @@ This book explains the design and the consequence of having a self-described ref
 Doing so we will learn about objects, object creation instantiation, message lookup, delegation, inheritance and much more.
 
 
-${inputFile:Chapters/ObjVTheory/ObjVTheory.pillar}$
+${inputFile:value=Chapters/ObjVTheory/ObjVTheory.pillar}$
 
-${inputFile:Chapters/ObjV/ObjV.pillar}$
+${inputFile:value=Chapters/ObjV/ObjV.pillar}$
 
 !! Selected definitions
 
