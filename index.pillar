@@ -3,22 +3,22 @@ This book explains the design and the consequence of having a self-described ref
 Doing so we will learn about objects, object creation instantiation, message lookup, delegation, inheritance and much more.
 
 
-${inputFile:value=Chapters/ObjVTheory/ObjVTheory.pillar}$
+${inputFile:path=Chapters/ObjVTheory/ObjVTheory.pillar}$
 
-${inputFile:value=Chapters/ObjV/ObjV.pillar}$
+${inputFile:path=Chapters/ObjV/ObjV.pillar}$
 
 !! Selected definitions
 
-Smith was the first to introduce reflection in a programming language with 3Lisp ${cite:Smit84a}$. He defines reflection as:
+Smith was the first to introduce reflection in a programming language with 3Lisp ${cite:ref=Smit84a}$. He defines reflection as:
 
 - An entity's integral ability to represent, operate on, and otherwise deal with itself in the same way that it represents, operates on and deals with its primary subject matter.
 
-In the context of meta-object protocols, Bobrow ${cite:Bobr93a}$  refines the definition as follows:
+In the context of meta-object protocols, Bobrow ${cite:ref=Bobr93a}$  refines the definition as follows:
 
 - Reflection is the ability of a program to manipulate as data something representing the state of the program during its own execution. There are two aspects of such manipulation: ''introspection'' and ''intercession'' (...) Both aspects require a mechanism for encoding execution state as data; providing such an encoding is called ''reification''. 
 
 
-Maes proposed some definitions for reflexive programming ${cite:Maes87b}$:
+Maes proposed some definitions for reflexive programming ${cite:ref=Maes87b}$:
 
 - A ''computational system'' is something that ''reasons'' about and ''acts'' upon some part of the world, called the ''domain'' of the system.
 
