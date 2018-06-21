@@ -370,13 +370,13 @@ Point new :y 6 :x 24
 
 When there is no value specified, the value of an instance variable is initialized to nil. CLOS provides the notion of default instance variable initialization. It can be added to ObjVlisp as an exercise and does not bring conceptual difficulties.
 
-[[[
+[[[testcase=true
 Point new
 >>> aPoint (nil nil)
 ]]]
 
 When the same argument is passed multiple times, then the implementation takes the first occurence.
-[[[
+[[[testcase=true
 Point new :y 10 :y 15
 >>> aPoint (nil 10)
 ]]]
@@ -386,7 +386,7 @@ We should not worry too much about such details: The point is that we can pass m
 !!! Creation of the class Point instance of Class
 Since the class ==Point== is an instance of the class ==Class==, to create it, we should send the message ==new== to the class as follows: 
 
-[[[
+[[[testcase=true
 Class new 
    :name 'Point'
    :super 'Object'
@@ -433,13 +433,13 @@ In our model, the marking of an object as instance of a class is performed by se
 
 The ==allocate== method is defined on the metaclass ==Class==. Here are some examples of allocation.
 
-[[[
+[[[testcase=true
 Point allocate
 >>> #(Point nil nil)
 ]]]
 A point allocation allocates three slots: one for the class and two for x and y values.
 
-[[[
+[[[testcase=true
 Class allocate
 >>>#(Class nil nil nil nil nil) 
 ]]]
@@ -528,7 +528,7 @@ AbstractMetaclass new :name 'Node' :super 'Object'
 ]]]
 
 Sending a message ==new== to the class ==Node== will raise an error.
-[[[
+[[[testcase=true
 Node new 
 >>> Cannot create instance of class
 ]]]
