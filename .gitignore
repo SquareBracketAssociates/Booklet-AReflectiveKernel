@@ -1,6 +1,6 @@
 _result
 build/
-
+.DS_Store
 Pharo.changes
 Pharo.image
 
