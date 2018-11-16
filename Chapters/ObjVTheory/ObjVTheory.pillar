@@ -542,6 +542,36 @@ A class method is just implemented and following the same semantics that instanc
 Sending the message ==error== to the class ==Node== starts in ==AbstractMetaclass== and since we did not redefine it locally, and it is not found there, the lookup will continue in the superclass of ==AbstractClass==: the class ==Class== and then the superclass of class ==Class==, the class ==Object==.
 
 
+!!! About class state
+
+Imagine that we define a metaclass ==Singleton== whose instances are classes that will have a unique instance. The situation is described in Figure *@fig:RefSing*. The class ==Singleton== inherits from ==Class== since it wants to reuse of all the class mechanisms. It is a also an instance of class since ==Singleton== is a class and it can create instances. The class ==Node== is an instance of class ==Singleton==. When it receives the message ==new==, the method ==new== defined in the class ==Singleton==
+is executed: if the unique instance variable is nil, it invokes the behavior defined in ==Class== and stores it in the unique instance variable and returns it.
+
++A Singleton metaclass: its instances can only have one instance.>file://figures/Ref-Singleton.pdf|width=45|label=fig:RefSing+
+
+There are several questions that still should be asked and answered. 
+
+- What is the instance variable list of ==Singleton== metaclass?
+- Where is actually stored the unique instance of the class ==Node== or ==Process==?
+
+
+!!!! Instance variable of Singleton
+
+As with any class, a subclass gets its instance variables as well as the instance variables of its superclass. Hence ==Singleton== instance variables are the same as the one of ==Class== and in addition it has ==unique== *@fig:RefSing2*. 
+
+[[[
+Singleton objIVs 
+>>> #(class name super ivs keywords methodDict unique)
+]]]
+
++Storing unique instance.>file://figures/Ref-SingletonTwo.pdf|width=45|label=fig:RefSing2+
+
+!!!! Where the singleton is stored?
+
+Each class instance of ==Singleton== will have a additional value after its method dictionary. This is where the actual singleton of the class is stored. 
+
+
+
 !!! About the 6th postulate 
 
 The 6th postulate of ObjVLisp is wrong. Let us read it again: 
