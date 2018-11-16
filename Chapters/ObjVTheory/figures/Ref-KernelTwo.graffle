@@ -26,7 +26,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2018-04-25 09:46:35 +0000</string>
+	<string>2018-11-16 10:44:09 +0000</string>
 	<key>Modifier</key>
 	<string>ducasse</string>
 	<key>MovementHandleVisible</key>
@@ -154,7 +154,7 @@
 					<key>Flow</key>
 					<string>Resize</string>
 					<key>ID</key>
-					<integer>46</integer>
+					<integer>3</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -176,7 +176,7 @@
 					<key>Text</key>
 					<dict>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -197,7 +197,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>45</integer>
+					<integer>4</integer>
 					<key>Points</key>
 					<array>
 						<string>{455.98648400878909, 384}</string>
@@ -247,7 +247,7 @@
 							<key>Flow</key>
 							<string>Resize</string>
 							<key>ID</key>
-							<integer>43</integer>
+							<integer>6</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -269,7 +269,7 @@
 							<key>Text</key>
 							<dict>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -286,7 +286,7 @@
 							<key>Class</key>
 							<string>LineGraphic</string>
 							<key>ID</key>
-							<integer>44</integer>
+							<integer>7</integer>
 							<key>Points</key>
 							<array>
 								<string>{451.22699999999998, 327.82285318311551}</string>
@@ -319,7 +319,7 @@
 						</dict>
 					</array>
 					<key>ID</key>
-					<integer>42</integer>
+					<integer>5</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -354,7 +354,7 @@
 							<key>Flow</key>
 							<string>Resize</string>
 							<key>ID</key>
-							<integer>40</integer>
+							<integer>9</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -376,7 +376,7 @@
 							<key>Text</key>
 							<dict>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -397,7 +397,7 @@
 							<key>Class</key>
 							<string>LineGraphic</string>
 							<key>ID</key>
-							<integer>41</integer>
+							<integer>10</integer>
 							<key>Points</key>
 							<array>
 								<string>{451.22700000000157, 301.96611264594549}</string>
@@ -428,7 +428,7 @@
 						</dict>
 					</array>
 					<key>ID</key>
-					<integer>39</integer>
+					<integer>8</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -458,7 +458,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>3</integer>
+					<integer>11</integer>
 					<key>Points</key>
 					<array>
 						<string>{378, 384}</string>
@@ -501,7 +501,7 @@
 					<key>Flow</key>
 					<string>Resize</string>
 					<key>ID</key>
-					<integer>4</integer>
+					<integer>12</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -525,7 +525,7 @@
 						<key>Align</key>
 						<integer>0</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -548,7 +548,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>5</integer>
+					<integer>13</integer>
 					<key>Points</key>
 					<array>
 						<string>{320, 313}</string>
@@ -595,7 +595,7 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>6</integer>
+					<integer>14</integer>
 					<key>Points</key>
 					<array>
 						<string>{110, 296}</string>
@@ -638,7 +638,7 @@
 					<key>Flow</key>
 					<string>Resize</string>
 					<key>ID</key>
-					<integer>7</integer>
+					<integer>15</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -662,7 +662,7 @@
 						<key>Align</key>
 						<integer>0</integer>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -685,13 +685,13 @@
 					<key>Class</key>
 					<string>LineGraphic</string>
 					<key>ID</key>
-					<integer>8</integer>
+					<integer>16</integer>
 					<key>Points</key>
 					<array>
 						<string>{158, 243.36520385742188}</string>
 						<string>{162, 138}</string>
-						<string>{198.5532, 110}</string>
-						<string>{309, 105.259}</string>
+						<string>{198.5532, 125}</string>
+						<string>{321, 132}</string>
 						<string>{407, 63.932200000000002}</string>
 					</array>
 					<key>Style</key>
@@ -736,14 +736,14 @@
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>24</integer>
+						<integer>32</integer>
 					</dict>
 					<key>ID</key>
-					<integer>9</integer>
+					<integer>17</integer>
 					<key>Points</key>
 					<array>
-						<string>{423.22699999999998, 180.34700000000001}</string>
-						<string>{301.51324894714355, 95.258999999999986}</string>
+						<string>{423.22699999999998, 191.54092659155776}</string>
+						<string>{301.51324894714355, 115.25899999999999}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -772,7 +772,7 @@
 					<key>Tail</key>
 					<dict>
 						<key>ID</key>
-						<integer>11</integer>
+						<integer>19</integer>
 					</dict>
 				</dict>
 				<dict>
@@ -783,14 +783,14 @@
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>18</integer>
+						<integer>26</integer>
 					</dict>
 					<key>ID</key>
-					<integer>10</integer>
+					<integer>18</integer>
 					<key>Points</key>
 					<array>
-						<string>{453.47699999999998, 155.34700000000001}</string>
-						<string>{453.47699999999998, 105.25900000000001}</string>
+						<string>{453.47699999999998, 166.54092659155776}</string>
+						<string>{453.47699999999998, 125.25900000000001}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -821,7 +821,7 @@
 					<key>Tail</key>
 					<dict>
 						<key>ID</key>
-						<integer>11</integer>
+						<integer>19</integer>
 						<key>Info</key>
 						<integer>8</integer>
 					</dict>
@@ -833,7 +833,7 @@
 					<array>
 						<dict>
 							<key>Bounds</key>
-							<string>{{423.22699999999998, 155.34700000000001}, {121, 20}}</string>
+							<string>{{423.22699999999998, 166.54092659155776}, {121, 20}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FitText</key>
@@ -846,7 +846,7 @@
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>12</integer>
+							<integer>20</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -863,7 +863,7 @@
 							<key>Text</key>
 							<dict>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -878,7 +878,7 @@
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{423.22699999999998, 175.34700000000001}, {121, 40}}</string>
+							<string>{{423.22699999999998, 186.54092659155776}, {121, 40}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FitText</key>
@@ -891,7 +891,7 @@
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>13</integer>
+							<integer>21</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -910,7 +910,7 @@
 								<key>Align</key>
 								<integer>0</integer>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -926,7 +926,7 @@ nextNode}</string>
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{423.22699999999998, 215.34700000000001}, {121, 40}}</string>
+							<string>{{423.22699999999998, 226.54092659155776}, {121, 40}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FitText</key>
@@ -939,7 +939,7 @@ nextNode}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>14</integer>
+							<integer>22</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -958,7 +958,7 @@ nextNode}</string>
 								<key>Align</key>
 								<integer>0</integer>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -975,15 +975,15 @@ accept:}</string>
 					</array>
 					<key>GridH</key>
 					<array>
-						<integer>12</integer>
-						<integer>13</integer>
-						<integer>14</integer>
+						<integer>20</integer>
+						<integer>21</integer>
+						<integer>22</integer>
 						<array/>
 					</array>
 					<key>GroupConnect</key>
 					<string>YES</string>
 					<key>ID</key>
-					<integer>11</integer>
+					<integer>19</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{1, 0.5}</string>
@@ -1022,14 +1022,14 @@ accept:}</string>
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>11</integer>
+						<integer>19</integer>
 					</dict>
 					<key>ID</key>
-					<integer>15</integer>
+					<integer>23</integer>
 					<key>Points</key>
 					<array>
-						<string>{288.88, 236.10087722161492}</string>
-						<string>{423.22699999999998, 230.34700000000001}</string>
+						<string>{288.88, 239.57659180171748}</string>
+						<string>{423.22699999999998, 241.54092659155776}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1060,7 +1060,7 @@ accept:}</string>
 					<key>Tail</key>
 					<dict>
 						<key>ID</key>
-						<integer>28</integer>
+						<integer>36</integer>
 					</dict>
 				</dict>
 				<dict>
@@ -1071,14 +1071,14 @@ accept:}</string>
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>18</integer>
+						<integer>26</integer>
 					</dict>
 					<key>ID</key>
-					<integer>16</integer>
+					<integer>24</integer>
 					<key>Points</key>
 					<array>
 						<string>{333.4999985961914, 76}</string>
-						<string>{423.22699999999998, 82.259}</string>
+						<string>{423.22699999999998, 97.259}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1122,14 +1122,14 @@ accept:}</string>
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>24</integer>
+						<integer>32</integer>
 					</dict>
 					<key>ID</key>
-					<integer>17</integer>
+					<integer>25</integer>
 					<key>Points</key>
 					<array>
-						<string>{423.22699999999998, 36.259}</string>
-						<string>{333.4999985961914, 41.259}</string>
+						<string>{423.22699999999998, 41.259}</string>
+						<string>{333.49999859619146, 46.258999999999986}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1158,7 +1158,7 @@ accept:}</string>
 					<key>Tail</key>
 					<dict>
 						<key>ID</key>
-						<integer>18</integer>
+						<integer>26</integer>
 					</dict>
 				</dict>
 				<dict>
@@ -1181,7 +1181,7 @@ accept:}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>19</integer>
+							<integer>27</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1198,7 +1198,7 @@ accept:}</string>
 							<key>Text</key>
 							<dict>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -1226,7 +1226,7 @@ accept:}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>20</integer>
+							<integer>28</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1252,7 +1252,7 @@ accept:}</string>
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{423.22699999999998, 45.259}, {121, 60}}</string>
+							<string>{{423.22699999999998, 45.259}, {121, 80}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FitText</key>
@@ -1265,7 +1265,7 @@ accept:}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>21</integer>
+							<integer>29</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1284,7 +1284,7 @@ accept:}</string>
 								<key>Align</key>
 								<integer>0</integer>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -1292,7 +1292,8 @@ accept:}</string>
 
 \f0\fs34 \cf0 error:\
 class?\
-iv-ref}</string>
+iv-ref\
+initialize}</string>
 								<key>VerticalPad</key>
 								<real>0.0</real>
 							</dict>
@@ -1302,15 +1303,15 @@ iv-ref}</string>
 					</array>
 					<key>GridH</key>
 					<array>
-						<integer>19</integer>
-						<integer>20</integer>
-						<integer>21</integer>
+						<integer>27</integer>
+						<integer>28</integer>
+						<integer>29</integer>
 						<array/>
 					</array>
 					<key>GroupConnect</key>
 					<string>YES</string>
 					<key>ID</key>
-					<integer>18</integer>
+					<integer>26</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{1, 0.5}</string>
@@ -1358,7 +1359,7 @@ iv-ref}</string>
 						<real>26</real>
 					</dict>
 					<key>ID</key>
-					<integer>22</integer>
+					<integer>30</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -1380,7 +1381,7 @@ iv-ref}</string>
 					<key>Text</key>
 					<dict>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -1408,10 +1409,10 @@ iv-ref}</string>
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>24</integer>
+						<integer>32</integer>
 					</dict>
 					<key>ID</key>
-					<integer>23</integer>
+					<integer>31</integer>
 					<key>OrthogonalBarAutomatic</key>
 					<true/>
 					<key>OrthogonalBarPoint</key>
@@ -1423,7 +1424,7 @@ iv-ref}</string>
 						<string>{237.53974964904785, 23.259}</string>
 						<string>{224.096, 6.8651999999999997}</string>
 						<string>{177, 34}</string>
-						<string>{205.553, 41.259}</string>
+						<string>{205.553, 46.259}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1454,7 +1455,7 @@ iv-ref}</string>
 					<key>Tail</key>
 					<dict>
 						<key>ID</key>
-						<integer>24</integer>
+						<integer>32</integer>
 					</dict>
 				</dict>
 				<dict>
@@ -1477,7 +1478,7 @@ iv-ref}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>25</integer>
+							<integer>33</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1494,7 +1495,7 @@ iv-ref}</string>
 							<key>Text</key>
 							<dict>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -1522,7 +1523,7 @@ iv-ref}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>26</integer>
+							<integer>34</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1548,7 +1549,7 @@ iv-ref}</string>
 						</dict>
 						<dict>
 							<key>Bounds</key>
-							<string>{{205.553, 55.259}, {127.94699859619141, 40}}</string>
+							<string>{{205.553, 55.259}, {127.94699859619141, 60}}</string>
 							<key>Class</key>
 							<string>ShapedGraphic</string>
 							<key>FitText</key>
@@ -1561,7 +1562,7 @@ iv-ref}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>27</integer>
+							<integer>35</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1580,14 +1581,15 @@ iv-ref}</string>
 								<key>Align</key>
 								<integer>0</integer>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\partightenfactor0
 
 \f0\fs34 \cf0 new\
-allocate}</string>
+allocate\
+initialize}</string>
 								<key>VerticalPad</key>
 								<real>0.0</real>
 							</dict>
@@ -1597,15 +1599,15 @@ allocate}</string>
 					</array>
 					<key>GridH</key>
 					<array>
-						<integer>25</integer>
-						<integer>26</integer>
-						<integer>27</integer>
+						<integer>33</integer>
+						<integer>34</integer>
+						<integer>35</integer>
 						<array/>
 					</array>
 					<key>GroupConnect</key>
 					<string>YES</string>
 					<key>ID</key>
-					<integer>24</integer>
+					<integer>32</integer>
 					<key>Magnets</key>
 					<array>
 						<string>{1, 0.5}</string>
@@ -1656,7 +1658,7 @@ allocate}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>29</integer>
+							<integer>37</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1673,7 +1675,7 @@ allocate}</string>
 							<key>Text</key>
 							<dict>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -1701,7 +1703,7 @@ allocate}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>30</integer>
+							<integer>38</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1740,7 +1742,7 @@ allocate}</string>
 								<string>Helvetica-Bold</string>
 							</dict>
 							<key>ID</key>
-							<integer>31</integer>
+							<integer>39</integer>
 							<key>Style</key>
 							<dict>
 								<key>fill</key>
@@ -1759,7 +1761,7 @@ allocate}</string>
 								<key>Align</key>
 								<integer>0</integer>
 								<key>Text</key>
-								<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+								<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -1776,15 +1778,15 @@ accept:}</string>
 					</array>
 					<key>GridH</key>
 					<array>
-						<integer>29</integer>
-						<integer>30</integer>
-						<integer>31</integer>
+						<integer>37</integer>
+						<integer>38</integer>
+						<integer>39</integer>
 						<array/>
 					</array>
 					<key>GroupConnect</key>
 					<string>YES</string>
 					<key>ID</key>
-					<integer>28</integer>
+					<integer>36</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -1821,7 +1823,7 @@ accept:}</string>
 						<real>26</real>
 					</dict>
 					<key>ID</key>
-					<integer>32</integer>
+					<integer>40</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -1843,7 +1845,7 @@ accept:}</string>
 					<key>Text</key>
 					<dict>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -1869,14 +1871,14 @@ accept:}</string>
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>28</integer>
+						<integer>36</integer>
 					</dict>
 					<key>ID</key>
-					<integer>33</integer>
+					<integer>41</integer>
 					<key>Points</key>
 					<array>
-						<string>{280.05271109115552, 321.20124208632416}</string>
-						<string>{250.92556644233633, 274.69200000000001}</string>
+						<string>{280.05271109002507, 321.20124208633354}</string>
+						<string>{250.92556643891325, 274.69200000000001}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -1905,7 +1907,7 @@ accept:}</string>
 					<key>Tail</key>
 					<dict>
 						<key>ID</key>
-						<integer>34</integer>
+						<integer>42</integer>
 					</dict>
 				</dict>
 				<dict>
@@ -1914,7 +1916,7 @@ accept:}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>34</integer>
+					<integer>42</integer>
 					<key>Style</key>
 					<dict>
 						<key>shadow</key>
@@ -1931,7 +1933,7 @@ accept:}</string>
 					<key>Text</key>
 					<dict>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -1960,7 +1962,7 @@ mac3}</string>
 						<real>26</real>
 					</dict>
 					<key>ID</key>
-					<integer>35</integer>
+					<integer>43</integer>
 					<key>Style</key>
 					<dict>
 						<key>fill</key>
@@ -1982,7 +1984,7 @@ mac3}</string>
 					<key>Text</key>
 					<dict>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -2008,14 +2010,14 @@ mac3}</string>
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>28</integer>
+						<integer>36</integer>
 					</dict>
 					<key>ID</key>
-					<integer>36</integer>
+					<integer>44</integer>
 					<key>Points</key>
 					<array>
-						<string>{192.9554725811517, 323.16390441625759}</string>
-						<string>{213.28287396918842, 274.69200000000001}</string>
+						<string>{192.95547258099529, 323.16390441625634}</string>
+						<string>{213.28287396867194, 274.69200000000001}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -2044,7 +2046,7 @@ mac3}</string>
 					<key>Tail</key>
 					<dict>
 						<key>ID</key>
-						<integer>37</integer>
+						<integer>45</integer>
 					</dict>
 				</dict>
 				<dict>
@@ -2053,7 +2055,7 @@ mac3}</string>
 					<key>Class</key>
 					<string>ShapedGraphic</string>
 					<key>ID</key>
-					<integer>37</integer>
+					<integer>45</integer>
 					<key>Style</key>
 					<dict>
 						<key>shadow</key>
@@ -2070,7 +2072,7 @@ mac3}</string>
 					<key>Text</key>
 					<dict>
 						<key>Text</key>
-						<string>{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf830
+						<string>{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
 {\*\expandedcolortbl;;}
@@ -2097,14 +2099,14 @@ mac3}</string>
 					<key>Head</key>
 					<dict>
 						<key>ID</key>
-						<integer>24</integer>
+						<integer>32</integer>
 					</dict>
 					<key>ID</key>
-					<integer>38</integer>
+					<integer>46</integer>
 					<key>Points</key>
 					<array>
-						<string>{230.67898968414329, 202.69200000000001}</string>
-						<string>{237.53974964904788, 95.259}</string>
+						<string>{231.0514977952875, 202.69200000000001}</string>
+						<string>{237.53974964904785, 115.259}</string>
 					</array>
 					<key>Style</key>
 					<dict>
@@ -2133,7 +2135,7 @@ mac3}</string>
 					<key>Tail</key>
 					<dict>
 						<key>ID</key>
-						<integer>28</integer>
+						<integer>36</integer>
 					</dict>
 				</dict>
 			</array>
