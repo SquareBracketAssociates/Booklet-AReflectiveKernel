@@ -544,20 +544,20 @@ Sending the message ==error== to the class ==Node== starts in ==AbstractMetaclas
 
 !!! About class state
 
-Imagine that we define a metaclass ==Singleton== whose instances are classes that will have a unique instance. The situation is described in Figure *@fig:RefSing*. The class ==Singleton== inherits from ==Class== since it wants to reuse of all the class mechanisms. It is a also an instance of class ==Class== since ==Singleton== is a class and it can create instances. The class ==Node== is an instance of class ==Singleton==. When it receives the message ==new==, the method ==new== defined in the class ==Singleton==
+Imagine that we define a metaclass ==WithSingleton== whose instances are classes that will have a unique instance. The situation is described in Figure *@fig:RefSing*. The class ==WithSingleton== inherits from ==Class== since it wants to reuse of all the class mechanisms. It is a also an instance of class ==Class== since ==WithSingleton== is a class and it can create instances. The class ==Node== is an instance of class ==WithSingleton==. When it receives the message ==new==, the method ==new== defined in the class ==WithSingleton==
 is executed: if the unique instance variable is nil, it invokes the behavior defined in ==Class== and stores it in the unique instance variable and returns it.
 
-+A Singleton metaclass: its instances can only have one instance.>file://figures/Ref-Singleton.pdf|width=45|label=fig:RefSing+
++A WithSingleton metaclass: its instances can only have one instance.>file://figures/Ref-Singleton.pdf|width=45|label=fig:RefSing+
 
 There are several questions that still should be asked and answered. 
 
-- What is the instance variable list of ==Singleton== metaclass?
+- What is the instance variable list of ==WithSingleton== metaclass?
 - Where is actually stored the unique instance of the class ==Node== or ==Process==?
 
 
-!!!! Instance variable of Singleton
+!!!! Instance variable of WithSingleton
 
-As with any class, a subclass gets its instance variables as well as the instance variables of its superclass. Hence ==Singleton== instance variables are the same as the one of ==Class== and in addition it has ==unique== *@fig:RefSing2*. 
+As with any class, a subclass gets its instance variables as well as the instance variables of its superclass. Hence ==WithSingleton== instance variables are the same as the one of ==Class== and in addition it has ==unique== *@fig:RefSing2*. 
 
 [[[
 Singleton objIVs 
@@ -568,10 +568,10 @@ Singleton objIVs
 
 !!!! Where is stored the singleton?
 
-Each class instance of ==Singleton== will have a additional value after its method dictionary. This is where the actual singleton of the class is stored. 
-The class ==Node== and ==Processor== are instances of the metaclass ==Singleton== therefore they have 
+Each class instance of ==WithSingleton== will have an additional value after its method dictionary. This is where the actual singleton of the class is stored. 
+The class ==Node== and ==Processor== are instances of the metaclass ==WithSingleton== therefore they have 
 one extra field in their structure to hold the unique instance variable values. 
-Each instance of ==Singleton== will have its own value: the instance of class playing the singleton role.
+Each instance of ==WithSingleton== will have its own value: the instance of class playing the singleton role.
 
 
 
