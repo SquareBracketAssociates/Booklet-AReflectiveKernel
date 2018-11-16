@@ -4,3 +4,4 @@
 *.out
 *.synctex.gz
 *.DS_Store
+_result/
