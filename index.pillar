@@ -1,6 +1,11 @@
-This book explains the design and the consequence of having a self-described reflective minimal kernel such as ObjVlisp.
+Back early 90, when I was a master student, we learned meta object programming and we were using Common Lisp Object Systems (CLOS) to program. I loved the lecture and I realized that it was quite advanced. At that time I built an environment for therom proving system in CLOS. However, deep inside me I knew that I did not fully understand what was the class ==Object== or what is really a metaclass. Of course I could repeat the lecture and look smart but there was this little voice telling me that I was 100\%. 
+Then by accident I found the article of Pierre Cointe and I was blasted by the simplicity of the model. I spent 3 days reimplementing the model like a mad because it was too much fun. For me it was a key to my comprehension of class-based reflective systems. Once I finished I went to see my teacher and told her that she must teach it and she told me to do it. Since then I'm teaching it. 
 
-Doing so we will learn about objects, object creation instantiation, message lookup, delegation, inheritance and much more.
+This book explains the consequence of having classes as objects. In addition it describes the design and the consequence of having a self-described reflective minimal kernel such as ObjVlisp.
+
+Doing so we will learn deeply about objects, object creation instantiation, message lookup, delegation, inheritance and much more.
+
+S. Ducasse
 
 
 ${inputFile:path=Chapters/ObjVTheory/ObjVTheory.pillar}$

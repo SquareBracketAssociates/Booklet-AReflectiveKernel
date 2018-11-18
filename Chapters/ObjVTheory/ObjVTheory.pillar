@@ -323,7 +323,7 @@ Since our experience showed us that even some book writers got key semantics of 
 - ""self"" (also called ""this"" in languages like Java). self always represents the receiver of the message. The method lookup starts in the class of the receiver.  
 - ""super"". super always represents the receiver of the message (and not the superclass). The method lookup starts in the superclass of the class containing the super expression (and not in the superclass of the class of the receiver: this would mean that it loops forever in case of inheritance tree of three classes - We let you to find how).
 
-+self always represents the receiver.>file://figures/LookupWithSelfInSuperclassMethod.pdf|width=40|label=fig:LookupWithSelfInSuperclassMethod+
+
 
 Looking at Figure *@fig:LookupWithSelfInSuperclassMethod*  we see that the key point is that ==B new bar== returns 50 since
 the method is dynamically looked up and self represents the receiver i.e., the instance of the class ==B==. What is important to see is that ==self== sends act as a hook and that subclasses code can be injected in superclass code. 
@@ -339,15 +339,19 @@ B new bar
 >>> 50
 ]]]
 
-+super represents the receiver but the method lookup starts in the superclass of the class of the method using super. >file://figures/LookupWithSuperInSuperclassMethodThreeClasses.pdf|width=40|label=fig:LookupWithSuperInSuperclassMethodThreeClasses+
++self always represents the receiver.>file://figures/LookupWithSelfInSuperclassMethod.pdf|width=40|label=fig:LookupWithSelfInSuperclassMethod+
 
 
-For ==super==, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses* shows that ==super== represents the receiver, but that when ==super== is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence ==C new bar== returns 100 and not 20 nor 60. 
+
+
+For ==super==, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses* shows that ==super== represents the receiver, but that when ==super== is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence ==R new bar== returns 100 and not 20 nor 60. 
+
++super represents the receiver but the method lookup starts in the superclass of the class of the method using super. >file://figures/LookupWithSuperInSuperclassMethodThreeClasses2.pdf|width=40|label=fig:LookupWithSuperInSuperclassMethodThreeClasses+
 
 [[[
-B new bar
+Q new bar
 >>> 20
-C new bar
+R new bar
 >>> 100
 ]]]
 
