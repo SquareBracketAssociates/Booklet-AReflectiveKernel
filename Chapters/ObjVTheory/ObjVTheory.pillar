@@ -280,12 +280,12 @@ Contrary to instance variable inheritance, this part of inheritance is dynamic, 
 
 !!! Object: defining the minimal behavior of any object
 
-==Object== represents the minimal behavior that any object should understand. For example, returning the class of an object, being able to handle errors, initializing an object.
-This is why ==Object== is the root of the hierarchy. Depending on language ==Object== can be complex. In our kernel it is kept minimal as we will show in the implementation chapter. 
+==Object== represents the minimal behavior that any object should understand, e.g., returning the class of the object, being able to handle errors, and initializing the object.
+This is why ==Object== is the root of the hierarchy. Depending on the language, ==Object== can be complex. In our kernel it is kept minimal as we will show in the implementation chapter. 
 
 Figure *@fig:inheritancegraph* shows the inheritance graph without the presence of instantiation. 
-A Workstation is an object (should at least understand the minimal behavior), so the class ==Workstation== inherits directly or indirectly from the class ==Object==.
-A class is an object (it should understand the minimal behavior) so the class ==Class== inherits from class ==Object==. In particular, the ==class== instance variable is inherited from ==Object== class.
+A Workstation is an object (i.e., it should at least understand the minimal behavior), so the class ==Workstation== inherits directly or indirectly from the class ==Object==.
+A class is also an object (i.e., it should understand the minimal behavior) so the class ==Class== inherits from class ==Object==. In particular, the ==class== (note the lowercase) instance variable is inherited from ==Object== class.
 
 
 +Full inheritance graph: Every class ultimately inherits from ==Object==.>file://figures/Ref-InheritanceGraph.pdf|width=45|label=fig:inheritancegraph+
@@ -293,33 +293,40 @@ A class is an object (it should understand the minimal behavior) so the class ==
 
 
 !!!! Remark.
-In Pharo, the class ==Object== is not the root of inheritance. It is ==ProtoObject== and ==Object== inherits from it. Most of the classes still inherit from ==Object==.  The design of ==ProtoObject== is special: the design goal of ==ProtoObject== is to generate as many as errors as possible. Such errors can be then captured via ==doesNotUnderstand:==
-redefinition and can support different scenarios such as proxy implementation.
+In Pharo, the class ==Object== is not the root of inheritance. The root is in fact ==ProtoObject==, and ==Object== inherits from it. Most of the classes still inherit from ==Object==. The design goal of ==ProtoObject== is special: to generate as many as errors as possible. Such errors can be then captured via redefinition of ==doesNotUnderstand:==
+and can support different scenarios such as implementing a proxy.
 
 !!! Inheritance and instantiation together
 
-Now that we saw independently the instantiation  and the inheritance graph we can look at the complete picture. 
-Figure *@fig:kernel22* shows the graphs and in particular how such graph are used during message resolution: 
-- the instantiation link is used to find the class where to start to look the method associated with the received message. 
+Now that we have seen the instantiation and the inheritance graphs, we can examine the complete picture. 
+Figure *@fig:kernel22* shows the graphs and in particular how such graphs are used during message resolution: 
+- the instantiation link is used to find the starting class to look for any methods associated with the received message. 
 - the inheritance link is used to find inherited methods. 
 
-This process is also true when we send messages to the classes themselves. There is no difference between sending a message to an object or a class. The system ''always'' performs the same steps. 
+This process is the same when we send messages to the classes themselves. There is no difference between sending a message to an object or a class. The system ''always'' performs the same steps. 
 
 +Kernel with instantiation and inheritance link.>file://figures/Ref-KernelTwo.pdf|width=60|label=fig:kernel22+
 
 
 
-!!! Refresh on self and super semantics
+!!! Review of self and super semantics
 
-Since our experience showed us that even some book writers got key semantics of object-oriented programming wrong, we just refresh some facts that normally programmers familiar with object-oriented programming should fully master. For further readings refer to Pharo By Example or the Pharo Mooc available at *http://mooc.pharo.org*. 
+@@note CPF: "Review" is used to refer to going back to material one should know (and sometimes forgets)
 
-- ""self"" (also called ""this"" in languages like Java). self always represents the receiver of the message. The method lookup starts in the class of the receiver.  
-- ""super"". super always represents the receiver of the message (and not the superclass). The method lookup starts in the superclass of the class containing the super expression (and not in the superclass of the class of the receiver: this would mean that it loops forever in case of inheritance tree of three classes - We let you to find how).
+Since our experience showed us that even some book authors got the essential semantics of object-oriented programming wrong, we review here some facts that programmers familiar with object-oriented programming should master. For further readings refer to ''Pharo By Example'' or the Pharo Mooc available at *http://mooc.pharo.org*. 
+
+- ""self"" (also called ""this"" in languages like Java). self always represents the receiver of the message whose code contains the self reference. The lookup of a method sent to self starts in the class of the receiver.
+
+@@note CPF: I'm not sure about which message is which here. I made a guess as to the meaning.
+
+- ""super"". super is similar to ""self"" in that it ''also'' represents the receiver of the message (and not the superclass). However, the method lookup starts in the superclass of the class containing the super expression (and not in the superclass of the class of the receiver, since this would mean that it loops forever in the case of inheritance tree of three classes - We let you to find how).
+
+@@note CPF: The parenthetical expression at the end of the last paragraph should maybe be a footnote to make it less confusing? 
 
 
 
 Looking at Figure *@fig:LookupWithSelfInSuperclassMethod*  we see that the key point is that ==B new bar== returns 50 since
-the method is dynamically looked up and self represents the receiver i.e., the instance of the class ==B==. What is important to see is that ==self== sends act as a hook and that subclasses code can be injected in superclass code. 
+the method is dynamically looked up and self represents the receiver, i.e., the instance of the class ==B==. What is important to see is that sendings of ==self== act as a hook and that subclasses' code can be injected in superclass code. 
 
 [[[
 A new foo
@@ -332,12 +339,21 @@ B new bar
 >>> 50
 ]]]
 
+@@note Trying a PlantUML sequence diagram here
+
++Execution of self lookups.>https://www.plantuml.com/plantuml/img/XLB1JeGm4BttAoPxyLJGWnTYpBRn0qZyWbgws6otnNRGxDyxu1OBmNY0PEQzUVFUm36XYZXU74jdwmSLrGKINfsXTxHwHj0YrQ_6dS25S1u7u5HzZCPh0ozMzJJ4Q1IjjeFo28VMgMiVm-Yx0wW4xHfjnDmLcwwSktAV-mTPCgQZKMX8hGNEdq50GuytNrFzKrPL1QSGcD9eFpFtYVCPVBXddIcGh2TlUf8uybTFxkd9czu4Fgxq2d-BmQt3RF5DnSAYO0HaUDhc0xMZxT-nWRfEz3NgUiKlOom9To8M6PUGsvIoyBHUBExIr2rtammDvB7_lHA_FD5olPtpqVtOqVYEViDl.png|width=40|label=fig:ExecutingLookupWithSelfInSuperclassMethod+
+
+
+@@note CPF: I tricked myself into looking at Figure 1-16 here by mistake (it comes right after the text, but also because of the A, B, foo, bar). I suggest using different class names and messages for the self/super examples.
+
 +self always represents the receiver.>file://figures/LookupWithSelfInSuperclassMethod.pdf|width=40|label=fig:LookupWithSelfInSuperclassMethod+
 
 
 
 
-For ==super==, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses* shows that ==super== represents the receiver, but that when ==super== is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence ==R new bar== returns 100 and not 20 nor 60. 
+For ==super==, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses* shows that ==super== represents the receiver, but that when ==super== is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence ==R new bar== returns 100, but not 20 or 60. 
+
+@note CPF: In my American English brain, it's: (neither A nor B) or (not A or B). 
 
 +super represents the receiver but the method lookup starts in the superclass of the class of the method using super. >file://figures/LookupWithSuperInSuperclassMethodThreeClasses2.pdf|width=40|label=fig:LookupWithSuperInSuperclassMethodThreeClasses+
 
