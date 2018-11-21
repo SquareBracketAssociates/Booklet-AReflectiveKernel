@@ -341,9 +341,6 @@ B new bar
 
 @@note Trying a PlantUML sequence diagram here - if you like it, I can do another for the second example with super
 
-+Execution of self lookups.>https://www.plantuml.com/plantuml/img/XLB1JeGm4BttAoPxyLJGWnTYpBRn0qZyWbgws6otnNRGxDyxu1OBmNY0PEQzUVFUm36XYZXU74jdwmSLrGKINfsXTxHwHj0YrQ_6dS25S1u7u5HzZCPh0ozMzJJ4Q1IjjeFo28VMgMiVm-Yx0wW4xHfjnDmLcwwSktAV-mTPCgQZKMX8hGNEdq50GuytNrFzKrPL1QSGcD9eFpFtYVCPVBXddIcGh2TlUf8uybTFxkd9czu4Fgxq2d-BmQt3RF5DnSAYO0HaUDhc0xMZxT-nWRfEz3NgUiKlOom9To8M6PUGsvIoyBHUBExIr2rtammDvB7_lHA_FD5olPtpqVtOqVYEViDl.png|width=40|label=fig:ExecutingLookupWithSelfInSuperclassMethod+
-
-
 @@note CPF: I tricked myself into looking at Figure 1-16 here by mistake (it comes right after the text, but also because of the A, B, foo, bar). I suggest using different class names and messages for the self/super examples.
 
 +self always represents the receiver.>file://figures/LookupWithSelfInSuperclassMethod.pdf|width=40|label=fig:LookupWithSelfInSuperclassMethod+
