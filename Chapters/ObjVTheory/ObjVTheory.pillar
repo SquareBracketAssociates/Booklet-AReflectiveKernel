@@ -339,15 +339,13 @@ B new bar
 >>> 50
 ]]]
 
-@@note Trying a PlantUML sequence diagram here - if you like it, I can do another for the second example with super
-
-+Sequence diagram of self always represents the receiver.>file://figures/SelfLookupSequenceDiagram.pdf|width=40|label=fig:LookupWithSelfInSuperclassMethod+
-
 @@note CPF: I tricked myself into looking at Figure 1-16 here by mistake (it comes right after the text, but also because of the A, B, foo, bar). I suggest using different class names and messages for the self/super examples.
 
 +self always represents the receiver.>file://figures/LookupWithSelfInSuperclassMethod.pdf|width=40|label=fig:LookupWithSelfInSuperclassMethod+
 
+@@note Trying a PlantUML sequence diagram in Figure *@fig:SelfLookupSequenceDiagram*. If you like it, I can do another for the second example with super.
 
++Sequence diagram of self always represents the receiver.>file://figures/SelfLookupSequenceDiagram.pdf|width=60|label=fig:SelfLookupSequenceDiagram+
 
 
 For ==super==, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses* shows that ==super== represents the receiver, but that when ==super== is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence ==R new bar== returns 100, but not 20 or 60. 
