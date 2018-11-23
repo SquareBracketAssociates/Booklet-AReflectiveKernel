@@ -1,5 +1,6 @@
 @startuml
 skinparam style strictuml
+skinparam defaultFontName Helvetica
 title Self lookup - Sequence Diagram
 participant "Playground" as P
 participant ":A" as A
