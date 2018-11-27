@@ -396,9 +396,8 @@ Class new
 >>> aClass
 ]]]
 
-What is interesting to see here is that we use exactly the same way to create an instance of the class ==Point== as the class itself. Note that this single way to create objects is supported by the argument variable list. 
+What is interesting to see here is that we use exactly the same way to create an instance of the class ==Point== as the class itself. Note that the possibility to have the same way to create objects or classes is also due to the fact that the arguments are specified using a list of pairs.
 
-@@note CPF: single way --> unique way ? Not sure of the context...
 
 An implementation could have two different messages to create instances and classes. As soon as the same ==new==, ==allocate==, or ==initialize== methods are involved, the essence of the object creation is similar and uniform.
 
@@ -549,7 +548,7 @@ Sending the message ==error== to the class ==Node== starts in ==AbstractMetaclas
 Imagine that we define a metaclass ==WithSingleton== whose instances are classes that will have a unique instance. The situation is described in Figure *@fig:RefSing*. The class ==WithSingleton== inherits from ==Class== since it wants to reuse all of the class mechanisms. It is also an instance of class ==Class==, since ==WithSingleton== is a class and it can create instances. The class ==Node== is an instance of class ==WithSingleton==. When it receives the message ==new==, the method ==new== defined in the class ==WithSingleton==
 is executed. If the unique instance variable is nil, it invokes the behavior defined in ==Class== and stores it in the unique instance variable and returns it.
 
-+A WithSingleton metaclass: its instances can only have one instance.>file://figures/Ref-Singleton.pdf|width=45|label=fig:RefSing+
++A WithSingleton metaclass: its instances can only have one instance.>file://figures/Ref-Singleton.pdf|width=55|label=fig:RefSing+
 
 There are several questions that still should be asked and answered. 
 
@@ -566,7 +565,7 @@ Singleton objIVs
 >>> #(class name super ivs keywords methodDict unique)
 ]]]
 
-+Storing unique instance.>file://figures/Ref-SingletonTwo.pdf|width=45|label=fig:RefSing2+
++Storing unique instance.>file://figures/Ref-SingletonTwo.pdf|width=55|label=fig:RefSing2+
 
 !!!! Where is the singleton stored?
 
