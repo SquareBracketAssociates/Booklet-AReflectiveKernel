@@ -6,7 +6,7 @@ As this quote expresses it, there is a realm where classes are true objects, ins
 
 !!! ObjVlisp inspiration
 
-ObjVlisp was published the first time in 1986 when the foundation of object-oriented programming was still emerging ${cite:ref=Coin87a}$. ObjVlisp has explicit metaclasses and supports metaclass reuse. It was inspired from the kernel of Smalltalk-78. The IBM SOM-DSOM kernel is similar to ObjVLisp while implemented in C\+\+ ${cite:ref=Danf94b}$. ObjVlisp is a subset of the reflective kernel of CLOS (Common Lisp Object System) since CLOS reifies instance variables, generic functions, and method combination ${cite:ref=Stee90a}$ ${cite:ref=Kicz91a}$. In comparison to ObjVlisp, Smalltalk ${cite:ref=Gold84a}$  and Pharo ${cite:ref=Blac09a}$  have implicit metaclasses and no metaclass reuse except by basic inheritance. However, they are more stable as explained by Bouraqadi et al ${cite:ref=Grau89a}$ ${cite:ref=Bour98a}$.
+ObjVlisp was published the first time in 1986 when the foundation of object-oriented programming was still emerging ${cite:ref=Coin87a}$. ObjVlisp has explicit metaclasses and supports metaclass reuse. It was inspired from the kernel of Smalltalk-78. The IBM SOM-DSOM kernel is similar to ObjVLisp while implemented in C\+\+ ${cite:ref=Danf94b}$. ObjVlisp is a subset of the reflective kernel of CLOS (Common Lisp Object System) since CLOS reifies instance variables, generic functions, and method combination ${cite:ref=Stee90a}$ ${cite:ref=Kicz91a}$. In comparison to ObjVlisp, Smalltalk and Pharo have implicit metaclasses and no metaclass reuse except by basic inheritance ${cite:ref=Blac09a}$. However, they are more stable as explained by Bouraqadi et al ${cite:ref=Grau89a}$ ${cite:ref=Bour98a}$.
  
 Studying this kernel is really worth it, since it has the following properties:
 - It unifies class and instances (there is only one data structure to represent all objects, classes included),
@@ -311,18 +311,16 @@ This process is the same when we send messages to the classes themselves. There 
 
 !!! Review of self and super semantics
 
-@@note CPF: "Review" is used to refer to going back to material one should know (and sometimes forgets)
-
 Since our experience showed us that even some book authors got the essential semantics of object-oriented programming wrong, we review here some facts that programmers familiar with object-oriented programming should master. For further readings refer to ''Pharo By Example'' or the Pharo Mooc available at *http://mooc.pharo.org*. 
 
-- ""self"" (also called ""this"" in languages like Java). self always represents the receiver of the message whose code contains the self reference. The lookup of a method sent to self starts in the class of the receiver.
+As explained in Section *@sec_message*, sending a message to an object always starts the lookup the corresponding method in the class of the receiver.
+Now we should distinguish two cases:
 
-@@note CPF: I'm not sure about which message is which here. I made a guess as to the meaning.
+- ""self"" (also called ""this"" in languages like Java). In a method body, ==self== always represents the receiver of the message. In reaction to a message sent to ==self==, the lookup of a method starts in the class of the receiver.
 
-- ""super"". super is similar to ""self"" in that it ''also'' represents the receiver of the message (and not the superclass). However, the method lookup starts in the superclass of the class containing the super expression (and not in the superclass of the class of the receiver, since this would mean that it loops forever in the case of inheritance tree of three classes - We let you to find how).
+- ""super"". super is similar to ""self"" in that it ''also'' represents the receiver of the message (and not the superclass). However, the method lookup starts in the superclass of the class containing the super expression.
 
-@@note CPF: The parenthetical expression at the end of the last paragraph should maybe be a footnote to make it less confusing? 
-
+Note that the lookup of a method in the case of ==super== does not look in the superclass of the class of the receiver, since this would mean that it may loop forever in the case of inheritance tree with three classes.
 
 
 Looking at Figure *@fig:LookupWithSelfInSuperclassMethod*  we see that the key point is that ==B new bar== returns 50 since
@@ -339,18 +337,12 @@ B new bar
 >>> 50
 ]]]
 
-@@note CPF: I tricked myself into looking at Figure 1-16 here by mistake (it comes right after the text, but also because of the A, B, foo, bar). I suggest using different class names and messages for the self/super examples.
-
 +self always represents the receiver.>file://figures/LookupWithSelfInSuperclassMethod.pdf|width=40|label=fig:LookupWithSelfInSuperclassMethod+
-
-@@note Trying a PlantUML sequence diagram in Figure *@fig:SelfLookupSequenceDiagram*. If you like it, I can do another for the second example with super.
 
 +Sequence diagram of self always represents the receiver.>file://figures/SelfLookupSequenceDiagram.pdf|width=60|label=fig:SelfLookupSequenceDiagram+
 
 
-For ==super==, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses* shows that ==super== represents the receiver, but that when ==super== is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence ==R new bar== returns 100, but not 20 or 60. 
-
-@@note CPF: In my American English brain, it's: (neither A nor B) or (not A or B). 
+For ==super==, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses* shows that ==super== represents the receiver, but that when ==super== is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence ==R new bar== returns 100, but neither 20 nor 60. 
 
 +super represents the receiver, but the method lookup starts in the superclass of the class of the method using super. >file://figures/LookupWithSuperInSuperclassMethodThreeClasses2.pdf|width=40|label=fig:LookupWithSuperInSuperclassMethodThreeClasses+
 
