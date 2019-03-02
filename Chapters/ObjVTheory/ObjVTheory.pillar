@@ -314,11 +314,13 @@ This process is the same when we send messages to the classes themselves. There 
 Since our experience showed us that even some book authors got the essential semantics of object-oriented programming wrong, we review here some facts that programmers familiar with object-oriented programming should master. For further readings refer to ''Pharo By Example'' or the Pharo Mooc available at *http://mooc.pharo.org*. 
 
 As explained in Section *@sec_message*, sending a message to an object always starts the lookup the corresponding method in the class of the receiver.
-Now we should distinguish two cases:
+In the body of a method, both ""self"" (also called ""this"" in languages like Java) and ""super"" always represent the receiver of the message. The difference lies in the class from where the lookup starts:
 
-- ""self"" (also called ""this"" in languages like Java). In a method body, ==self== always represents the receiver of the message. In reaction to a message sent to ==self==, the lookup of a method starts in the class of the receiver.
+- When a message is sent to ==self==, the lookup starts in the class of the receiver.
 
-- ""super"". super is similar to ""self"" in that it ''also'' represents the receiver of the message (and not the superclass). However, the method lookup starts in the superclass of the class containing the super expression.
+- When a message is sent to ==super==, the lookup starts in the superclass of the method's class.
+
+This distinction is required to handle the case when a method extends, instead of overriding, an implementation in its superclasses. The extending method may be defined anywhere along the class hierarchy of the receiver, so it needs a way to start lookup from its own superclass hierarchy. Hence the name ==super==.
 
 Note that the lookup of a method in the case of ==super== does not look in the superclass of the class of the receiver, since this would mean that it may loop forever in the case of inheritance tree with three classes.
 
