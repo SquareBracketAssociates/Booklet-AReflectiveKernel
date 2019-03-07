@@ -575,8 +575,6 @@ Compare the two following versions of ==basicSend: selector withArguments: argum
 
 [[[
 Obj >> basicSend: selector withArguments: arguments from: aClass
-   "Execute the method found starting from aClass and whose name is selector."
-   "The core of the sending a message, reused for both a normal send or a super one."
    | methodOrNil |
    methodOrNil := (aClass lookup: selector).
    ^ methodOrNil
@@ -587,8 +585,6 @@ Obj >> basicSend: selector withArguments: arguments from: aClass
 
 [[[
 Obj >> basicSend: selector withArguments: arguments from: aClass
-   "Execute the method found starting from aClass and whose name is selector."
-   "The core of the sending a message, reused for both a normal send or a super one."
    | methodOrNil |
    methodOrNil := (aClass lookup: selector).
    ^ methodOrNil
