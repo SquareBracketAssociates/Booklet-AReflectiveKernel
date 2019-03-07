@@ -1,12 +1,12 @@
 !!Building a minimal reflective class-based kernel
 
-The objectives of this chapter is to help you to implement step by step the ObjVlisp model explained in the previous chapter. ObjVlisp was designed by P. Cointe who got inspired by the kernel  of Smalltalk-78. It has explicit metaclasses and it is composed of two classes ==Object== and ==Class==.
+The objective of this chapter is to help you to implement step by step the ObjVlisp model explained in the previous chapter.
+ObjVlisp was designed by Pierre Cointe, who got inspired by the kernel of Smalltalk-78. It has explicit metaclasses and it is composed of two classes ==Object== and ==Class==.
 
 !!! Objectives
-During the previous chapter, you saw the main points of the ObjVLisp model, now you 
-will implement it. The goals of this implementation are to give a 
-concrete understanding of the concepts presented previously. Here 
-are some of the points you can deeply understand while writing the implementation:
+During the previous chapter, you saw the main points of the ObjVLisp model, now you will implement it.
+The goals of this implementation are to give a concrete understanding of the concepts presented previously.
+Here are some of the points you can deeply understand while writing the implementation:
 
 - What is a possible object structure?
 - What is object  allocation and initialization?
@@ -43,8 +43,8 @@ Gofer new
 	load.
 ]]]
 
-Alternatively, to load the code open a monticello browser, 
-- Add a file repository to point to an ObjVLispSkeleton project under ==StephaneDucasse== in the ObjVLispSkeleton project at *http://www.smalltalkhub.com*. Use the following expression in the smalltalkhub repository creation pop up.
+Alternatively, to load the code, open a monticello browser, add a file repository to point to the ObjVLispSkeleton project under ==StephaneDucasse== at *http://www.smalltalkhub.com*.
+Use the following expression in the smalltalkhub repository creation pop up, then select the latest file and load it.
 
 [[[
 MCSmalltalkhubRepository
@@ -53,13 +53,12 @@ MCSmalltalkhubRepository
     user: ''
     password: ''
 ]]]
-- Select the latest file and load it. 
- 
+
 !!!! Running tests
 For each functionality you will have to run some tests.
 
-For example to run a particular test named ==testPrimitive==, 
-- evaluate the following expression ==(ObjTest selector: #testPrimitiveStructure) run== or 
+For example to run a particular test named ==testPrimitiveStructure==,
+- evaluate the expression ==(ObjTest selector: #testPrimitiveStructure) run==, or
 - click on the icon of the method named ==testPrimitiveStructure==.
 
 Note that since you are developing the kernel, to test it we implemented manually some mocks of the classes and kernel. This is the setup method of the test classes that build this fake kernel. Now pay attention because the setups are often taking shortcuts, so do not copy them blindly. 
@@ -106,7 +105,7 @@ We need a way to store and access ObjVLisp classes. As a
 solution, on the class level of the Pharo class ==Obj== we defined a
 dictionary holding the defined classes. This dictionary acts as the namespace for our language. We defined the following methods to store and access defined classes.
 
-- ==declareClass: anObjClass== stores the objinstance ==anObjClass== given as argument in the class repository (here a dictionary whose keys are the class names and values the ObjVLisp classes themselves).
+- ==declareClass: anObjClass== stores the objInstance ==anObjClass== given as argument in the class repository (here a dictionary whose keys are the class names and values the ObjVLisp classes themselves).
 
 - ==giveClassNamed: aSymbol== returns  the ObjVLisp class  named ==aSymbol== if it exists. The class should have been declared previously.
 
@@ -131,7 +130,7 @@ Now you are ready to start.
 
 !!! Structure and primitives
 
-The first issue is how to represent objects.  We have to agree on an initial representation. In this implementation we chose to represent the objinstances as arrays (instances of ==Obj== a subclass of ==Array==). In the following we use the terms array for talking about instances of the class ==Obj==.  
+The first issue is how to represent objects. We have to agree on an initial representation. In this implementation we chose to represent the objInstances as arrays (instances of ==Obj== a subclass of ==Array==). In the following we use the terms array for talking about instances of the class ==Obj==.
 
 !!!! Your job.
 Check that the class ==Obj== exists and  inherits from ==Array==. 
@@ -140,7 +139,7 @@ Check that the class ==Obj== exists and  inherits from ==Array==.
 The first object that we will create is the class ==ObjClass==. Therefore we
 focus now on the minimal structure of the classes in our language. 
 
-An objinstance representing a class has the following structure: an identifier to its class, a name, an identifier to its superclass (we limit the model to single inheritance), a list of instance variables, a list of initialization keywords, and a method dictionary. 
+An objInstance representing a class has the following structure: an identifier to its class, a name, an identifier to its superclass (we limit the model to single inheritance), a list of instance variables, a list of initialization keywords, and a method dictionary.
 
 For example the class ==ObjPoint== has then the following structure: 
 
@@ -150,11 +149,11 @@ For example the class ==ObjPoint== has then the following structure:
 
 
 It means that ==ObjPoint== is an instance of ==ObjClass==, is named ==#ObjPoint==, inherits from a class named ==ObjObject==, has three instance variables, two initialization keywords and an uninitialized method dictionary. To access this structure we define some primitives as shown in Figure *@fig:structure*.
-
-
-
+Figure *@fig:offset* shows how offsets are used to access in an controlled manner the raw objClass information.
 
 +Class structure representation.>file://figures/ClassRepresentationAsArray.pdf|width=60|label=fig:structure+
+
++Using offset to access information.>file://figures/AccessObjName.pdf|width=60|label=fig:offset+
 
 
 !!!! Your job.
@@ -174,10 +173,7 @@ RawObjTest >> testPrimitiveStructureObjIVs
 
    self assert: ((pointClass objIVs) = #(#class #x #y)).
 ]]]
- 
-+Using offset to access information.>file://figures/AccessObjName.pdf|width=60|label=fig:offset+
- 
-Figure *@fig:offset* shows how offsets are used to access in an controlled manner the raw objclass information. 
+
 
 Implement the primitives that are missing to run the following tests ==testPrimitiveStructureObjClassId==,
  ==testPrimitiveStructureObjIVs==, ==testPrimitiveStructureObjKeywords==, 
@@ -211,7 +207,7 @@ Make sure that you execute the test method: ==testClassAccess==
 
 [[[
 RawObjTest >> testClassAccess
-   "(self  selector: #testClassAccess) run"
+   "(self selector: #testClassAccess) run"
 
    self assert: (aPoint objClass = pointClass)
 ]]]
@@ -269,11 +265,10 @@ Make sure that you execute the test method: ==testIVOffsetAndValue== and it pass
 
 !!! Object allocation and initialization
 
-The creation of an object is the composition of two elementary operations: its '''allocation''' and its ''initialization''. 
-
-We now define all the primitives that allow us to allocate and initialize an object. Remember that 
-# the allocation is a class method that returns a nearly empty structure, nearly empty because the instance represented by the structure should at least knows its class and 
-# the initialization of an instance is an instance method that given a newly allocated instance and a list of initialization arguments fill the instance.
+The creation of an object is the composition of two elementary operations: its ''allocation'' and its ''initialization''.
+We now define the primitives that allow us to allocate and initialize an object. Remember that:
+- allocation is a class method that returns a nearly empty structure, nearly empty because the instance represented by the structure should at least know its class, and
+- initialization is an instance method that given a newly allocated instance and a list of initialization arguments fill the instance.
 
 !!!! Instance allocation
 
@@ -333,11 +328,11 @@ ObjTest >> testKeywords
 Make sure that you execute the test method: ==testKeywords== and that it passes. 
 
 !!! Object initialization
-Once an object is allocated, it may be initialized by the programmer by specifying a list of initialization values. We can represent such list by an array containing alternatively
+Once an object is allocated, it may be initialized by the programmer by specifying a list of initialization values. We can represent such a list by an array containing alternatively
 a keyword and a value like ==#(#toto 33 #x 23)== where 33 is associated with ==#toto== and 23 with ==#x==.
 
-!!!! Your job. 
-Read in the protocol =='instance initialization'== the primitive  ==initializeUsing: anArray== that sent an object with an initialization list returns an initialized object.
+!!!! Your job.
+Read in the protocol =='instance initialization'== the primitive ==initializeUsing: anArray== that, when sent to an object along with an initialization list, returns the initialized object.
 
 [[[
 ObjTest >> testInitialize
@@ -353,8 +348,9 @@ ObjTest >> testInitialize
 
 !!! Static inheritance of instance variables
 
-Instance variables are statically inherited at the class creation time. The simplest form of instance variable inheritance is to define the  complete set of instance variables as the ordered fusion between the inherited instance variables  and the locally defined instance variables. For simplicity reason and as most of the languages, we chose to forbid duplicated instance
-variables in the inheritance chain.
+Instance variables are statically inherited at class creation time.
+The simplest form of instance variable inheritance is to define the complete set of instance variables as the ''ordered fusion'' between the inherited instance variables and the locally defined instance variables.
+For simplicity and similarity with most languages, we chose to forbid duplicated instance variables in the inheritance chain.
 
 !!!! Your job.
 In the protocol =='iv inheritance'==, read and understand the primitive  ==computeNewIVFrom: superIVOrdCol with: localIVOrdCol==.
@@ -382,13 +378,17 @@ ObjTest >> testInstanceVariableInheritance
 You could think that keeping the same order of the instance variables between a superclass and its subclass is not an issue. This is partly true in this simple implementation because the instance variable accessors compute each time the corresponding offset to access an instance variable using the primitive ==offsetFromClassOfInstanceVariable:==.  However, the structure (instance variable order) of a class is hardcoded by the primitives. That's why your implementation of the primitive ==computeNewIVFrom:with:== should take care of that aspect.
 
 !!!Method management
-A class stores the behavior (expressed by methods) shared by all its instances into a method dictionary. In our implementation, we represent methods by associating a symbol to a Pharo ''block'' a kind of anonymous method. The block is then stored in the method dictionary of an objClass.
+A class stores the behavior (expressed by methods) shared by all its instances into a method dictionary.
+In our implementation, we represent methods by associating a symbol to a Pharo ''block'', a kind of anonymous method.
+The block is then stored in the method dictionary of an objClass.
 
-In this implementation we do not offer the ability to  access  directly instance variables of the class in which the method is defined. This could be done by sharing a common environment among all the methods. The programmer has to use accessors or the ==setIV== and ==getIV== objMethods defined on ==ObjObject== to access the instance variables. You can find the definition of such methods in the bootstrap method on the class side of ==Obj==.
+In this implementation we do not offer the ability to directly access instance variables of the class in which the method is defined.
+This could be done by sharing a common environment among all the methods.
+The programmer has to use accessors or the ==setIV== and ==getIV== objMethods defined on ==ObjObject== to access the instance variables.
+You can find the definition of those methods in the bootstrap protocol on the class side of ==Obj==.
 
 In our ObjVLisp implementation, we do not have a syntax for message passing. Instead we call the primitives using the Pharo syntax for message passing (using the message ==send:withArguments:==).
-
-The following expression ==objself getIV: x== is expressed in ObjVLisp as 
+The expression ==objself getIV: x== is expressed in ObjVLisp as
 ==objself send: #getIV withArguments: #(#x)==.
 
 
@@ -400,7 +400,8 @@ ObjPoint
    withBody: 'objself send: #getIV withArguments: #(#x)'. 
 ]]]
 
-As a first approximation this code will create the following block that will get stored into the class method dictionary. ==[ :objself | objself send: #getIV withArguments: #(#x) ]==.  As you may notice, in our implementation, the receiver is always an explicit argument of the method. Here we named it ==objself==. 
+As a first approximation, this code will create the following block that will get stored into the class method dictionary: ==[ :objself | objself send: #getIV withArguments: #(#x) ]==.
+As you may notice, in our implementation, the receiver is always an explicit argument of the method. Here we named it ==objself==.
 
 !!!! Defining a method and sending a message  
 
@@ -434,8 +435,9 @@ anObjClass
 
 
 !!!! Your job.
-We provide all the primitives that handle with method definition. In the protocol =='method management'== look at the methods  ==addMethod: aSelector args: aString withBody: aStringBlock==,
-==removeMethod: aSelector== and ==doesUnderstand: aSelector==. Implement ==bodyOfMethod: aSelector==. 
+We provide all the primitives that handle method definition.
+In the protocol =='method management'== look at the methods ==addMethod: aSelector args: aString withBody: aStringBlock==,
+==removeMethod: aSelector== and ==doesUnderstand: aSelector==. Implement ==bodyOfMethod: aSelector==.
 
 Make sure that you execute the test method: ==testMethodManagement==
 
@@ -473,7 +475,7 @@ Obj >> basicSend: selector withArguments: arguments from: aClass
       ifNil: [ Error signal: 'Obj message' , selector asString, ' not understood' ] 
 ]]]
 
-Based on this primitive we can express ==send:withArguments:== and ==super:withArguments:== as follows:
+Based on this primitive we can express ==send:withArguments:== as follows:
 
 [[[
 Obj >> send: selector withArguments: arguments 
@@ -484,7 +486,7 @@ Obj >> send: selector withArguments: arguments
 
 
 !!!Method lookup
-The primitive ==lookup: selector== applied to an ==objClass== should return the method associated to the selector if it found it, else nil to indicate that it failed. 
+The primitive ==lookup: selector== applied to an objClass should return the method associated to the selector if it found it, else nil to indicate that it failed.
 
 !!!! Your job.
 Implement the primitive ==lookup: selector== that sent to an objClass with a method selector, a symbol and the initial receiver of the message, returns the method-body of the method associated with the selector in the objClass or its superclasses.  Moreover if the method is not found, nil is returned.
@@ -503,8 +505,8 @@ ObjTest >> testNilWhenErrorInLookup
 [[[
 ObjTest >> testRaisesErrorSendWhenErrorInLookup
    "(self  selector: #testRaisesErrorSendWhenErrorInLookup) run"
-   
-   self should: [  pointClass send: #zork withArguments: { aPoint } ] raise: Error.
+
+   self should: [ pointClass send: #zork withArguments: { aPoint } ] raise: Error.
    "Open a Transcript to see the message trace"
 ]]]
 
@@ -516,8 +518,7 @@ To invoke a superclass hidden method, in Java and Pharo you use ==super==, which
 Let us see how we will express the following situation. 
 [[[
 bar: x
-
-   super foo: x    
+   super foo: x
 ]]]
 
 In our implementation of ObjVlisp we do not have a syntactic construct to express super, you have to use the ==super:withArguments:== Pharo message as follows.
