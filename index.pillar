@@ -1,12 +1,23 @@
-Back early 90, when I was a master student, we learned meta object programming and we were using Common Lisp Object Systems (CLOS) to program. I loved the lecture and I realized that it was quite advanced. At that time I built an environment for therom proving system in CLOS. However, deep inside me I knew that I did not fully understand what was the class ==Object== or what is really a metaclass. Of course I could repeat the lecture and look smart but there was this little voice telling me that I was 100\%. 
-Then by accident I found the article of Pierre Cointe and I was blasted by the simplicity of the model. I spent 3 days reimplementing the model like a mad because it was too much fun. For me it was a key to my comprehension of class-based reflective systems. Once I finished I went to see my teacher and told her that she must teach it and she told me to do it. Since then I'm teaching it. 
+Back in the early 90's, when I was a master student, we learned meta object programming and we were using Common Lisp Object Systems (CLOS) to program.
+I loved the lecture and I realized that it was quite advanced.
+At that time I built a theorem proving system in CLOS.
+However, deep inside me I knew that I did not fully understand what was the class ==Object== or what is really a metaclass; of course, I could repeat the lecture and look smart, but there was this little voice telling me that I wasn't 100\% sure.
+Then by accident I found the article of Pierre Cointe and I was blasted by the simplicity of the model.
+I spent 3 days reimplementing the model like mad because it was too much fun.
+For me it was key to my comprehension of class-based reflective systems.
+Once I finished I went to see my teacher and told her that she must teach it and she told me to do it.
+Since then I'm teaching it.
 
-Note that while the project is historically named ObjVLisp, it has nothing to do about LISP. ObjVlisp is just a little conceptual framework but it provides a condensed view and explains the forces in presence in larger systems such as Pharo that share the "everything is an object mantra" I love so much. This book explains the consequence of having classes as objects. In addition, it describes the design and the consequences of having a self-described reflective minimal kernel. 
+Note that while the project is historically named ObjVLisp, it has nothing to do about LISP.
+ObjVlisp is just a little conceptual framework but it provides a condensed view and explains the forces in presence in larger systems such as Pharo that share the ''everything is an object'' mantra I love so much.
+This book explains the consequence of having classes as objects.
+In addition, it describes the design and the consequences of having a self-described reflective minimal kernel.
 
 Doing so we will learn deeply about objects, object creation instantiation, message lookup, delegation, inheritance and much more.
 
 I would like to thank Christopher Fuhrman for his large copy-edit pass and kksubbu for his suggestions.
-S. Ducasse
+
+— Stéphane Ducasse
 
 
 ${inputFile:path=Chapters/ObjVTheory/ObjVTheory.pillar}$
@@ -21,7 +32,7 @@ Smith was the first to introduce reflection in a programming language with 3Lisp
 
 In the context of meta-object protocols, Bobrow ${cite:ref=Bobr93a}$  refines the definition as follows:
 
-- Reflection is the ability of a program to manipulate as data something representing the state of the program during its own execution. There are two aspects of such manipulation: ''introspection'' and ''intercession'' (...) Both aspects require a mechanism for encoding execution state as data; providing such an encoding is called ''reification''. 
+- Reflection is the ability of a program to manipulate as data something representing the state of the program during its own execution. There are two aspects of such manipulation: ''introspection'' and ''intercession'' (...) Both aspects require a mechanism for encoding execution state as data; providing such an encoding is called ''reification''.
 
 
 Maes proposed some definitions for reflexive programming ${cite:ref=Maes87b}$:
@@ -42,7 +53,7 @@ Maes proposed some definitions for reflexive programming ${cite:ref=Maes87b}$:
 
 - The ''meta-object'' of an object X represents the explicit information about X (e.g. about its behavior and its implementation). The object X itself groups the information about the entity of domain it represents.
 
-{{{latex: 
+{{{latex:
 \bibliographystyle{alpha}
 \bibliography{rmod}
 }}}
