@@ -8,4 +8,4 @@ Currently bibliographic references are broken.
 [travis]: https://travis-ci.org/SquareBracketAssociates/Booklet-AReflectiveKernel
 [badge]: https://travis-ci.org/SquareBracketAssociates/Booklet-AReflectiveKernel.svg?branch=master
 
-The result from the latest successful Travis build can be found [on Bintray (PDF)](https://bintray.com/squarebracketassociates/wip/download_file?file_path=reflective-wip.pdf).
+The result from the latest successful Travis build can be found the release panel of this page.

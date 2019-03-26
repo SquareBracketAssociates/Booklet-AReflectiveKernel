@@ -23,15 +23,16 @@ install:
   
 script:
   - ./pillar/build/pillar build pdf
-deploy:
-- provider: bintray
-  file: .bintray.json
-  on:
-    repo: SquareBracketAssociates/Booklet-AReflectiveKernel
-  skip_cleanup: true
-  user: ducasse
-  key:
-    secure: qJIAOqcm3Q7btvUV3ryCvSwgIgDnz4yVAChYvzFcIHW8NWmlvZmUQXHy6MuHCiv1r3QUz0xrLQQML+qD25GSRMSAUZ32Eeeuda33C3IvLQm8l3qp55f8MfnFsX232++09qU+mtzvJNpo8D9ojLqccP2TsugSi1GIXTURWCvg5bcP2LPWpsNomCmHtyFJwfp9WlxGlx0GSgqi36aeeqfqEZqXFlpoA2WL7Wz7ZbesO+6p/bd0KeHIJSpkKurbCw37g10nJziJ01R4b9fkoACVD3/GdPk6wNkHk9hoQbJUM/C9BHt22DFKMh4VAgTOUizv+rh63D9Tst+TPyW4B34UqhSInj1N0N8rfymWiUL8WPkC8IeBuTEo1nEI5VGgGpYjbHeK1kSdyi89UCOzOPah05OdFtc3NWOYXzqK8pTeNt+JEqd0Ay83zEuE9ccpwDN33KuUkj6Vgl6n0KCQ6TPPEXX5yYoGfJ7K3clk7QRmXfOVJUfzYkp37xer3QhGMKyJ1/ZIMYW2SzPHffidRtSzi6+tSPQKN/ey3aQKlXYcj5lS8s0NVha8kN+/OjfvLfRc7viqVCIjSJl3IYjQRz/QLBDLLYAwdHHsiHcrna2FLRM4HQLUp41eox37BuGLeeVkxS7ypan+bDamYL5XA4+gcOhiDBbavwRiMaUXXkKrN3E=
+
+after_success:
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - mv _result/pdf/index.pdf BuildAReflectiveKernel-wip.pdf
+  - bash upload.sh BuildAReflectiveKernel-wip.pdf
+
+branches:
+  except:
+    - /^(?i:continuous)$/
+
 
 - provider: releases
   file: build/book.spiral.pdf
