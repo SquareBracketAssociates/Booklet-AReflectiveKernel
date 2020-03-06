@@ -22,10 +22,10 @@ In this section we discuss the set up that you will use, the implementation choi
 !!!!Getting Pharo
 You need to download and install Pharo from *http://www.pharo.org/*. You need a virtual machine, and the couple image and changes. You can use *http://get.pharo.org* to get a script to download Pharo.
 
-The current version that you can use is Pharo 6.1.
+The current version that you can use is Pharo 7.0.
 
 [[[
-wget -O- get.pharo.org/61+vm | bash
+wget -O- get.pharo.org/70+vm | bash
 ]]]
 
 You can use the book Pharo by Example from *http://www.pharo.org/PharoByExample/* for an overview of the syntax and the system.
@@ -37,22 +37,22 @@ All the necessary definitions are provided as a Monticello package. It contains 
 To load the code, execute the following expression:
 
 [[[
-Gofer new
-	url: 'http://smalltalkhub.com/mc/StephaneDucasse/ObjVLispSkeleton/main';
-	package: 'ObjVLispSkeleton';
-	load.
+Metacello new
+  baseline: 'ObjV';
+  repository: 'github://Ducasse/ObjVLispSkeleton/tree/master/src';
+  load
 ]]]
 
-Alternatively, to load the code, open a monticello browser, add a file repository to point to the ObjVLispSkeleton project under ==StephaneDucasse== at *http://www.smalltalkhub.com*.
-Use the following expression in the smalltalkhub repository creation pop up, then select the latest file and load it.
+%Alternatively, to load the code, open a monticello browser, add a file repository to point to the ObjVLispSkeleton project under ==StephaneDucasse== at *http://www.smalltalkhub.com*.
+%Use the following expression in the smalltalkhub repository creation pop up, then select the latest file and load it.
 
-[[[
-MCSmalltalkhubRepository
-    owner: 'StephaneDucasse'
-    project: 'ObjVLispSkeleton'
-    user: ''
-    password: ''
-]]]
+%[[[
+%MCSmalltalkhubRepository
+%    owner: 'StephaneDucasse'
+%    project: 'ObjVLispSkeleton'
+%    user: ''
+%    password: ''
+%]]]
 
 !!!! Running tests
 For each functionality you will have to run some tests.
