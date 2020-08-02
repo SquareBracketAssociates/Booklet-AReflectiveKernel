@@ -542,7 +542,7 @@ Node new
 >>> Cannot create instance of class
 ]]]
 
-A subclass of ==Node==, for example ==Workstation==, can be a concrete class by being an instance of ==Class== instead of ==AbstractMetaclass== but still inheriting from ==Node==. What we see in Figure *@fig:AbstractLookup* is that there are two links, instanciation and inheritance. The method lookup follows them as we presented previously. It always starts in the class of the receiver and follow the inheritance path.
+A subclass of ==Node==, for example ==Workstation==, can be a concrete class by being an instance of ==Class== instead of ==AbstractMetaclass== but still inheriting from ==Node==. What we see in Figure *@fig:AbstractLookup* is that there are two links, instantiation and inheritance. The method lookup follows them as we presented previously. It always starts in the class of the receiver and follow the inheritance path.
 
 What is key to understand is that when we send the message ==new== to the class ==Workstation==, we look for methods first in the metaclass ==Class==. When we send the message ==new== to class ==Node==, we look in its class: ==AbstractMetaclass== as shown in Figure *@fig:AbstractLookup*. In fact we do what we do for any instances: we look in the class of the receiver.
 
