@@ -5,7 +5,7 @@ Currently bibliographic references are broken.
 
 [![Build status][badge]][travis]
 
-[travis]: https://travis-ci.org/SquareBracketAssociates/Booklet-AReflectiveKernel
-[badge]: https://travis-ci.org/SquareBracketAssociates/Booklet-AReflectiveKernel.svg?branch=master
+[travis]: https://travis-ci.com/SquareBracketAssociates/Booklet-AReflectiveKernel
+[badge]: https://travis-ci.com/SquareBracketAssociates/Booklet-AReflectiveKernel.svg?branch=master
 
 The result from the latest successful Travis build can be found the release panel of this page.
