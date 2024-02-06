@@ -27,10 +27,10 @@ In this section we discuss the set up that you will use, the implementation choi
 
 You need to download and install Pharo from [http://www.pharo.org/](http://www.pharo.org/). You need a virtual machine, and the couple image and changes. You can use [http://get.pharo.org](http://get.pharo.org) to get a script to download Pharo.
 
-The current version that you can use is Pharo 7.0.
+The current version that you can use is Pharo 11.0.
 
 ```
-wget -O- get.pharo.org/70+vm | bash
+wget -O- get.pharo.org/110+vm | bash
 ```
 
 
@@ -39,7 +39,7 @@ You can use the book Pharo by Example from [http://www.pharo.org/PharoByExample/
 
 #### Getting infrastructure definitions
 
-All the necessary definitions are provided as a Monticello package. It contains all the classes, the method categories and the method signatures of the methods that you have to implement. It provides additional functionality such as a dedicated inspector and some extra methods that will make your life easy and help you to concentrate on the essence of the model. It contains also all the tests of the functionality you have to implement.
+All the necessary definitions are provided as a package. It contains all the classes, the method categories, and the method signatures of the methods that you have to implement. It provides additional functionality such as a dedicated inspector and some extra methods that will make your life easy and help you to concentrate on the essence of the model. It contains also all the tests of the functionality you have to implement.
 
 To load the code, execute the following expression:
 
@@ -64,7 +64,7 @@ Metacello new
 
 #### Running tests
 
-For each functionality you will have to run some tests.
+For each functionality, you will have to run some tests.
 
 For example to run a particular test named `testPrimitiveStructure`,
 - evaluate the expression `(ObjTest selector: #testPrimitiveStructure) run`, or
@@ -77,7 +77,7 @@ Note that since you are developing the kernel, to test it we implemented manuall
 
 ### Naming conventions
 
-We use the following conventions: we name as _primitives_ all the Pharo methods that participate in the building of ObjVLisp. These primitives are mainly implemented as methods of the class `Obj`. Note that in a Lisp implementation such primitives would be just lambda expressions, in a C implementation such primitives would be represented by C functions.
+We use the following conventions: we name as _primitives_ all the Pharo methods that participate in the building of ObjVLisp. These primitives are mainly implemented as methods of the class `Obj`. Note that in a Lisp implementation, such primitives would be just lambda expressions, in a C implementation such primitives would be represented by C functions.
 
 To help you to distinguish between classes in the implementation language \(Pharo\) and the ObjVLisp model, we prefix  all the ObjVLisp classes by `Obj`. Finally, some of the crucial and confusing primitives \(mainly the class structure ones\) are all prefixed by `obj`. For example the primitive that given an _objInstance_ returns its class identifier is named `objClassId`.
 We also talk about objInstances, objObjects and objClasses to refer to
@@ -86,10 +86,10 @@ specific instances, objects or classes defined in ObjVLisp.
 ### Inheriting from class Array
 
 
-We do not want to implement a scanner, a parser and a compiler for ObjVLisp but concentrate on the essence of the language. That's why we chose to use as much as possible the implementation language, here Pharo. As Pharo does not support macro definition, we will use as much as possible the existing classes to avoid extra syntactic problems.
+We do not want to implement a scanner, a parser, and a compiler for ObjVLisp but concentrate on the essence of the language. That's why we chose to use as much as possible the implementation language, here Pharo. As Pharo does not support macro definition, we will use as much as possible the existing classes to avoid extra syntactic problems.
 
 
-In our implementation, every object in the ObjVLisp world is instance of the class `Obj`.
+In our implementation, every object in the ObjVLisp world is an instance of the class `Obj`.
 The class `Obj` is a subclass of `Array`.
 
 Since `Obj` is a subclass of `Array`, `#(#ObjPoint 10 15)` is an objInstance of the class `ObjPoint` which is also an array instance of the Pharo class `ObjClass`.
