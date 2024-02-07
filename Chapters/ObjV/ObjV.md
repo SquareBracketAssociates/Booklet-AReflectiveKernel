@@ -11,9 +11,9 @@ The goals of this implementation are to give a concrete understanding of the con
 Here are some of the points you can deeply understand while writing the implementation:
 
 - What is a possible object structure?
-- What is object  allocation and initialization?
+- What is object allocation and initialization?
 - What is class initialization?
-- What the semantics of the method lookup?
+- What is the semantics of the method lookup?
 - What is a reflective kernel?
 - What are the roles of the classes `Class` and `Object`?
 - What is the role of a metaclass?
@@ -21,7 +21,7 @@ Here are some of the points you can deeply understand while writing the implemen
 
 ### Preparation
 
-In this section we discuss the set up that you will use, the implementation choices and the conventions that we will follow during all this chapter.
+In this section we discuss the setup that you will use, the implementation choices, and the conventions that we will follow during this book.
 
 #### Getting Pharo
 
@@ -67,7 +67,9 @@ Note that since you are developing the kernel, to test it we implemented manuall
 
 We use the following conventions: we name as _primitives_ all the Pharo methods that participate in the building of ObjVLisp. These primitives are mainly implemented as methods of the class `Obj`. Note that in a Lisp implementation, such primitives would be just lambda expressions, in a C implementation such primitives would be represented by C functions.
 
-To help you to distinguish between classes in the implementation language \(Pharo\) and the ObjVLisp model, we prefix all the ObjVLisp classes by `Obj`. Finally, some of the crucial and confusing primitives \(mainly the class structure ones\) are all prefixed by `obj`. For example, the primitive that given an _objInstance_ returns its class identifier is named `objClassId`.
+To help you to distinguish between classes in the implementation language (Pharo) and the ObjVLisp model, we prefix all the ObjVLisp classes by `Obj`. Finally, some of the crucial and confusing primitives (mainly the class structure ones) are all prefixed by `obj`. 
+
+For example, the primitive that given an _objInstance_ returns its class identifier is named `objClassId`.
 We also talk about objInstances, objObjects, and objClasses to refer to
 specific instances, objects, or classes defined in ObjVLisp.
 

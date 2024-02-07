@@ -15,7 +15,7 @@ In addition, it describes the design and the consequences of having a self-descr
 
 By doing so we will learn deeply about objects, object creation instantiation, message lookup, delegation, inheritance, and much more.
 
-I would like to thank Christopher Fuhrman for his large copy-edit pass and kksubbu and Ren'e-Paul for their suggestions.
+I would like to thank Christopher Fuhrman for his large copy-edit pass and kksubbu and René-Paul for their suggestions.
 
 — Stéphane Ducasse
 
@@ -59,7 +59,7 @@ Maes proposed some definitions for reflexive programming:
 - A programming environment has a _meta-level architecture_ if it has an architecture that supports meta-computation, without supporting reflective computation.
 
 
-- The _meta-object_ of an object X represents the explicit information about X \(e.g. about its behavior and its implementation\). The object X itself groups the information about the entity of the domain it represents.
+- The _meta-object_ of an object X represents the explicit information about X (e.g. about its behavior and its implementation). The object X itself groups the information about the entity of the domain it represents.
 
 
 
