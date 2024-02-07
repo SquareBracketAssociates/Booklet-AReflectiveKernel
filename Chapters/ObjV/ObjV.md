@@ -105,7 +105,7 @@ aPoint objInstanceVariableValue: 'x'.
 ```
 
 
-### Facilitating objclass class access
+### Facilitating objClass class access
 
 
 We need a way to store and access ObjVLisp classes. As a
@@ -113,7 +113,6 @@ solution, on the class level of the Pharo class `Obj` we defined a
 dictionary holding the defined classes. This dictionary acts as the namespace for our language. We defined the following methods to store and access defined classes.
 
 - `declareClass: anObjClass` stores the objInstance `anObjClass` given as an argument in the class repository \(here a dictionary whose keys are the class names and values the ObjVLisp classes themselves\).
-
 
 - `giveClassNamed: aSymbol` returns the ObjVLisp class named `aSymbol` if it exists. The class should have been declared previously.
 
@@ -134,7 +133,6 @@ Since `ObjPoint` is an unknown message, this same code is then written as:
 Obj ObjPoint
 >>> #(#ObjClass 'ObjPoint' #ObjObject #(class x y) #(:x :y) ... )
 ```
-
 
 Now you are ready to start.
 
@@ -205,11 +203,11 @@ Implement in protocol `'object structure primitives'` the primitives that manage
 
 
 Implement in protocol `'class structure primitives'` the primitives that manage:
-- the class name: `objName`, `objName: aSymbol`. The receiver is an objClass.
-- the superclass: `objSuperclassId`, `objSuperclassId: aSymbol`. The receiver is an objClass.
-- the instance variables: `objIVs`, `objIVs: anOrderedCollection`. The receiver is an objClass.
-- the keyword list: `objKeywords`, `objKeywords: anOrderedCollection`. The receiver is an objClass.
-- the method dictionary: `objMethodDict`, `objMethodDict: anIdentityDictionary`. The receiver is an objClass.
+- the class name: `objName`, `objName: aSymbol`. The receiver is an `objClass`.
+- the superclass: `objSuperclassId`, `objSuperclassId: aSymbol`. The receiver is an `objClass`.
+- the instance variables: `objIVs`, `objIVs: anOrderedCollection`. The receiver is an `objClass`.
+- the keyword list: `objKeywords`, `objKeywords: anOrderedCollection`. The receiver is an `objClass`.
+- the method dictionary: `objMethodDict`, `objMethodDict: anIdentityDictionary`. The receiver is an `objClass`.
 
 
 
@@ -219,7 +217,7 @@ Every object keeps the identifier of its class (its name). For example, an insta
 
 #### Your job.
 
-Using the primitive `giveClassNamed: aSymbol` defined at the class level of Obj, define the primitive `objClass` in the protocol `'object-structure primitive'` that returns the objInstance that represents its class \(classes are objects too in ObjVLisp\).
+Using the primitive `giveClassNamed: aSymbol` defined at the class level of Obj, define the primitive `objClass` in the protocol `'object-structure primitive'` that returns the `objInstance` that represents its class (classes are objects too in ObjVLisp).
 
 Make sure that you execute the test method: `testClassAccess`
 
@@ -230,12 +228,10 @@ RawObjTest >> testClassAccess
    self assert: aPoint objClass equals: pointClass
 ```
 
-
 Now we will be ready to manipulate objInstances via proper API. We will now use the class `ObjTest` for more elaborate tests.
 
 
 ### Accessing object instance variable values
-
 
 ![Instance variable offset asked to the class.](figures/offsetFromClass.pdf width=60&label=fig:offset2)
 
@@ -250,7 +246,6 @@ ObjTest >> testIVOffset
    self assert: (pointClass offsetFromClassOfInstanceVariable: #x) equals: 2.
    self assert: (pointClass offsetFromClassOfInstanceVariable: #lulu) equals: 0
 ```
-
 
 #### Your job.
 
@@ -289,7 +284,6 @@ Make sure that you execute the test method: `testIVOffsetAndValue` and it passes
 
 ### Object allocation and initialization
 
-
 The creation of an object is the composition of two elementary operations: its _allocation_ and its _initialization_.
 We now define the primitives that allow us to allocate and initialize an object. Remember that:
 - allocation is a class method that returns a nearly empty structure, nearly empty because the instance represented by the structure should at least know its class, and
@@ -304,6 +298,7 @@ As shown in the class `ObjTest`, if the class `ObjPoint` has two instance variab
 ```
 ObjTest >> testAllocate
    "(self  selector: #testAllocate) run"
+
    | newInstance |
    newInstance := pointClass allocateAnInstance.
    self assert: (newInstance at: 1) equals: #ObjPoint.
@@ -341,22 +336,24 @@ ObjTest >> testKeywords
    | dummyObject |
    dummyObject := Obj new.
    self 
-   	assert: (dummyObject generateKeywords: #(#titi #toto #lulu))
+        assert: (dummyObject generateKeywords: #(#titi #toto #lulu))
         equals: #(#titi: #toto: #lulu:).
-   self assert:
-      (dummyObject keywordValue: #x
-          getFrom: #(#toto 33 #x 23)
-          ifAbsent: 2)
-	equals: 23.
-   self assert:
-      (dummyObject keywordValue: #x
-         getFrom: #(#toto 23)
-         ifAbsent: 2
-	equals: 2.
    self 
-   	assert:
-      (dummyObject returnValuesFrom: #(#x 22 #y 35) followingSchema: #(#y #yy #x #y))
-        equals: #(35 nil 22 35)
+        assert:
+             (dummyObject keywordValue: #x
+                  getFrom: #(#toto 33 #x 23)
+                  ifAbsent: 2)
+        equals: 23.
+   self 
+         assert:
+              (dummyObject keywordValue: #x
+                   getFrom: #(#toto 23)
+                   ifAbsent: 2)
+         equals: 2.
+   self 
+         assert:
+              (dummyObject returnValuesFrom: #(#x 22 #y 35) followingSchema: #(#y #yy #x #y))
+         equals: #(35 nil 22 35)
 ```
 
 
@@ -405,12 +402,12 @@ ObjTest >> testInstanceVariableInheritance
 
    "a better choice would be to throw an exception if there are duplicates"
    self 
-   	assert:
+        assert:
     	  (Obj new computeNewIVFrom: #(#a #b #c #d) asOrderedCollection
          	with: #(#a #z #b #t) asOrderedCollection)
-         equals: #(#a #b #c #d #z #t) asOrderedCollection).
+        equals: #(#a #b #c #d #z #t) asOrderedCollection).
    self 
-   	assert: (Obj new computeNewIVFrom: #() asOrderedCollection
+         assert: (Obj new computeNewIVFrom: #() asOrderedCollection
          			with: #(#a #z #b #t) asOrderedCollection)
          equals: #(#a #z #b #t) asOrderedCollection)
 ```
@@ -418,11 +415,11 @@ ObjTest >> testInstanceVariableInheritance
 
 #### Side remark
 
-You could think that keeping the same order of the instance variables between a superclass and its subclass is not an issue. This is partly true in this simple implementation because the instance variable accessors compute each time the corresponding offset to access an instance variable using the primitive `offsetFromClassOfInstanceVariable:`.  However, the structure \(instance variable order\) of a class is hardcoded by the primitives. That's why your implementation of the primitive `computeNewIVFrom:with:` should take care of that aspect.
+You could think that keeping the same order of the instance variables between a superclass and its subclass is not an issue. This is partly true in this simple implementation because the instance variable accessors compute each time the corresponding offset to access an instance variable using the primitive `offsetFromClassOfInstanceVariable:`.  However, the structure (instance variable order) of a class is hardcoded by the primitives. That's why your implementation of the primitive `computeNewIVFrom:with:` should take care of that aspect.
 
 ### Method management
 
-A class stores the behavior \(expressed by methods\) shared by all its instances into a method dictionary.
+A class stores the behavior (expressed by methods) shared by all its instances into a method dictionary.
 In our implementation, we represent methods by associating a symbol to a Pharo _block_, a kind of anonymous method.
 The block is then stored in the method dictionary of an objClass.
 
@@ -431,7 +428,7 @@ This could be done by sharing a common environment among all the methods.
 The programmer has to use accessors or the `setIV` and `getIV` objMethods defined on `ObjObject` to access the instance variables.
 You can find the definition of those methods in the bootstrap protocol on the class side of `Obj`.
 
-In our ObjVLisp implementation, we do not have a syntax for message passing. Instead we call the primitives using the Pharo syntax for message passing \(using the message `send:withArguments:`\).
+In our ObjVLisp implementation, we do not have a syntax for message passing. Instead we call the primitives using the Pharo syntax for message passing (using the message `send:withArguments:`).
 The expression `objself getIV: x` is expressed in ObjVLisp as
 `objself send: #getIV withArguments: #(#x)`.
 
@@ -556,8 +553,6 @@ ObjTest >> testNilWhenErrorInLookup
    "The method zork is NOT implemented on pointClass"
 ```
 
-
-
 ```
 ObjTest >> testRaisesErrorSendWhenErrorInLookup
    "(self  selector: #testRaisesErrorSendWhenErrorInLookup) run"
@@ -566,10 +561,7 @@ ObjTest >> testRaisesErrorSendWhenErrorInLookup
    "Open a Transcript to see the message trace"
 ```
 
-
-
 ### Managing super
-
 
 To invoke a superclass hidden method, in Java and Pharo you use `super`, which means that the lookup up will start above the class defining the method containing the super expression. In fact, we can consider that in Java or Pharo, super is a syntactic sugar to refer to the receiver but changing where the method lookup starts. This is what we see in our implementation where we do not have syntactic support.
 
@@ -634,7 +626,6 @@ Now you should implement `super: selector withArguments: arguments from: aSuperc
 
 ### Handling not understood messages
 
-
 Now we can revisit error handling. Instead of raising a Pharo error, we want to send an ObjVlisp message to the receiver of the message to give him a chance to trap the error.
 
 Compare the two following versions of `basicSend: selector withArguments: arguments from: aClass` and propose an implementation of `sendError: selector withArgs: arguments`.
@@ -647,8 +638,6 @@ Obj >> basicSend: selector withArguments: arguments from: aClass
       ifNotNil: [ methodOrNil valueWithArguments: (Array with: self) , arguments ]
       ifNil: [ Error signal: 'Obj message' , selector asString, ' not understood' ]
 ```
-
-
 
 ```
 Obj >> basicSend: selector withArguments: arguments from: aClass
@@ -796,9 +785,7 @@ Make sure that you read and execute the test method: `testManuallyCreateObjClass
 Read carefully the following remarks below and the code.
 - In the objMethod `manualObjClassStructure`, the instance variable inheritance is simulated. Indeed the instance variable array contains `#class` that should normally be inherited from `ObjObject` as we will see in the third phase of the bootstrap.
 
-
 - Note that the class is declared into the class repository using the method `declareClass:`.
-
 
 - Note the method `#initialize` is method of the metaclass `ObjClass`: when you create a class the initialize method is invoked on a class! The `initialize` objMethod defines on `ObjClass` has two aspects: the first one deals with the initialization of the class like any other instance (first line). This behavior is normally done using a super call to invoke the `initialize` method defined in `ObjObject`. The final version of the `initialize` method will do it using perform. The second one deals with the initialization of classes: performing the instance variable inheritance, then computing the keywords of the newly created class. Note in this final step that the keyword array does not contain the `#class:` keyword because we do not want to let the user modify the class of an object.
 
@@ -852,7 +839,6 @@ Implement the following methods in `ObjObject`
 - the objMethod `setIV` that takes the receiver, an attribute name and a value and sets the value of the given attribute to the given value.
 - the objMethod `initialize` that takes the receiver and an initargs-list and initializes the receiver according to the specification given by the initargs-list. Note that here the `initialize` method only fills the instance according to the specification given by the initargs-list. Compare with the `initialize` method defined on `ObjClass`.
 
-
 Make sure that you read and execute the test method: `testCreateObjObjectStructure`
 
 In particular notice that this class does not implement the class method `new` because it is not a metaclass but does implement the instance method `initialize` because any object should be initialized.
@@ -862,10 +848,7 @@ In particular notice that this class does not implement the class method `new` b
 - Make sure that you read and execute the test method: `testCreateObjObjectMessage`
 - Make sure that you read and execute the test method: `testCreateObjObjectInstanceMessage`
 
-
-
 ### Creation of ObjClass
-
 
 Following the same approach, you can now recreate completely the class `ObjClass`. The primitive `createObjClass` is responsible for creating the final class `ObjClass`. So you will implement it and define all the primitive it needs. Now we only define what is specific to classes, the rest is inherited from the superclass of the class `ObjClass`, the class `ObjObject`.
 

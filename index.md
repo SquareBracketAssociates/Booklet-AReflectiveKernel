@@ -29,7 +29,7 @@ I would like to thank Christopher Fuhrman for his large copy-edit pass and kksub
 
 Smith was the first to introduce reflection in a programming language with 3Lisp. He defines reflection as:
 
-- An entity's integral ability to represent, operate on, and otherwise deal with itself in the same way that it represents, operates on and deals with its primary subject matter.
+- An entity's integral ability to represent, operate on, and otherwise deal with itself in the same way that it represents, operates on, and deals with its primary subject matter.
 
 
 In the context of meta-object protocols, Bobrow refines the definition as follows:
