@@ -33,7 +33,6 @@ The current version that you can use is Pharo 11.0.
 wget -O- get.pharo.org/110+vm | bash
 ```
 
-
 You can use the book Pharo by Example from [http://www.pharo.org/PharoByExample/](http://www.pharo.org/PharoByExample/) for an overview of the syntax and the system.
 
 
@@ -50,17 +49,6 @@ Metacello new
   load
 ```
 
-
-% Alternatively, to load the code, open a monticello browser, add a file repository to point to the ObjVLispSkeleton project under ==StephaneDucasse== at *http://www.smalltalkhub.com*.
-% Use the following expression in the smalltalkhub repository creation pop up, then select the latest file and load it.
-
-% [[[
-% MCSmalltalkhubRepository
-%     owner: 'StephaneDucasse'
-%     project: 'ObjVLispSkeleton'
-%     user: ''
-%     password: ''
-% ]]]
 
 #### Running tests
 
@@ -79,9 +67,9 @@ Note that since you are developing the kernel, to test it we implemented manuall
 
 We use the following conventions: we name as _primitives_ all the Pharo methods that participate in the building of ObjVLisp. These primitives are mainly implemented as methods of the class `Obj`. Note that in a Lisp implementation, such primitives would be just lambda expressions, in a C implementation such primitives would be represented by C functions.
 
-To help you to distinguish between classes in the implementation language \(Pharo\) and the ObjVLisp model, we prefix  all the ObjVLisp classes by `Obj`. Finally, some of the crucial and confusing primitives \(mainly the class structure ones\) are all prefixed by `obj`. For example the primitive that given an _objInstance_ returns its class identifier is named `objClassId`.
-We also talk about objInstances, objObjects and objClasses to refer to
-specific instances, objects or classes defined in ObjVLisp.
+To help you to distinguish between classes in the implementation language \(Pharo\) and the ObjVLisp model, we prefix all the ObjVLisp classes by `Obj`. Finally, some of the crucial and confusing primitives \(mainly the class structure ones\) are all prefixed by `obj`. For example, the primitive that given an _objInstance_ returns its class identifier is named `objClassId`.
+We also talk about objInstances, objObjects, and objClasses to refer to
+specific instances, objects, or classes defined in ObjVLisp.
 
 ### Inheriting from class Array
 
@@ -95,8 +83,8 @@ The class `Obj` is a subclass of `Array`.
 Since `Obj` is a subclass of `Array`, `#(#ObjPoint 10 15)` is an objInstance of the class `ObjPoint` which is also an array instance of the Pharo class `ObjClass`.
 
 As we will see:
-- `#(#ObjPoint 10 15)` represents an objPoint \(10,15\). It is an objInstance of the class `ObjPoint`.
-- `#(#ObjClass #ObjPoint #ObjObject #(class x y) #(:x :y) nil )` is the array that represents the objclass  `ObjPoint`.
+- `#(#ObjPoint 10 15)` represents an objPoint (10,15). It is an objInstance of the class `ObjPoint`.
+- `#(#ObjClass #ObjPoint #ObjObject #(class x y) #(:x :y) nil )` is the array that represents the objClass `ObjPoint`.
 
 
 #### About representation choices
@@ -122,13 +110,13 @@ We need a way to store and access ObjVLisp classes. As a
 solution, on the class level of the Pharo class `Obj` we defined a
 dictionary holding the defined classes. This dictionary acts as the namespace for our language. We defined the following methods to store and access defined classes.
 
-- `declareClass: anObjClass` stores the objInstance `anObjClass` given as argument in the class repository \(here a dictionary whose keys are the class names and values the ObjVLisp classes themselves\).
+- `declareClass: anObjClass` stores the objInstance `anObjClass` given as an argument in the class repository \(here a dictionary whose keys are the class names and values the ObjVLisp classes themselves\).
 
 
-- `giveClassNamed: aSymbol` returns  the ObjVLisp class  named `aSymbol` if it exists. The class should have been declared previously.
+- `giveClassNamed: aSymbol` returns the ObjVLisp class named `aSymbol` if it exists. The class should have been declared previously.
 
 
-With such methods we can write code like the following one that looks for the class of the class `ObjPoint`.
+With such methods, we can write code like the following one that looks for the class of the class `ObjPoint`.
 
 ```testcase=true
 Obj giveClassNamed: #ObjPoint
@@ -152,7 +140,7 @@ Now you are ready to start.
 ### Structure and primitives
 
 
-The first issue is how to represent objects. We have to agree on an initial representation. In this implementation we chose to represent the objInstances as arrays \(instances of `Obj` a subclass of `Array`\). In the following we use the terms array for talking about instances of the class `Obj`.
+The first issue is how to represent objects. We have to agree on an initial representation. In this implementation, we chose to represent the objInstances as arrays (instances of `Obj` a subclass of `Array`). In the following, we use the term 'array' for talking about instances of the class `Obj`.
 
 #### Your job.
 
@@ -163,7 +151,7 @@ Check that the class `Obj` exists and inherits from `Array`.
 The first object that we will create is the class `ObjClass`. Therefore we
 focus now on the minimal structure of the classes in our language.
 
-An objInstance representing a class has the following structure: an identifier to its class, a name, an identifier to its superclass \(we limit the model to single inheritance\), a list of instance variables, a list of initialization keywords, and a method dictionary.
+An objInstance representing a class has the following structure: an identifier to its class, a name, an identifier to its superclass (we limit the model to single inheritance), a list of instance variables, a list of initialization keywords, and a method dictionary.
 
 For example, the class `ObjPoint` has the following structure:
 
@@ -173,7 +161,7 @@ For example, the class `ObjPoint` has the following structure:
 
 
 
-It means that `ObjPoint` is an instance of `ObjClass`, is named `#ObjPoint`, inherits from a class named `ObjObject`, has three instance variables, two initialization keywords and an uninitialized method dictionary. To access this structure we define some primitives as shown in Figure *@fig:structure@*.
+It means that `ObjPoint` is an instance of `ObjClass`, is named `#ObjPoint`, inherits from a class named `ObjObject`, has three instance variables, two initialization keywords, and an uninitialized method dictionary. To access this structure we define some primitives as shown in Figure *@fig:structure@*.
 Figure *@fig:offset@* shows how offsets are used to access in a controlled manner the raw objClass information.
 
 ![Class structure representation.](figures/ClassRepresentationAsArray.pdf width=60&label=fig:structure)
@@ -190,7 +178,7 @@ Figure *@fig:offset@* shows how offsets are used to access in a controlled manne
 RawObjTest >> testPrimitiveStructureObjClassId
    "(self selector: #testPrimitiveStructureObjClassId) run"
 
-   self assert: (pointClass objClassId = #ObjClass).
+   self assert: pointClass objClassId equals: #ObjClass
 ```
 
 
@@ -198,7 +186,7 @@ RawObjTest >> testPrimitiveStructureObjClassId
 RawObjTest >> testPrimitiveStructureObjIVs
    "(self selector: #testPrimitiveStructureObjIVs) run"
 
-   self assert: ((pointClass objIVs) = #(#class #x #y)).
+   self assert: pointClass objIVs equals: #(#class #x #y)
 ```
 
 
@@ -223,15 +211,11 @@ Implement in protocol `'class structure primitives'` the primitives that manage:
 
 
 
-
-
-
 ### Finding the class of an object
 
-Every object keeps the identifier of its class \(its name\). For example, an instance of `ObjPoint` has then the following structure: `#(#ObjPoint 10 15)` where `#ObjPoint` is a symbol identifying the class `ObjPoint`.
+Every object keeps the identifier of its class (its name). For example, an instance of `ObjPoint` has then the following structure: `#(#ObjPoint 10 15)` where `#ObjPoint` is a symbol identifying the class `ObjPoint`.
 
 #### Your job.
-
 
 Using the primitive `giveClassNamed: aSymbol` defined at the class level of Obj, define the primitive `objClass` in the protocol `'object-structure primitive'` that returns the objInstance that represents its class \(classes are objects too in ObjVLisp\).
 
@@ -241,11 +225,11 @@ Make sure that you execute the test method: `testClassAccess`
 RawObjTest >> testClassAccess
    "(self selector: #testClassAccess) run"
 
-   self assert: (aPoint objClass = pointClass)
+   self assert: aPoint objClass equals: pointClass
 ```
 
 
-Now we will be ready to manipulate objInstances via proper API. We will now use the class `ObjTest` for more elaborated tests.
+Now we will be ready to manipulate objInstances via proper API. We will now use the class `ObjTest` for more elaborate tests.
 
 
 ### Accessing object instance variable values
@@ -255,14 +239,14 @@ Now we will be ready to manipulate objInstances via proper API. We will now use 
 
 #### A first simple method.
 
-The following test illustrate the behavior of the message `offsetFromClassOfInstanceVariable:`
+The following test illustrates the behavior of the message `offsetFromClassOfInstanceVariable:`
 
 ```
 ObjTest >> testIVOffset
    "(self  selector: #testIVOffset) run"
 
-   self assert: ((pointClass offsetFromClassOfInstanceVariable: #x) = 2).
-   self assert: ((pointClass offsetFromClassOfInstanceVariable: #lulu) = 0)
+   self assert: (pointClass offsetFromClassOfInstanceVariable: #x) equals: 2.
+   self assert: (pointClass offsetFromClassOfInstanceVariable: #lulu) equals: 0
 ```
 
 
@@ -278,15 +262,14 @@ Make sure that you execute the test method: `testIVOffset`
 
 #### A second simple method.
 
-
 The following test illustrates the expected behavior
 
 ```
 ObjTest >> testIVOffsetAndValue
    "(self  selector: #testIVOffsetAndValue) run"
 
-   self assert: ((aPoint offsetFromObjectOfInstanceVariable: #x) = 2).
-   self assert: ((aPoint valueOfInstanceVariable: #x) = 10)
+   self assert: (aPoint offsetFromObjectOfInstanceVariable: #x) equals: 2.
+   self assert: (aPoint valueOfInstanceVariable: #x) equals: 10
 ```
 
 
@@ -294,9 +277,8 @@ ObjTest >> testIVOffsetAndValue
 #### Your job.
 
 Using the previous method, define in the protocol `'iv management'`:
-1. the method `offsetFromObjectOfInstanceVariable: aSymbol` that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class \(as shown in Figure *@fig:offset3@*\).
+1. the method `offsetFromObjectOfInstanceVariable: aSymbol` that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset3@*).
 1. the method `valueOfInstanceVariable: aSymbol` that returns the value of this instance variable in the given object as shown in the test below.
-
 
 Note that for the method `offsetFromObjectOfInstanceVariable:` you can check that the instance variable exists in the class of the object and else raise an error using the Pharo method `error:`.
 
@@ -322,18 +304,18 @@ ObjTest >> testAllocate
    "(self  selector: #testAllocate) run"
    | newInstance |
    newInstance := pointClass allocateAnInstance.
-   self assert: (newInstance at: 1) = #ObjPoint.
-   self assert: (newInstance size) = 3.
+   self assert: (newInstance at: 1) equals: #ObjPoint.
+   self assert: (newInstance size) equals: 3.
    self assert: (newInstance at: 2) isNil.
    self assert: (newInstance at: 3) isNil.
-   self assert: (newInstance objClass = pointClass)
+   self assert: newInstance objClass equals: pointClass
 ```
 
 
 
 #### Your job.
 
-In the protocol `'instance allocation'` implement the primitive called `allocateAnInstance` that sent to an _objClass_ returns a new instance whose instance variable values are nil and whose objClassId represents the objClass.
+In the protocol `'instance allocation'` implement the primitive called `allocateAnInstance` that when sent to an _objClass_ returns a new instance whose instance variable values are nil and whose objClassId represents the objClass.
 
 
 Make sure that you execute the test method: `testAllocate`
@@ -356,20 +338,23 @@ ObjTest >> testKeywords
 
    | dummyObject |
    dummyObject := Obj new.
+   self 
+   	assert: (dummyObject generateKeywords: #(#titi #toto #lulu))
+        equals: #(#titi: #toto: #lulu:).
    self assert:
-      ((dummyObject generateKeywords: #(#titi #toto #lulu))
-        = #(#titi: #toto: #lulu:)).
-   self assert:
-      ((dummyObject keywordValue: #x
+      (dummyObject keywordValue: #x
           getFrom: #(#toto 33 #x 23)
-          ifAbsent: 2) = 23).
+          ifAbsent: 2)
+	equals: 23.
    self assert:
-      ((dummyObject keywordValue: #x
+      (dummyObject keywordValue: #x
          getFrom: #(#toto 23)
-         ifAbsent: 2) = 2).
-   self assert:
-      ((dummyObject returnValuesFrom: #(#x 22 #y 35) followingSchema: #(#y #yy #x #y))
-         = #(35 nil 22 35))
+         ifAbsent: 2
+	equals: 2.
+   self 
+   	assert:
+      (dummyObject returnValuesFrom: #(#x 22 #y 35) followingSchema: #(#y #yy #x #y))
+        equals: #(35 nil 22 35)
 ```
 
 
@@ -417,14 +402,15 @@ ObjTest >> testInstanceVariableInheritance
    "(self  selector: #testInstanceVariableInheritance) run"
 
    "a better choice would be to throw an exception if there are duplicates"
-   self assert:
-      ((Obj new computeNewIVFrom: #(#a #b #c #d) asOrderedCollection
-         with: #(#a #z #b #t) asOrderedCollection)
-         = #(#a #b #c #d #z #t) asOrderedCollection).
-   self assert:
-      ((Obj new computeNewIVFrom: #() asOrderedCollection
-         with: #(#a #z #b #t) asOrderedCollection)
-         = #(#a #z #b #t) asOrderedCollection)
+   self 
+   	assert:
+    	  (Obj new computeNewIVFrom: #(#a #b #c #d) asOrderedCollection
+         	with: #(#a #z #b #t) asOrderedCollection)
+         equals: #(#a #b #c #d #z #t) asOrderedCollection).
+   self 
+   	assert: (Obj new computeNewIVFrom: #() asOrderedCollection
+         			with: #(#a #z #b #t) asOrderedCollection)
+         equals: #(#a #z #b #t) asOrderedCollection)
 ```
 
 
@@ -438,7 +424,7 @@ A class stores the behavior \(expressed by methods\) shared by all its instances
 In our implementation, we represent methods by associating a symbol to a Pharo _block_, a kind of anonymous method.
 The block is then stored in the method dictionary of an objClass.
 
-In this implementation we do not offer the ability to directly access instance variables of the class in which the method is defined.
+In this implementation, we do not offer the ability to directly access instance variables of the class in which the method is defined.
 This could be done by sharing a common environment among all the methods.
 The programmer has to use accessors or the `setIV` and `getIV` objMethods defined on `ObjObject` to access the instance variables.
 You can find the definition of those methods in the bootstrap protocol on the class side of `Obj`.
@@ -484,7 +470,6 @@ bar: x
    self foo: x
 ```
 
-
 In our implementation of ObjVlisp you write:
 ```
 anObjClass
@@ -513,11 +498,11 @@ ObjTest >> testMethodManagement
       addMethod: #xx
       args: ''
       withBody: 'objself valueOfInstanceVariable: #x '.
-   self assert: (((pointClass bodyOfMethod: #xx) value: aPoint) = 10).
+   self assert: ((pointClass bodyOfMethod: #xx) value: aPoint) equals: 10.
    self assert: (pointClass doesUnderstand: #xx).
    pointClass removeMethod: #xx.
    self assert: (pointClass doesUnderstand: #xx) not.
-   self assert: (((pointClass bodyOfMethod: #x) value: aPoint) = 10)
+   self assert: ((pointClass bodyOfMethod: #x) value: aPoint) equals: 10
 ```
 
 
@@ -557,7 +542,7 @@ The primitive `lookup: selector` applied to an objClass should return the method
 
 #### Your job.
 
-Implement the primitive `lookup: selector` that sent to an objClass with a method selector, a symbol and the initial receiver of the message, returns the method-body of the method associated with the selector in the objClass or its superclasses.  Moreover if the method is not found, nil is returned.
+Implement the primitive `lookup: selector` that sent to an objClass with a method selector, a symbol and the initial receiver of the message, returns the method-body of the method associated with the selector in the objClass or its superclasses.  Moreover, if the method is not found, nil is returned.
 
 Make sure that you execute the test methods: `testNilWhenErrorInLookup` and `testRaisesErrorSendWhenErrorInLookup` whose code is given below:
 
@@ -566,7 +551,7 @@ ObjTest >> testNilWhenErrorInLookup
    "(self  selector: #testNilWhenErrorInLookup) run"
 
    self assert: (pointClass lookup: #zork) isNil.
-   "The method zork is NOT implement on pointClass"
+   "The method zork is NOT implemented on pointClass"
 ```
 
 
@@ -584,7 +569,7 @@ ObjTest >> testRaisesErrorSendWhenErrorInLookup
 ### Managing super
 
 
-To invoke a superclass hidden method, in Java and Pharo you use `super`, which means that the lookup up will start above the class defining the method containing the super expression. In fact we can consider that in Java or Pharo, super is a syntactic sugar to refer to the receiver but changing where the method lookup starts. This is what we see in our implementation where we do not have syntactic support.
+To invoke a superclass hidden method, in Java and Pharo you use `super`, which means that the lookup up will start above the class defining the method containing the super expression. In fact, we can consider that in Java or Pharo, super is a syntactic sugar to refer to the receiver but changing where the method lookup starts. This is what we see in our implementation where we do not have syntactic support.
 
 Let us see how we will express the following situation.
 ```
@@ -597,17 +582,17 @@ In our implementation of ObjVlisp we do not have a syntactic construct to expres
 
 ```
 anObjClass
-  addMethod: #bar:
-  args: 'x'
-  withBody: 'objself super: #foo: withArguments: #(#x) from: superClassOfClassDefiningTheMethod'.
+   addMethod: #bar:
+   args: 'x'
+   withBody: 'objself super: #foo: withArguments: #(#x) from: superClassOfClassDefiningTheMethod'.
 ```
 
 
-Note that `superClassOfClassDefiningTheMethod` is a variable that is bound to the superclass of `anObjClass` i.e., the class defining the method `bar` \(see later\).
+Note that `superClassOfClassDefiningTheMethod` is a variable that is bound to the superclass of `anObjClass` i.e., the class defining the method `bar` (see later).
 
 ```
 Pharo Unary: super odd
-ObjVLisp:  objself super: #odd withArguments: #() from: superClassOfClassDefiningTheMethod
+ObjVLisp: objself super: #odd withArguments: #() from: superClassOfClassDefiningTheMethod
 
 Pharo Binary: super + 4
 ObjVLisp: objself super: #+ withArguments: #(4) from: superClassOfClassDefiningTheMethod
@@ -619,15 +604,15 @@ ObjVlisp: objself super: #max: withArguments: #(4) from: superClassOfClassDefini
 
 ### Representing super
 
-We would like to explain you where the `superClassOfClassDefiningTheMethod` variable comes from.
+We would like to explain to you where the `superClassOfClassDefiningTheMethod` variable comes from.
 When we compare the primitive `send:withArguments:`, for super sends we added a third parameter to the primitive and we called it `super:withArguments:from:`.
 
 This extra parameter corresponds to the superclass of class in which the method is defined. This argument should always have the same name, i.e.,  `superClassOfClassDefiningTheMethod`. This variable will be bound when the method is added in the method dictionary of an objClass.
 
 If you want to understand how we bind the variable, here is the explanation:
-In fact, a method is not only a block but it needs to know the class that defines it or its superclass. We added such information using currification. \(a currification is the transformation of a function with n arguments into function with less argument but an environment capture: `f(x,y)= (+ x y)` is transformed into a function `f(x)=f(y)(+ x y)` that returns a function of a single argument y and where x is bound to a value and obtain a function generator\). For example, `f(2,y)` returns a function `f(y)=(+ 2 y)` that adds its parameter to 2. A currification acts as a generator of function where one of the argument of the original function is fixed.
+In fact, a method is not only a block but it needs to know the class that defines it or its superclass. We added such information using a currification. A currification is the transformation of a function with n arguments into function with less arguments but an environment capture: `f(x,y)= (+ x y)` is transformed into a function `f(x)=f(y)(+ x y)` that returns a function of a single argument y and where x is bound to a value and obtain a function generator. For example, `f(2,y)` returns a function `f(y)=(+ 2 y)` that adds its parameter to 2. A currification acts as a generator of function where one of the arguments of the original function is fixed.
 
-In Pharo we wrap the block representing the method around another block with a single parameter and we bind this parameter with the superclass of the class defining the method. When the method is added to the method dictionary, we evaluate the first block with the superclass as parameter as illustrated as follows:
+In Pharo, we wrap the block representing the method around another block with a single parameter and we bind this parameter with the superclass of the class defining the method. When the method is added to the method dictionary, we evaluate the first block with the superclass as a parameter as illustrated as follows:
 
 ```
 method := [ :superClassOfClassDefiningTheMethod |
@@ -639,11 +624,11 @@ method value: (Obj giveClassNamed: self objSuperclassId)
 
 
 So now you know where the `superClassOfClassDefiningTheMethod` variable comes from.
-Make sure that you execute the test method:  `testMethodLookup` and that is passes.
+Make sure that you execute the test method:  `testMethodLookup` and that i passes.
 
 #### Your job.
 
-Now you should be implement `super: selector withArguments: arguments from: aSuperclass` using the primitive `basicSend:withArguments:from:`.
+Now you should implement `super: selector withArguments: arguments from: aSuperclass` using the primitive `basicSend:withArguments:from:`.
 
 ### Handling not understood messages
 
@@ -673,7 +658,7 @@ Obj >> basicSend: selector withArguments: arguments from: aClass
 ```
 
 
-It should be noted that the objVlisp method is defined as follows in the `ObjObject` class \(see the bootstrap method on the class side of Obj\). The obj `error` method expects a single parameter: an array of arguments whose first element is the selector of the not understood message.
+It should be noted that the objVlisp method is defined as follows in the `ObjObject` class (see the bootstrap method on the class side of Obj). The obj `error` method expects a single parameter: an array of arguments whose first element is the selector of the not understood message.
 
 ```
 objObject
@@ -728,19 +713,19 @@ Read them.
 ### Manually creating ObjClass
 
 
-The first step is to create manually the class `ObjClass`. By manually we mean create an array \(because we chose an array to represent instances and classes in particular\) that represents the objClass `ObjClass`, then define its methods. You will implement/read this in the primitive `manuallyCreateObjClass` as shown below:
+The first step is to create manually the class `ObjClass`. By manually we mean create an array (because we chose an array to represent instances and classes in particular) that represents the objClass `ObjClass`, then define its methods. You will implement/read this in the primitive `manuallyCreateObjClass` as shown below:
 
 ```
 Obj class >> manuallyCreateObjClass
-  "self manuallyCreateObjClass"
+   "self manuallyCreateObjClass"
 
-  | class |
-  class := self manualObjClassStructure.
-  Obj declareClass: class.
-  self defineManualInitializeMethodIn: class.
-  self defineAllocateMethodIn: class.
-  self defineNewMethodIn: class.
-  ^ class
+   | class |
+   class := self manualObjClassStructure.
+   Obj declareClass: class.
+   self defineManualInitializeMethodIn: class.
+   self defineAllocateMethodIn: class.
+   self defineNewMethodIn: class.
+   ^ class
 ```
 
 
@@ -772,11 +757,11 @@ Obj class >> defineManualInitializeMethodIn: class
       objsuperclass isNil
         ifFalse:
           [ objself
-            objIVs: (objself computeNewIVFrom: objsuperclass objIVs with: objself objIVs)]
+               objIVs: (objself computeNewIVFrom: objsuperclass objIVs with: objself objIVs)]
         ifTrue:
           [ objself objIVs: (objself computeNewIVFrom: #(#class) with: objself objIVs)].
       objself
-        objKeywords: (objself generateKeywords: (objself objIVs copyWithout: #class)).
+          objKeywords: (objself generateKeywords: (objself objIVs copyWithout: #class)).
       objself objMethodDict: (IdentityDictionary new: 3).
       Obj declareClass: objself.
       objself'
@@ -797,7 +782,7 @@ defineAllocateMethodIn: class
 ```
 
 
-Following the same principle, define the primitive `defineNewMethodIn: anObjClass` that defines in anObjClass passed as argument the objMethod `new`. `new` takes two arguments: a class and an  initargs-list. It should invoke the objMethod `allocate` and `initialize`.
+Following the same principle, define the primitive `defineNewMethodIn: anObjClass` that defines in anObjClass passed as argument the objMethod `new`. `new` takes two arguments: a class and an initargs-list. It should invoke the objMethod `allocate` and `initialize`.
 
 #### Your job.
 
@@ -813,15 +798,15 @@ Read carefully the following remarks below and the code.
 - Note that the class is declared into the class repository using the method `declareClass:`.
 
 
-- Note the method `#initialize` is method of the metaclass `ObjClass`: when you create a class the initialize method is invoked on a class! The `initialize` objMethod defines on `ObjClass` has two aspects: the first one dealing with the initialization of the class like any other instance \(first line\). This behavior is normally done using a super call to invoke the `initialize` method defined in `ObjObject`. The final version of the `initialize` method will do it using perform. The second one dealing with the initialization of classes: performing the instance variable inheritance, then computing the keywords of the newly created class. Note in this final step that the keyword array  does not contain the `#class:` keyword because we do not want to let the user modify the class of an object.
+- Note the method `#initialize` is method of the metaclass `ObjClass`: when you create a class the initialize method is invoked on a class! The `initialize` objMethod defines on `ObjClass` has two aspects: the first one deals with the initialization of the class like any other instance (first line). This behavior is normally done using a super call to invoke the `initialize` method defined in `ObjObject`. The final version of the `initialize` method will do it using perform. The second one deals with the initialization of classes: performing the instance variable inheritance, then computing the keywords of the newly created class. Note in this final step that the keyword array does not contain the `#class:` keyword because we do not want to let the user modify the class of an object.
 
 
 
 ### Creation of ObjObject
 
 
-Now you are in the situation where you can create the first real and normal class of the system: the class `ObjObject`. To do  that you send the message `new` to class `ObjClass` specifying that the class you are creating is named `#ObjObject` and
-only have one instance variable called `class`. Then you will add the methods defining the behavior shared by all the objects.
+Now you are in the situation where you can create the first real and normal class of the system: the class `ObjObject`. To do that you send the message `new` to class `ObjClass` specifying that the class you are creating is named `#ObjObject` and
+only has one instance variable called `class`. Then you will add the methods defining the behavior shared by all the objects.
 
 #### Your job: objObjectStructure
 
@@ -834,7 +819,6 @@ Obj class >> objObjectStructure
       send: #new
       withArguments: #(#(#name: #ObjObject #iv: #(#class)))
 ```
-
 
 The class `ObjObject` is named `ObjObject`, has only one instance variable `class` and does not have a superclass because it is the inheritance graph root.
 
@@ -861,10 +845,10 @@ Implement the following methods in `ObjObject`
 - the objMethod `class` that given an objInstance returns its class \(the objInstance that represents the class\).
 - the objMethod `isClass` that returns false.
 - the objMethod `isMetaClass` that returns false.
-- the objMethod `error` that takes two arguments the receiver and the selector of the original invocation and raises an  error.
+- the objMethod `error` that takes two arguments the receiver and the selector of the original invocation and raises an error.
 - the objMethod `getIV` that takes the receiver and an attribute name, aSymbol, and returns its value for the receiver.
 - the objMethod `setIV` that takes the receiver, an attribute name and a value and sets the value of the given attribute to the given value.
-- the objMethod `initialize` that takes the receiver and an initargs-list and initializes the receiver according to the specification given by the  initargs-list. Note that here the `initialize` method only fill  the instance according to the specification given by the initargs-list. Compare with the `initialize` method defined on `ObjClass`.
+- the objMethod `initialize` that takes the receiver and an initargs-list and initializes the receiver according to the specification given by the initargs-list. Note that here the `initialize` method only fills the instance according to the specification given by the initargs-list. Compare with the `initialize` method defined on `ObjClass`.
 
 
 Make sure that you read and execute the test method: `testCreateObjObjectStructure`
@@ -881,7 +865,7 @@ In particular notice that this class does not implement the class method `new` b
 ### Creation of ObjClass
 
 
-Following the same approach, you can now recreate completely the class `ObjClass`. The primitive `createObjClass` is responsible to create the final class `ObjClass`. So you will implement it and define all the primitive it needs. Now we only define what is specific to classes, the rest is inherited from the superclass of the class `ObjClass`, the class `ObjObject`.
+Following the same approach, you can now recreate completely the class `ObjClass`. The primitive `createObjClass` is responsible for creating the final class `ObjClass`. So you will implement it and define all the primitive it needs. Now we only define what is specific to classes, the rest is inherited from the superclass of the class `ObjClass`, the class `ObjObject`.
 
 ```
 Obj class >> createObjClass
@@ -907,7 +891,7 @@ Obj class >> createObjClass
 
 To make the method `createObjClass` working we should implement the method it calls. Implement then:
 
-- the primitive `objClassStructure` that creates the `ObjClass` class  by invoking the `new` message to the class `ObjClass`. Note that during this method the `ObjClass` symbol refers to  two different entities because the new class that is created using the old one is declared in the class dictionary with the same name.
+- the primitive `objClassStructure` that creates the `ObjClass` class by invoking the `new` message to the class `ObjClass`. Note that during this method the `ObjClass` symbol refers to two different entities because the new class that is created using the old one is declared in the class dictionary with the same name.
 
 
 
@@ -950,8 +934,7 @@ objClass
 ```
 
 
-
-- the primitive `defineInitializeMethodIn: anObjClass` that adds the objMethod `initialize` to the objClass passed as argument. The objMethod `initialize` takes the receiver \(an objClass\) and an initargs-list and initializesthe receiver according to the specification given by the initargs-list. In particular, it should be initialized as any other object, then it should compute its instance variable \(i.e., inherited instance variables are computed\), the keywords are also computed, the method dictionary should be defined and the class is then declared as an existing one. We provide the following template to help you.
+- the primitive `defineInitializeMethodIn: anObjClass` that adds the objMethod `initialize` to the objClass passed as argument. The objMethod `initialize` takes the receiver (an objClass) and an initargs-list and initializesthe receiver according to the specification given by the initargs-list. In particular, it should be initialized as any other object, then it should compute its instance variable (i.e., inherited instance variables are computed), the keywords are also computed, the method dictionary should be defined and the class is then declared as an existing one. We provide the following template to help you.
 
 
 ```
@@ -997,7 +980,7 @@ Obj class >> defineInitializeMethodIn: objClass
 Make sure that you execute the test method: `testCreateObjClassMessage`.
 
 Note the following points:
-- The locally specified instance variables now are just the instance variables that  describe a class. The instance variable `class` is inherited from `ObjObject`.
+- The locally specified instance variables now are just the instance variables that describe a class. The instance variable `class` is inherited from `ObjObject`.
 - The `initialize` method now does a super send to invoke the initialization performed by `ObjObject`.
 
 
@@ -1015,7 +998,7 @@ Pay attention that your scenario covers the following aspects:
 - Send some messages defined in `ObjObject` to this instance.
 
 
-Define the class `ObjPoint` so that we can create points as below \(create a Pharo method to define it\).
+Define the class `ObjPoint` so that we can create points as below (create a Pharo method to define it).
 
 ```
 ObjClass send: #new
@@ -1047,7 +1030,7 @@ Obj ObjPoint
 ```
 
 
-Then test these new functionality.
+Then test these new functionalities.
 
 ```
 aPoint send: #x withArguments: #().
@@ -1110,8 +1093,8 @@ cannot create instances. This class should raise an error when it executes the `
 Then the following shows you a possible use of this metaclass.
 ```
 ObjAbstractClass
-  send: #new
-  withArguments: #(#(#name: #ObjAbstractPoint
+   send: #new
+   withArguments: #(#(#name: #ObjAbstractPoint
             #iv: #()
             #superclass: #ObjPoint)).
 
@@ -1119,12 +1102,10 @@ ObjAbstractPoint send: #new
    withArguments: #(#(#x: 24 #y: 6))        "should raise an error"
 ```
 
-
-You should redefine the `new` method. Note that the `ObjAbstractClass` is an instance of `ObjClass` because this is a class and inherits from it  because this is a metaclass.
+You should redefine the `new` method. Note that the `ObjAbstractClass` is an instance of `ObjClass` because this is a class and inherits from it because this is a metaclass.
 
 
 ### New features that you could implement
-
 
 You can implement some simple features:
 - define a metaclass that automatically defines accessors for the specified instances variables.
@@ -1133,10 +1114,9 @@ You can implement some simple features:
 
 #### Shared Variables
 
-Note that contrary to the proposition made in the 6th postulate of the original ObjVLisp model, class instance variables are not equivalent of shared variables.  According to the 6th postulate, a shared variable will be stored into the instance representing the class and not in an instance variable of the class representing the shared variables.  For example if a workstation has a shared variable named `domain`.  But domain should not be an extra instance variable of the class of `Workstation`. Indeed domain has nothing to do with class description.
+Note that contrary to the proposition made in the 6th postulate of the original ObjVLisp model, class instance variables are not equivalent to shared variables. According to the 6th postulate, a shared variable will be stored in the instance representing the class and not in an instance variable of the class representing the shared variables.  For example, if a workstation has a shared variable named `domain`. But the domain should not be an extra instance variable of the class of `Workstation`. Indeed domain has nothing to do with class description.
 
-The correct solution is that `domain` is a value hold into the list of the shared variable of the class `Workstation`. This means that
-a _class_ has an extra information to describe it: an instance variable `sharedVariable` holding pairs.  So we should be able to write
+The correct solution is that `domain` is a value held into the list of the shared variable of the class `Workstation`. This means that a _class_ has extra information to describe it: an instance variable `sharedVariable` holding pairs. So we should be able to write:
 
 ```
 Obj Workstation getIV: #sharedVariable
@@ -1147,8 +1127,7 @@ and get
  #((domain 'inria.fr'))
 ```
 
-
-introduce shared variables: add a new instance variable in the
-class `ObjClass` to hold a dictionary of shared variable bindings \(a
-symbol and a value\) that can be queried using specific methods:
-`sharedVariableValue:`, `sharedVariableValue:put:`.
+Introduce shared variables: add a new instance variable in the
+class `ObjClass` to hold a dictionary of shared variable bindings (a
+symbol and a value) that can be queried using specific methods:
+`sharedVariableValue:` and `sharedVariableValue:put:`.
