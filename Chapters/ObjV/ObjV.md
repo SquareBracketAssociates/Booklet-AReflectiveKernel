@@ -62,7 +62,24 @@ For example to run a particular test named `testPrimitiveStructure`,
 - click on the icon of the method named `testPrimitiveStructure`.
 
 
-Note that since you are developing the kernel, to test it we implemented manually some mocks of the classes and kernel. This is the setup method of the test classes that build this fake kernel. Now pay attention because the setups are often taking shortcuts, so do not copy them blindly.
+
+
+### Helping develop the kernel
+
+To help you implement step by step the kernel of ObjVLisp, we defined 
+tests that you will be able to execute one by one for each new aspect of ObjVLisp that you will define.
+
+The problem is that to run a test, the kernel should be fully finished and we are defining it step by step. So we are trapped. 
+Now to make sure that you can execute tests as soon as you defined a method, we implemented _manually_ some mocks of the classes and kernel: we basically created arrays and stuffed them with the correct information to mimick what the kernel once created will do.
+If you look at the methods setUp of the test classes you will see how we created. Now pay attention because the setups are often taking shortcuts, so do not copy them blindly.
+
+Finally if you want to interact with objects during your development you can simply define a test method and put a break point. Figure *@fig:helping@* shows a method name `testBidouille` with an halt. It also shows that we can interact and send messages to the objects that where manually created. Here we execute the primitive `objName` on the objClass `pointClass`.
+
+![Interacting in the debugger with some objInstances.](figures/HelpCodingTestOpen.png width=90&label=fig:helping)
+
+
+
+
 
 
 ### Naming conventions
@@ -79,39 +96,22 @@ specific instances, objects, or classes defined in ObjVLisp.
 
 We do not want to implement a scanner, a parser, and a compiler for ObjVLisp but concentrate on the essence of the language. That's why we chose to use as much as possible the implementation language, here Pharo. We will use as much as possible the existing classes to avoid extra syntactic problems.
 
-
 In our implementation, every object in the ObjVLisp world is an instance of the class `Obj`.
 The class `Obj` is a subclass of `Array`.
 
-Since `Obj` is a subclass of `Array`, `#(#ObjPoint 10 15)` is an objInstance of the class `ObjPoint` which is also an array instance of the Pharo class `ObjClass`.
+Since the Pharo class `Obj` is a subclass of the Pharo class`Array`, `#(#ObjPoint 10 15)` is an objInstance of the class `ObjPoint`. This objClass `ObjPoint` is also an instance of the Pharo class `Obj`. Conceptually `ObjPoint` is an instance of the objclass `ObjClass`.
 
 As we will see:
 - `#(#ObjPoint 10 15)` represents an objPoint (10,15). It is an objInstance of the class `ObjPoint`.
 - `#(#ObjClass #ObjPoint #ObjObject #(class x y) #(:x :y) nil )` is the array that represents the objClass `ObjPoint`.
 
 
-#### About representation choices
-
-You can skip this discussion in a first reading. We could have implemented ObjVLisp functionality at the class level of a class named `Obj` inheriting simply from `Object`. However, to use the ObjVlisp primitive \(a Pharo method\) `objInstanceVariableValue: anObject for: anInstanceVariable` that returns the value of the instance variable in `anObject`, we would have been forced to write the following expression:
-
-```
-Obj objInstanceVariableValue: 'x' for: aPoint
-```
-
-
-We chose to represent any ObjVLisp object by an array and to define the ObjVLisp functionality in the instance side of the class `Obj` \(a subclass of `Array`\). That way we can write in a more natural and readable way  the previous functionality as:
-
-```
-aPoint objInstanceVariableValue: 'x'.
-```
-
-
 ### Facilitating objClass class access
 
-
-We need a way to store and access ObjVLisp classes. As a
-solution, on the class level of the Pharo class `Obj` we defined a
-dictionary holding the defined classes. This dictionary acts as the namespace for our language. We defined the following methods to store and access defined classes.
+Creating a new class does not magically ensure that the class
+will be accessible and not garbage collected.
+We need a way to store and access ObjVLisp classes. 
+As a solution, on the class level of the Pharo class `Obj` we defined a dictionary holding the defined classes. This dictionary acts as the namespace for our language. We defined the following methods to store and access defined classes.
 
 - `declareClass: anObjClass` stores the objInstance `anObjClass` given as an argument in the class repository \(here a dictionary whose keys are the class names and values the ObjVLisp classes themselves\).
 
@@ -136,6 +136,9 @@ Obj ObjPoint
 ```
 
 Now you are ready to start.
+
+
+
 
 
 ### Structure and primitives
@@ -172,7 +175,6 @@ Figure *@fig:offset@* shows how offsets are used to access in a controlled manne
 
 #### Your job.
 
-
  The test methods of the class `RawObjTest` that are in the categories `'step1-tests-structure of objects'` and `'step2-tests-structure of classes'` give some examples of structure accesses.
 
 ```
@@ -190,9 +192,10 @@ RawObjTest >> testPrimitiveStructureObjIVs
    self assert: pointClass objIVs equals: #(#class #x #y)
 ```
 
+To avoid manipulating numbers we defined some Pharo methods returning some 
+constants of the object and class structure: `offsetForClassId`, `offsetForName`, `offsetOfSuperclass`....
 
-
-Implement the primitives that are missing to run the following tests `testPrimitiveStructureObjClassId`,
+Using methods such as offsetForClassId, implement the primitives that are missing to run the following tests `testPrimitiveStructureObjClassId`,
  `testPrimitiveStructureObjIVs`, `testPrimitiveStructureObjKeywords`,
  `testPrimitiveStructureObjMethodDict`, `testPrimitiveStructureObjName`, and `testPrimitiveStructureObjSuperclassId`.
 
