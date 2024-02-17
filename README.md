@@ -14,5 +14,5 @@ Here are some of the points you can deeply understand while writing reading and 
 - What are the roles of the classes `Class` and `Object`?
 - What is the role of a metaclass?
 
-Further are to study the reflective kernel of Pharo 
+Further are to study the reflective kernel of Pharo as described in Pharo by example [http://book.pharo.org](http://book.pharo.org) and explained in the Pharo Mooc [http://mooc.pharo.org](http://mooc.pharo.org) and in particular in this video: 
 [http://rmod-pharo-mooc.lille.inria.fr/MOOC/PharoMOOC-Videos/EN/Week7/C019SD-W7-S3-EN-V1.mp4](http://rmod-pharo-mooc.lille.inria.fr/MOOC/PharoMOOC-Videos/EN/Week7/C019SD-W7-S3-EN-V1.mp4)
