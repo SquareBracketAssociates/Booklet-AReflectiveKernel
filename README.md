@@ -1,11 +1,18 @@
 # A simple reflective object kernel
 
-This book explains the design of a simple reflective kernel and its consequences. The design is illustrated by proposing to the reader to implement step by step this kernel in Pharo.
-Currently bibliographic references are broken.
+This book explains the design of a simple reflective kernel, namely ObjVLisp and its consequences. 
+The design is illustrated by proposing to the reader to implement step by step this kernel in Pharo.
 
-[![Build status][badge]][travis]
+The goals of this implementation are to give a concrete understanding of the concepts.
+Here are some of the points you can deeply understand while writing reading and implementing this model:
 
-[travis]: https://travis-ci.com/SquareBracketAssociates/Booklet-AReflectiveKernel
-[badge]: https://travis-ci.com/SquareBracketAssociates/Booklet-AReflectiveKernel.svg?branch=master
+- What is a possible object structure?
+- What is object allocation and initialization?
+- What is class initialization?
+- What is the semantics of the method lookup?
+- What is a reflective kernel?
+- What are the roles of the classes `Class` and `Object`?
+- What is the role of a metaclass?
 
-The result from the latest successful Travis build can be found the release panel of this page.
+Further are to study the reflective kernel of Pharo 
+[http://rmod-pharo-mooc.lille.inria.fr/MOOC/PharoMOOC-Videos/EN/Week7/C019SD-W7-S3-EN-V1.mp4](http://rmod-pharo-mooc.lille.inria.fr/MOOC/PharoMOOC-Videos/EN/Week7/C019SD-W7-S3-EN-V1.mp4)
