@@ -1,31 +1,19 @@
 ## Building a minimal reflective class-based kernel
 
 
-The objective of this chapter is to help you to implement step by step the ObjVlisp model explained in the previous chapter.
-ObjVlisp was designed by Pierre Cointe, who got inspired by the kernel of Smalltalk-78. It has explicit metaclasses and it is composed of two classes `Object` and `Class`.
-
-### Objectives
-
-During the previous chapter, you saw the main points of the ObjVLisp model, now you will implement it.
-The goals of this implementation are to give a concrete understanding of the concepts presented previously.
-Here are some of the points you can deeply understand while writing the implementation:
-
-- What is a possible object structure?
-- What is object allocation and initialization?
-- What is class initialization?
-- What is the semantics of the method lookup?
-- What is a reflective kernel?
-- What are the roles of the classes `Class` and `Object`?
-- What is the role of a metaclass?
+During the previous chapter, you saw the main points of the ObjVLisp model, now you will implement it. The objective of this chapter is to help you to implement step by step the model. 
+To do so, we offer a skeleton where key methods have been removed and a set of tests that specify 
+the methods that are missing and that you should implement.
+Making the tests pass will guide you during your implementation. 
 
 
 ### Preparation
 
-In this section we discuss the setup that you will use, the implementation choices, and the conventions that we will follow during this rest of this book.
+In this section, we discuss the setup that you will use, the implementation choices, and the conventions that we will follow during the rest of this book.
 
 #### Getting Pharo 11
 
-You need to download and install Pharo from [http://www.pharo.org/](http://www.pharo.org/). You need a virtual machine, and the couple image and changes. 
+You need to download and install Pharo from [http://www.pharo.org/](http://www.pharo.org/). You need a virtual machine, and a couple image and changes. 
 The best way is to use the PharoLauncher that is available at [http://www.pharo.org/download](http://www.pharo.org/download).
 
 You can also use [http://get.pharo.org](http://get.pharo.org) to get a script to download Pharo.
@@ -60,8 +48,6 @@ For each functionality, you will have to run some tests.
 For example to run a particular test named `testPrimitiveStructure`,
 - evaluate the expression `(ObjTest selector: #testPrimitiveStructure) run`, or
 - click on the icon of the method named `testPrimitiveStructure`.
-
-
 
 
 ### Helping develop the kernel
@@ -192,15 +178,25 @@ RawObjTest >> testPrimitiveStructureObjIVs
    self assert: pointClass objIVs equals: #(#class #x #y)
 ```
 
-To avoid manipulating numbers we defined some Pharo methods returning some 
-constants of the object and class structure: `offsetForClassId`, `offsetForName`, `offsetOfSuperclass`....
+To avoid manipulating numbers we defined a couple Pharo methods returning some 
+constants of the object and class structure. These methods start with the `offset` term.
+We have `offsetForClassId`, `offsetForName`, `offsetOfSuperclassId`....
 
-Using methods such as offsetForClassId, implement the primitives that are missing to run the following tests `testPrimitiveStructureObjClassId`,
+Here is the definition of `offsetForName`: It just define that given an objobject representing a an objclass the name of the class is located at the second position.
+
+```
+Obj >> offsetForName
+
+	^ 2
+```	
+
+
+Using methods such as `offsetForClassId`, implement the primitives that are missing to run the following tests `testPrimitiveStructureObjClassId`,
  `testPrimitiveStructureObjIVs`, `testPrimitiveStructureObjKeywords`,
  `testPrimitiveStructureObjMethodDict`, `testPrimitiveStructureObjName`, and `testPrimitiveStructureObjSuperclassId`.
 
 You can execute them by selecting the following expression `(RawObjTest selector:
- #testPrimitiveStructureObjClassId) run`.  Note that arrays start at 1 in Pharo. Below is the list of the primitives that you should implement.
+ #testPrimitiveStructureObjClassId) run`. Note that arrays start at 1 in Pharo. Below is the list of the primitives that you should implement.
 
 Implement in protocol `'object structure primitives'` the primitives that manage:
 - the class of the instance represented as a symbol. `objClassId`, `objClassId: aSymbol`. The receiver is an `objObject`. This means that this primitive can be applied on any objInstances to get its class identifier.

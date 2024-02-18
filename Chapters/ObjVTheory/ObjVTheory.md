@@ -180,7 +180,7 @@ Figure *@fig:ClassClassAsObject@* describes the class `Class` itself. Indeed it 
 - It is an instance of class `Class`: indeed this is a class.
 - It is named `'Class'`.
 - It inherits from class `Object`
-- It has four locally defined instance variables: `name`, `superclass`, `i-v`, and  `methodDict`.
+- It has four locally defined instance variables: `name`, `superclass`, `iv`, and  `methodDict`.
 - It has a method dictionary.
 
 
@@ -649,7 +649,7 @@ As with any class, a subclass gets its instance variables as well as the instanc
 
 ```
 Singleton objIVs
->>> #(class name superclass ivs keywords methodDict unique)
+>>> #(class name superclass iv keywords methodDict unique)
 ```
 
 
