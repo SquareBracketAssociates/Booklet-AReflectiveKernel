@@ -99,14 +99,10 @@ As we will see:
 
 ### Facilitating objClass class access
 
-In the previous chapter we wrote some expressions using some objClass such as the following that returns the instance variables of the objClass `ObjPoint`.
-
-```
-ObjPoint objIVs
-```
+In the previous chapter, we wrote some expressions using some objClass such as `ObjPoint objIVs` that returns the instance variables of the objClass `ObjPoint`.
 
 If you simply execute this expression in Pharo you will get an error. 
-Indeed, the objClass `ObjPoint` is not a Pharo class and it is not know to Pharo: It is not added to the Pharo namespace and this is normal because it is another world.
+Indeed, the objClass `ObjPoint` is not a Pharo class and it is not known to Pharo: It is not added to the Pharo namespace and this is normal because it is another world.
 
 The question is then how can we provide simple access to objClasses once they are created.
 For this, we need a way to store and access ObjVLisp classes. 
@@ -156,7 +152,7 @@ Check that the class `Obj` exists and inherits from `Array`.
 
 ### Structure of a class
 
-The first object that we will create is the class `ObjClass`. Therefore we
+The first object that we will have to create is the class `ObjClass`. Therefore we
 focus now on the minimal structure of the classes in our language.
 
 An objInstance representing a class has the following structure: an identifier to its class, a name, an identifier to its superclass (we limit the model to single inheritance), a list of instance variables, a list of initialization keywords, and a method dictionary.
@@ -169,63 +165,58 @@ For example, the class `ObjPoint` has the following structure:
 
 
 
-It means that `ObjPoint` is an instance of `ObjClass`, is named `#ObjPoint`, inherits from a class named `ObjObject`, has three instance variables, two initialization keywords, and an uninitialized method dictionary. To access this structure we define some primitives as shown in Figure *@fig:structure@*.
-Figure *@fig:offset@* shows how offsets are used to access in a controlled manner the raw objClass information.
-
-![Class structure representation.](figures/ClassRepresentationAsArray.pdf width=60&label=fig:structure)
-
-![Using offset to access information.](figures/AccessObjName.pdf width=60&label=fig:offset)
+It means that the objClass `ObjPoint` is an instance of `ObjClass`, is named `#ObjPoint`, inherits from a class named `ObjObject`, has three instance variables, two initialization keywords, and an uninitialized method dictionary. To access this structure we define some primitives as shown in Figure *@fig:structure@*.
 
 
-#### Your job.
-
- The test methods of the class `RawObjTest` that are in the categories `'step1-tests-structure of objects'` and `'step2-tests-structure of classes'` give some examples of structure accesses.
-
-```
-RawObjTest >> testPrimitiveStructureObjClassId
-   "(self selector: #testPrimitiveStructureObjClassId) run"
-
-   self assert: pointClass objClassId equals: #ObjClass
-```
-
-
-```
-RawObjTest >> testPrimitiveStructureObjIVs
-   "(self selector: #testPrimitiveStructureObjIVs) run"
-
-   self assert: pointClass objIVs equals: #(#class #x #y)
-```
+![Class structure representation.](figures/ClassRepresentationAsArray.pdf width=50&label=fig:structure)
 
 To avoid manipulating numbers we defined a couple Pharo methods returning some 
 constants of the object and class structure. These methods start with the `offset` term.
-We have `offsetForClassId`, `offsetForName`, `offsetOfSuperclassId`....
+We have `offsetForClassId`, `offsetForName`, `offsetOfSuperclassId`.... Figure *@fig:offset@* shows how offsets are used to access the information of an objClass.
 
 Here is the definition of `offsetForName`: It just define that given an objobject representing a an objclass the name of the class is located at the second position.
 
 ```
 Obj >> offsetForName
-
 	^ 2
 ```	
+Using the method `offsetForName` we can simply define a Pharo primitive named `objName` that returns the name of a class
+as follows: 
+
+```
+Obj >> objName
+	^ self at: self offsetForName
+```	
+
+![Using offset to access information.](figures/AccessObjName.pdf width=45&label=fig:offset)
 
 
-Using methods such as `offsetForClassId`, implement the primitives that are missing to run the following tests `testPrimitiveStructureObjClassId`,
- `testPrimitiveStructureObjIVs`, `testPrimitiveStructureObjKeywords`,
- `testPrimitiveStructureObjMethodDict`, `testPrimitiveStructureObjName`, and `testPrimitiveStructureObjSuperclassId`.
+#### Your job.
 
-You can execute them by selecting the following expression `(RawObjTest selector:
- #testPrimitiveStructureObjClassId) run`. Note that arrays start at 1 in Pharo. Below is the list of the primitives that you should implement.
+ The test methods of the class `RawObjTest` that are in the categories `'step01-tests-structure of objects'` and `'step02-tests-structure of classes'` give some examples of structure accesses.
+Here are two examples of such test methods: 
+```
+RawObjTest >> testPrimitiveStructureObjClassId
+   self assert: pointClass objClassId equals: #ObjClass
 
-Implement in protocol `'object structure primitives'` the primitives that manage:
-- the class of the instance represented as a symbol. `objClassId`, `objClassId: aSymbol`. The receiver is an `objObject`. This means that this primitive can be applied on any objInstances to get its class identifier.
+RawObjTest >> testPrimitiveStructureObjIVs
+   self assert: pointClass objIVs equals: #(#class #x #y)
+```
 
+#### Access of ClassId for any objects.
+
+Using the method `offsetForClassId`, implement in protocol `'object structure primitives'` the primitives `objClassId` and `objClassId: aSymbol`. The receiver is an `objObject`. This means that this primitive can be applied on any objInstances (be it a class or an instance such as a point objObject) to get its class identifier. 
+Execute the test method `testPrimitiveStructureObjClassId`.
+
+#### Class structure access.
+Now we can focus on the other primitives that give access to class information.
 
 Implement in protocol `'class structure primitives'` the primitives that manage:
-- the class name: `objName`, `objName: aSymbol`. The receiver is an `objClass`.
-- the superclass: `objSuperclassId`, `objSuperclassId: aSymbol`. The receiver is an `objClass`.
-- the instance variables: `objIVs`, `objIVs: anOrderedCollection`. The receiver is an `objClass`.
-- the keyword list: `objKeywords`, `objKeywords: anOrderedCollection`. The receiver is an `objClass`.
-- the method dictionary: `objMethodDict`, `objMethodDict: anIdentityDictionary`. The receiver is an `objClass`.
+- the class name: `objName`, `objName: aSymbol`. The receiver is an `objClass`. Execute test method  `testPrimitiveStructureObjName`.
+- the superclass: `objSuperclassId`, `objSuperclassId: aSymbol`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjSuperclassId`
+- the instance variables: `objIVs`, `objIVs: anOrderedCollection`. The receiver is an `objClass`. Execute test method  `testPrimitiveStructureObjIVs`.
+- the keyword list: `objKeywords`, `objKeywords: anOrderedCollection`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjKeywords`.
+- the method dictionary: `objMethodDict`, `objMethodDict: anIdentityDictionary`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjMethodDict`.
 
 
 
@@ -241,8 +232,6 @@ Make sure that you execute the test method: `testClassAccess`
 
 ```
 RawObjTest >> testClassAccess
-   "(self selector: #testClassAccess) run"
-
    self assert: aPoint objClass equals: pointClass
 ```
 
@@ -254,37 +243,41 @@ Now we will be ready to manipulate objInstances via proper API. We will now use 
 ![Instance variable offset asked to the class.](figures/offsetFromClass.pdf width=60&label=fig:offset2)
 
 #### A first simple method.
-
-The following test illustrates the behavior of the message `offsetFromClassOfInstanceVariable:`
+Now you will implement a primitive that when sent to an objClass returns the offset of the instance variable represented by the symbol. It returns 0 if the variable is not defined.
+The following test illustrates the behavior of this primitive `offsetFromClassOfInstanceVariable:` (It could have been named `classOffsetForIV:`)
 
 ```
 ObjTest >> testIVOffset
-   "(self  selector: #testIVOffset) run"
-
-   self assert: (pointClass offsetFromClassOfInstanceVariable: #x) equals: 2.
-   self assert: (pointClass offsetFromClassOfInstanceVariable: #lulu) equals: 0
+   self 
+   	assert: (pointClass offsetFromClassOfInstanceVariable: #x) 
+   	equals: 2.
+   self 
+   	assert: (pointClass offsetFromClassOfInstanceVariable: #lulu) 
+   	equals: 0
 ```
 
 #### Your job.
 
-In the protocol `'iv management'` define a method called `offsetFromClassOfInstanceVariable: aSymbol` that returns the offset of the instance variable represented by the symbol given by the parameter. It returns 0 if the variable is not defined. Look at the tests `#testIVOffset` of the class `ObjTest`.
+In the protocol `'iv management'` define a method called `offsetFromClassOfInstanceVariable: aSymbol`  Look at the tests `#testIVOffset` of the class `ObjTest`.  Make sure that you execute the test method: `testIVOffset`.
 
 Hints: Use the Pharo method `indexOf:`. Pay attention that such a primitive is applied to an objClass as shown in the test.
 
-Make sure that you execute the test method: `testIVOffset`
-
 ![Instance variable offset asked to the instance itself.](figures/offsetFromObject.pdf width=60&label=fig:offset3)
 
-#### A second simple method.
+#### Two simple methods.
+Now that we know from the class the offset for a given instance variables, we can define a primitive that performs a similar behavior but that is sent to an instance and not a class. Using it we can easily get access to the value of an instance variable of an instance.
 
-The following test illustrates the expected behavior
+The following test illustrates the expected behavior:
 
 ```
 ObjTest >> testIVOffsetAndValue
-   "(self  selector: #testIVOffsetAndValue) run"
 
-   self assert: (aPoint offsetFromObjectOfInstanceVariable: #x) equals: 2.
-   self assert: (aPoint valueOfInstanceVariable: #x) equals: 10
+   self 
+   	assert: (aPoint offsetFromObjectOfInstanceVariable: #x) 
+	equals: 2.
+   self 
+   	assert: (aPoint valueOfInstanceVariable: #x) 
+	equals: 10
 ```
 
 
@@ -292,7 +285,7 @@ ObjTest >> testIVOffsetAndValue
 #### Your job.
 
 Using the previous method, define in the protocol `'iv management'`:
-1. the method `offsetFromObjectOfInstanceVariable: aSymbol` that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset3@*).
+1. When sent to an objObject, the primitive `offsetFromObjectOfInstanceVariable: aSymbol` that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset3@*). (It could have been named `objectOffsetForIV:`).
 1. the method `valueOfInstanceVariable: aSymbol` that returns the value of this instance variable in the given object as shown in the test below.
 
 Note that for the method `offsetFromObjectOfInstanceVariable:` you can check that the instance variable exists in the class of the object and else raise an error using the Pharo method `error:`.
@@ -310,12 +303,10 @@ We now define the primitives that allow us to allocate and initialize an object.
 
 #### Instance allocation
 
-
 As shown in the class `ObjTest`, if the class `ObjPoint` has two instance variables: `ObjPoint allocateAnInstance` returns `#(#ObjPoint nil nil)`.
 
 ```
 ObjTest >> testAllocate
-   "(self  selector: #testAllocate) run"
 
    | newInstance |
    newInstance := pointClass allocateAnInstance.
@@ -332,16 +323,15 @@ ObjTest >> testAllocate
 
 In the protocol `'instance allocation'` implement the primitive called `allocateAnInstance` that when sent to an _objClass_ returns a new instance whose instance variable values are nil and whose objClassId represents the objClass.
 
+Hints: in Pharo we use the message `new:` to specify the size of Arrays. For example, `Array new: 5` will create an array of 5 elements.
 
 Make sure that you execute the test method: `testAllocate`
 
 ### Keywords primitives
 
-
 The original implementation of ObjVLisp uses the facility offered by the Lisp keywords to ease the specification of the instance variable values during instance creation. It also provides a uniform and unique way to create objects.
-We have to implement some functionality to support keywords. However
-as this is not really interesting that you lose time we give you
-all the necessary primitives.
+We have to implement some functionality to support keywords. 
+However, as this is not really interesting that you lose time we give you all the necessary primitives.
 
 #### Your job.
 
@@ -349,7 +339,6 @@ All the functionality for managing the keywords are defined in the protocol `'ke
 
 ```
 ObjTest >> testKeywords
-   "(self  selector: #testKeywords) run"
 
    | dummyObject |
    dummyObject := Obj new.
@@ -358,22 +347,25 @@ ObjTest >> testKeywords
         equals: #(#titi: #toto: #lulu:).
    self 
         assert:
-             (dummyObject keywordValue: #x
+             (dummyObject 
+                  keywordValue: #x
                   getFrom: #(#toto 33 #x 23)
                   ifAbsent: 2)
         equals: 23.
    self 
          assert:
-              (dummyObject keywordValue: #x
+              (dummyObject 
+                   keywordValue: #x
                    getFrom: #(#toto 23)
                    ifAbsent: 2)
          equals: 2.
    self 
          assert:
-              (dummyObject returnValuesFrom: #(#x 22 #y 35) followingSchema: #(#y #yy #x #y))
+              (dummyObject 
+                  returnValuesFrom: #(#x 22 #y 35)
+                  followingSchema: #(#y #yy #x #y))
          equals: #(35 nil 22 35)
 ```
-
 
 Make sure that you execute the test method: `testKeywords` and that it passes.
 
@@ -388,7 +380,6 @@ Read in the protocol `'instance initialization'` the primitive `initializeUsing:
 
 ```
 ObjTest >> testInitialize
-   "(self  selector: #testInitialize) run"
 
    | newInstance  |
    newInstance := pointClass allocateAnInstance.
@@ -401,7 +392,6 @@ ObjTest >> testInitialize
 
 ### Static inheritance of instance variables
 
-
 Instance variables are statically inherited at class creation time.
 The simplest form of instance variable inheritance is to define the complete set of instance variables as the _ordered fusion_ between the inherited instance variables and the locally defined instance variables.
 For simplicity and similarity with most languages, we chose to forbid duplicated instance variables in the inheritance chain.
@@ -412,33 +402,33 @@ In the protocol `'iv inheritance'`, read and understand the primitive  `computeN
 
 The primitive takes two ordered collections of symbols and returns an ordered collection containing the union of the two ordered collections but with the extra constraint that the order of elements of the first ordered collection is kept. Look at the test method `testInstanceVariableInheritance` below for examples.
 
-Make sure that you execute the test method: `testInstanceVariableInheritance` and that is passes.
+Make sure that you execute the test method: `testInstanceVariableInheritance` and that it passes.
 
 ```
 ObjTest >> testInstanceVariableInheritance
-   "(self  selector: #testInstanceVariableInheritance) run"
-
    "a better choice would be to throw an exception if there are duplicates"
    self 
         assert:
-    	  (Obj new computeNewIVFrom: #(#a #b #c #d) asOrderedCollection
-         	with: #(#a #z #b #t) asOrderedCollection)
-        equals: #(#a #b #c #d #z #t) asOrderedCollection).
+    	  (Obj new 
+		computeNewIVFrom: #(#a #b #c #d)
+		with: #(#a #z #b #t))
+        equals: #(#a #b #c #d #z #t).
    self 
-         assert: (Obj new computeNewIVFrom: #() asOrderedCollection
-         			with: #(#a #z #b #t) asOrderedCollection)
-         equals: #(#a #z #b #t) asOrderedCollection)
+         assert: (Obj new 
+			computeNewIVFrom: #()
+			with: #(#a #z #b #t))
+         equals: #(#a #z #b #t)
 ```
-
 
 #### Side remark
 
 You could think that keeping the same order of the instance variables between a superclass and its subclass is not an issue. This is partly true in this simple implementation because the instance variable accessors compute each time the corresponding offset to access an instance variable using the primitive `offsetFromClassOfInstanceVariable:`.  However, the structure (instance variable order) of a class is hardcoded by the primitives. That's why your implementation of the primitive `computeNewIVFrom:with:` should take care of that aspect.
+In real language, compilers will try to ensure that a method defined in a superclass can be applied to instances of the subclasses.
 
 ### Method management
 
-A class stores the behavior (expressed by methods) shared by all its instances into a method dictionary.
-In our implementation, we represent methods by associating a symbol to a Pharo _block_, a kind of anonymous method.
+A class defines the instance behavior expressed by methods stored in a method dictionary. As such they are shared by all the instances of a class.
+In our implementation, we represent methods by associating a symbol to a Pharo _block_ (a lexical closure).
 The block is then stored in the method dictionary of an objClass.
 
 In this implementation, we do not offer the ability to directly access instance variables of the class in which the method is defined.
@@ -446,25 +436,38 @@ This could be done by sharing a common environment among all the methods.
 The programmer has to use accessors or the `setIV` and `getIV` objMethods defined on `ObjObject` to access the instance variables.
 You can find the definition of those methods in the bootstrap protocol on the class side of `Obj`.
 
-In our ObjVLisp implementation, we do not have a syntax for message passing. Instead we call the primitives using the Pharo syntax for message passing (using the message `send:withArguments:`).
-The expression `objself getIV: x` is expressed in ObjVLisp as
-`objself send: #getIV withArguments: #(#x)`.
+In our ObjVLisp implementation, we do not have a specific (non Pharo) syntax for message passing.
+Instead, we call the primitives using the Pharo syntax for message passing using the message `send:withArguments:`.
+The objVLisp expression `objself getIV: #x` is expressed as follows: `objself send: #getIV withArguments: #(#x)`.
 
+#### Method definition.
+We need a way to define a method, e.g., add a block to the method dictionary.
+We use the method `addUnaryMethod: aName withBody: aString`.
 
-The following code describes the definition of the accessor method `x` defined on the objClass `ObjPoint` that invokes a field access using the message `getIV`.
+The following code describes the _definition_ of the accessor method `x` defined on the objClass `ObjPoint` that invokes a field access using the message `getIV`.
 
 ```
 ObjPoint
-   addUnaryMethod: #accessInstanceVariableX
+   addUnaryMethod: #x
    withBody: 'objself send: #getIV withArguments: #(#x)'.
 ```
 
+As a first approximation, this code will create the following block that will get stored in the class method dictionary: `[ :objself | objself send: #getIV withArguments: #(#x) ]`.
+As you may notice, in our implementation, the receiver is always an explicit argument of the method. 
+Here we named it `objself`.
 
-As a first approximation, this code will create the following block that will get stored into the class method dictionary: `[ :objself | objself send: #getIV withArguments: #(#x) ]`.
-As you may notice, in our implementation, the receiver is always an explicit argument of the method. Here we named it `objself`.
+We propose two variations for the method definition: The primitives `addUnaryMethod:withBody:`
+and `addMethod:args:withBody:`. The first one is a version that avoids having an empty list of arguments.
+
+```
+ObjPoint
+   addMethod: #x
+   args: ''
+   withBody: 'objself send: #getIV withArguments: #(#x)'.
+```
+Note that the arguments of args: are expressed in a string where arguments are separated by a space.
 
 #### Defining a method and sending a message
-
 
 As we want to keep this implementation as simple as possible, we define only one primitive for sending a message: it is `send:withArguments:`. To see the mapping between Pharo and ObjVlisp ways of expressing message sent, look at the comparison below:
 
@@ -480,10 +483,9 @@ ObjVLisp: a send: #max: withArguments: #(4)
 ```
 
 
-
 While in Pharo you would write the following method definition:
 ```
-bar: x
+bar: x 
    self foo: x
 ```
 
@@ -492,28 +494,26 @@ In our implementation of ObjVlisp you write:
 anObjClass
    addMethod: #bar:
    args: 'x'
-   withBody: 'objself send: #foo: withArguments: #x'.
+   withBody: 'objself send: #foo: withArguments: #(x)'.
 ```
-
 
 
 #### Your job.
 
 We provide all the primitives that handle method definition.
-In the protocol `'method management'` look at the methods `addMethod: aSelector args: aString withBody: aStringBlock`,
-`removeMethod: aSelector` and `doesUnderstand: aSelector`. Implement `bodyOfMethod: aSelector`.
+- Read the methods `addMethod: aSelector args: aString withBody: aStringBlock`, `removeMethod: aSelector`, and `doesUnderstand: aSelector` - they are grouped in the protocol `'method management'`.
+- Implement `bodyOfMethod: aSelector`.
 
 Make sure that you execute the test method: `testMethodManagement`
 
 ```
 ObjTest >> testMethodManagement
-   "(self  selector: #testMethodManagment) run"
+
    self assert: (pointClass doesUnderstand: #x).
    self assert: (pointClass doesUnderstand: #xx) not.
 
    pointClass
-      addMethod: #xx
-      args: ''
+      addUnaryMethod: #xx
       withBody: 'objself valueOfInstanceVariable: #x '.
    self assert: ((pointClass bodyOfMethod: #xx) value: aPoint) equals: 10.
    self assert: (pointClass doesUnderstand: #xx).
@@ -525,22 +525,23 @@ ObjTest >> testMethodManagement
 
 ### Message passing and dynamic lookup
 
+Sending a message is the result of the composition of _method lookup_ and _execution_.
 
-Sending a message is the result of the composition of _method lookup_ and _execution_. The following `basicSend:withArguments:from:` primitive just implements it.
-First it looks up the method into the class or superclass of the receiver then if a
-method has been found it execute it, else `lookup:` returned nil and we raise a Pharo error.
+The following `basicSend:withArguments:from:` primitive just implements it.
+First, it looks up the method into the class or superclass of the receiver then if a
+method has been found it executes it, else `lookup:` returns nil and we raise a Pharo error.
 
 ```
 Obj >> basicSend: selector withArguments: arguments from: aClass
    "Execute the method found starting from aClass and whose name is selector.
    The core of the sending a message, reused for both a normal send or a super one."
+
    | methodOrNil |
    methodOrNil := aClass lookup: selector.
    ^ methodOrNil
       ifNotNil: [ methodOrNil valueWithArguments: (Array with: self) , arguments ]
       ifNil: [ Error signal: 'Obj message' , selector asString, ' not understood' ]
 ```
-
 
 Based on this primitive we can express `send:withArguments:` as follows:
 
@@ -551,6 +552,7 @@ Obj >> send: selector withArguments: arguments
    ^ self basicSend: selector withArguments: arguments from:  self objClass
 ```
 
+Note that the definition above of `basicSend:withArguments:from:` does not let us ObjVLisp developers redefine the error handing. We will propose a solution in subsequent sections.
 
 
 ### Method lookup
@@ -559,13 +561,12 @@ The primitive `lookup: selector` applied to an objClass should return the method
 
 #### Your job.
 
-Implement the primitive `lookup: selector` that sent to an objClass with a method selector, a symbol and the initial receiver of the message, returns the method-body of the method associated with the selector in the objClass or its superclasses.  Moreover, if the method is not found, nil is returned.
+Implement the primitive `lookup: selector` that when sent to an objClass with a method selector, a symbol, and the initial receiver of the message, returns the method-body of the method associated with the selector in the objClass or its superclasses.  Moreover, if the method is not found, nil is returned.
 
 Make sure that you execute the test methods: `testNilWhenErrorInLookup` and `testRaisesErrorSendWhenErrorInLookup` whose code is given below:
 
 ```
 ObjTest >> testNilWhenErrorInLookup
-   "(self  selector: #testNilWhenErrorInLookup) run"
 
    self assert: (pointClass lookup: #zork) isNil.
    "The method zork is NOT implemented on pointClass"
@@ -573,15 +574,14 @@ ObjTest >> testNilWhenErrorInLookup
 
 ```
 ObjTest >> testRaisesErrorSendWhenErrorInLookup
-   "(self  selector: #testRaisesErrorSendWhenErrorInLookup) run"
 
    self should: [ pointClass send: #zork withArguments: { aPoint } ] raise: Error.
-   "Open a Transcript to see the message trace"
+
 ```
 
 ### Managing super
 
-To invoke a superclass hidden method, in Java and Pharo you use `super`, which means that the lookup up will start above the class defining the method containing the super expression. In fact, we can consider that in Java or Pharo, super is a syntactic sugar to refer to the receiver but changing where the method lookup starts. This is what we see in our implementation where we do not have syntactic support.
+To invoke a superclass hidden method, in Java and Pharo you use `super`, which means that the lookup up will start above the class defining the method containing the super expression. In fact, we can consider that in Java or Pharo, super is a syntactic sugar to refer to the receiver but changes where the method lookup starts. This is what we see in our implementation where we do not have syntactic support.
 
 Let us see how we will express the following situation.
 ```
@@ -589,53 +589,49 @@ bar: x
    super foo: x
 ```
 
-
-In our implementation of ObjVlisp we do not have a syntactic construct to express super, you have to use the `super:withArguments:` Pharo message as follows.
+In our implementation of ObjVlisp we do not have a syntactic construct to express super, you have to use the `super:withArguments:from:` Pharo message as follows.
 
 ```
 anObjClass
    addMethod: #bar:
    args: 'x'
-   withBody: 'objself super: #foo: withArguments: #(#x) from: superClassOfClassDefiningTheMethod'.
+   withBody: 'objself super: #foo: withArguments: #(#x) from: superclassOfClassDefiningTheMethod'.
 ```
 
-
-Note that `superClassOfClassDefiningTheMethod` is a variable that is bound to the superclass of `anObjClass` i.e., the class defining the method `bar` (see later).
+Note that `superclassOfClassDefiningTheMethod` is a variable that is bound to the superclass of `anObjClass` i.e., the class defining the method `bar` (see later).
 
 ```
 Pharo Unary: super odd
-ObjVLisp: objself super: #odd withArguments: #() from: superClassOfClassDefiningTheMethod
+ObjVLisp: objself super: #odd withArguments: #() from: superclassOfClassDefiningTheMethod
 
 Pharo Binary: super + 4
-ObjVLisp: objself super: #+ withArguments: #(4) from: superClassOfClassDefiningTheMethod
+ObjVLisp: objself super: #+ withArguments: #(4) from: superclassOfClassDefiningTheMethod
 
 Pharo Keyword: super max: 4
-ObjVlisp: objself super: #max: withArguments: #(4) from: superClassOfClassDefiningTheMethod
+ObjVlisp: objself super: #max: withArguments: #(4) from: superclassOfClassDefiningTheMethod
 ```
-
 
 ### Representing super
 
-We would like to explain to you where the `superClassOfClassDefiningTheMethod` variable comes from.
-When we compare the primitive `send:withArguments:`, for super sends we added a third parameter to the primitive and we called it `super:withArguments:from:`.
+We would like to explain to you where the `superclassOfClassDefiningTheMethod` variable comes from.
+When we compare the primitive `send:withArguments:` to its variation using super, for super sends we added a third parameter to the primitive and we called it `super:withArguments:from:`.
 
-This extra parameter corresponds to the superclass of class in which the method is defined. This argument should always have the same name, i.e.,  `superClassOfClassDefiningTheMethod`. This variable will be bound when the method is added in the method dictionary of an objClass.
+This extra parameter corresponds to the superclass of the class in which the method is defined. This argument should always have the same name, i.e., `superclassOfClassDefiningTheMethod`. This variable will be set when the method is added to the method dictionary of an objClass.
 
 If you want to understand how we bind the variable, here is the explanation:
-In fact, a method is not only a block but it needs to know the class that defines it or its superclass. We added such information using a currification. A currification is the transformation of a function with n arguments into function with less arguments but an environment capture: `f(x,y)= (+ x y)` is transformed into a function `f(x)=f(y)(+ x y)` that returns a function of a single argument y and where x is bound to a value and obtain a function generator. For example, `f(2,y)` returns a function `f(y)=(+ 2 y)` that adds its parameter to 2. A currification acts as a generator of function where one of the arguments of the original function is fixed.
+In fact, a method is not only a block but it needs to know the class that defines it or its superclass. We added such information using a currification. A currification is the transformation of a function with n arguments into function with less arguments but an environment capture: `f(x,y)= (+ x y)` is transformed into a function `f(x)=f(y)(+ x y)` that returns a function of a single argument y and where x is bound to a value and obtain a function generator. For example, `f(2,y)` returns a function `f(y)=(+ 2 y)` that adds its parameter to 2. A currification acts as a generator of functions where one of the arguments of the original function is fixed.
 
 In Pharo, we wrap the block representing the method around another block with a single parameter and we bind this parameter with the superclass of the class defining the method. When the method is added to the method dictionary, we evaluate the first block with the superclass as a parameter as illustrated as follows:
 
 ```
-method := [ :superClassOfClassDefiningTheMethod |
+method := [ :superclassOfClassDefiningTheMethod |
      [ :objself :otherArgs  |
            ... method code ...
            ]]
 method value: (Obj giveClassNamed: self objSuperclassId)
 ```
 
-
-So now you know where the `superClassOfClassDefiningTheMethod` variable comes from.
+So now you know where the `superclassOfClassDefiningTheMethod` variable comes from.
 Make sure that you execute the test method:  `testMethodLookup` and that i passes.
 
 #### Your job.
@@ -650,6 +646,7 @@ Compare the two following versions of `basicSend: selector withArguments: argume
 
 ```
 Obj >> basicSend: selector withArguments: arguments from: aClass
+
    | methodOrNil |
    methodOrNil := (aClass lookup: selector).
    ^ methodOrNil
@@ -659,6 +656,7 @@ Obj >> basicSend: selector withArguments: arguments from: aClass
 
 ```
 Obj >> basicSend: selector withArguments: arguments from: aClass
+
    | methodOrNil |
    methodOrNil := (aClass lookup: selector).
    ^ methodOrNil
@@ -947,7 +945,7 @@ Obj class>>defineInitializeMethodIn: objClass
      addMethod: #initialize
      args: 'initArray'
      withBody:
-        'objself super: #initialize withArguments: {initArray} from: superClassOfClassDefiningTheMethod.
+        'objself super: #initialize withArguments: {initArray} from: superclassOfClassDefiningTheMethod.
          objself objIVs: (objself
                   computeNewIVFrom:
                         (Obj giveClassNamed: objself objSuperclassId) objIVs
@@ -967,7 +965,7 @@ Obj class >> defineInitializeMethodIn: objClass
      addMethod: #initialize
      args: 'initArray'
      withBody:
-         'objself super: #initialize withArguments: {initArray} from: superClassOfClassDefiningTheMethod.
+         'objself super: #initialize withArguments: {initArray} from: superclassOfClassDefiningTheMethod.
          objself objIVs: (objself
            computeNewIVFrom: (Obj giveClassNamed: objself objSuperclassId) objIVs
            with: objself objIVs).
@@ -1071,7 +1069,7 @@ Define some functionality and invoke them: the method color,  implement the meth
 ```
 coloredPointClass addUnaryMethod: #display
    withBody:
-     'objself super: #display withArguments: #() from: superClassOfClassDefiningTheMethod.
+     'objself super: #display withArguments: #() from: superclassOfClassDefiningTheMethod.
       Transcript cr;
          show: '' with Color = ''.
       Transcript show: (objself send: #giveColor withArguments: #()) printString; cr'.
