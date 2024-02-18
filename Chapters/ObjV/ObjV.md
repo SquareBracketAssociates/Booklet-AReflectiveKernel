@@ -1,9 +1,8 @@
 ## Building a minimal reflective class-based kernel
 
 
-During the previous chapter, you saw the main points of the ObjVLisp model, now you will implement it. The objective of this chapter is to help you to implement step by step the model. 
-To do so, we offer a skeleton where key methods have been removed and a set of tests that specify 
-the methods that are missing and that you should implement.
+During the previous chapter, you saw the main conceptual points of the ObjVLisp model, now you will implement it. The objective of this chapter is to help you to implement step by step the model. 
+To do so, we offer a skeleton of the implementation where key method bodies have been removed and replaced with an indication that you should implement them. In addition, a set of tests specifies the methods that are missing and that you should implement.
 Making the tests pass will guide you during your implementation. 
 
 
@@ -24,7 +23,7 @@ The current version of this book is working with Pharo 11.0.
 wget -O- get.pharo.org/110+vm | bash
 ```
 
-You can use the book Pharo by Example from [http://www.pharo.org/PharoByExample/](http://www.pharo.org/PharoByExample/) for an overview of the syntax and the system.
+You can use the book _Pharo by Example_ from [http://www.pharo.org/PharoByExample/](http://www.pharo.org/PharoByExample/) for an overview of the syntax and the system.
 
 
 #### Getting infrastructure definitions
@@ -46,8 +45,21 @@ Metacello new
 For each functionality, you will have to run some tests.
 
 For example to run a particular test named `testPrimitiveStructure`,
-- evaluate the expression `(ObjTest selector: #testPrimitiveStructure) run`, or
+- evaluate the expression `(ObjTest run: #testPrimitiveStructure)`, or
 - click on the icon of the method named `testPrimitiveStructure`.
+
+
+### Naming conventions
+
+We use the following conventions: we name as _primitives_ all the Pharo methods that are used to build ObjVLisp. These primitives are mainly implemented as methods of the class `Obj`. Note that in a Lisp implementation, such primitives would be just lambda expressions, in a C implementation such primitives would be represented by C functions.
+
+We also talk about _objInstances_, _objObjects_, and _objClasses_ to refer to
+specific instances, objects, or classes defined in ObjVLisp.
+
+To help you to distinguish between classes in the implementation language (Pharo) and the ObjVLisp model, we prefix all the ObjVLisp classes by `Obj`. Finally, some of the crucial and confusing primitives (mainly the class structure ones) are all prefixed by `obj`. 
+
+For example, the primitive that given an _objInstance_ returns its class identifier is named `objClassId`.
+
 
 
 ### Helping develop the kernel
@@ -56,61 +68,70 @@ To help you implement step by step the kernel of ObjVLisp, we defined
 tests that you will be able to execute one by one for each new aspect of ObjVLisp that you will define.
 
 The problem is that to run a test, the kernel should be fully finished and we are defining it step by step. So we are trapped. 
-Now to make sure that you can execute tests as soon as you defined a method, we implemented _manually_ some mocks of the classes and kernel: we basically created arrays and stuffed them with the correct information to mimick what the kernel once created will do.
-If you look at the methods setUp of the test classes you will see how we created. Now pay attention because the setups are often taking shortcuts, so do not copy them blindly.
+Now to make sure that you can execute tests as soon as you define a method, we implemented _manually_ some mocks of the objects that represent instances and classes in the ObjVLisp world: we basically created arrays and stuffed them with the correct information to mimick what the kernel once created will do.
+If you look at the methods `setUp` of the test classes you will see how we created them. Now pay attention because the setups are often taking shortcuts, so do not copy them blindly.
 
-Finally if you want to interact with objects during your development you can simply define a test method and put a break point. Figure *@fig:helping@* shows a method name `testBidouille` with an halt. It also shows that we can interact and send messages to the objects that where manually created. Here we execute the primitive `objName` on the objClass `pointClass`.
+Finally, if you want to interact with objects during your development, for example to check manually that a pharo method is working or to explore your objClasses you can simply define a test method and put a breakpoint using `self halt`.
+When you execute this test, it will open a debugger and you will be able to execute code. For example the class `RawObjectTest` has several instances holding objects representing: the objClass `Object`, an objInstance of the objClass `Point`, the objClass `Point`.... Check the instance variables of the class `RawObjectTest`.
 
-![Interacting in the debugger with some objInstances.](figures/HelpCodingTestOpen.png width=90&label=fig:helping)
+Figure *@fig:helping@* shows a method named `testBidouille` with a halt. It also shows that we can interact and send messages to the objects that were manually created. Here we executed the primitive `objName` on the objClass `pointClass` and it returned `#ObjPoint`.
+
+![Interacting in the debugger with some objinstances.](figures/HelpCodingTestOpen.png width=90&label=fig:helping)
 
 
 
 
 
-
-### Naming conventions
-
-We use the following conventions: we name as _primitives_ all the Pharo methods that participate in the building of ObjVLisp. These primitives are mainly implemented as methods of the class `Obj`. Note that in a Lisp implementation, such primitives would be just lambda expressions, in a C implementation such primitives would be represented by C functions.
-
-To help you to distinguish between classes in the implementation language (Pharo) and the ObjVLisp model, we prefix all the ObjVLisp classes by `Obj`. Finally, some of the crucial and confusing primitives (mainly the class structure ones) are all prefixed by `obj`. 
-
-For example, the primitive that given an _objInstance_ returns its class identifier is named `objClassId`.
-We also talk about objInstances, objObjects, and objClasses to refer to
-specific instances, objects, or classes defined in ObjVLisp.
 
 ### Inheriting from class Array
 
-We do not want to implement a scanner, a parser, and a compiler for ObjVLisp but concentrate on the essence of the language. That's why we chose to use as much as possible the implementation language, here Pharo. We will use as much as possible the existing classes to avoid extra syntactic problems.
-
+We do not want to implement a scanner, a parser, and a compiler for ObjVLisp but concentrate on the essence of the language. That's why we chose to use as much as possible the implementation language, here Pharo.
 In our implementation, every object in the ObjVLisp world is an instance of the class `Obj`.
 The class `Obj` is a subclass of `Array`.
 
-Since the Pharo class `Obj` is a subclass of the Pharo class`Array`, `#(#ObjPoint 10 15)` is an objInstance of the class `ObjPoint`. This objClass `ObjPoint` is also an instance of the Pharo class `Obj`. Conceptually `ObjPoint` is an instance of the objclass `ObjClass`.
+Since the Pharo class `Obj` is a subclass of the Pharo class `Array`, the following array `#(#ObjPoint 10 15)` represents an objInstance of the objClass `ObjPoint`. 
+From an implementation point of view, this objClass `ObjPoint` is just an instance of the Pharo class `Obj`. 
 
 As we will see:
-- `#(#ObjPoint 10 15)` represents an objPoint (10,15). It is an objInstance of the class `ObjPoint`.
+- `#(#ObjPoint 10 15)` represents an objPoint (10,15). It is an objInstance of the objClass `ObjPoint`.
 - `#(#ObjClass #ObjPoint #ObjObject #(class x y) #(:x :y) nil )` is the array that represents the objClass `ObjPoint`.
 
 
 ### Facilitating objClass class access
 
-Creating a new class does not magically ensure that the class
-will be accessible and not garbage collected.
-We need a way to store and access ObjVLisp classes. 
-As a solution, on the class level of the Pharo class `Obj` we defined a dictionary holding the defined classes. This dictionary acts as the namespace for our language. We defined the following methods to store and access defined classes.
+In the previous chapter we wrote some expressions using some objClass such as the following that returns the instance variables of the objClass `ObjPoint`.
+
+```
+ObjPoint objIVs
+```
+
+If you simply execute this expression in Pharo you will get an error. 
+Indeed, the objClass `ObjPoint` is not a Pharo class and it is not know to Pharo: It is not added to the Pharo namespace and this is normal because it is another world.
+
+The question is then how can we provide simple access to objClasses once they are created.
+For this, we need a way to store and access ObjVLisp classes. 
+As a solution, on the _class_ level of the Pharo class `Obj`, we defined a dictionary holding the defined classes.
+The keys of this dictionary are the objClass names and the values are the objClasses with the corresponding name.
+This dictionary acts as the namespace for our language. We defined the following methods to store and access defined classes.
 
 - `declareClass: anObjClass` stores the objInstance `anObjClass` given as an argument in the class repository \(here a dictionary whose keys are the class names and values the ObjVLisp classes themselves\).
 
 - `giveClassNamed: aSymbol` returns the ObjVLisp class named `aSymbol` if it exists. The class should have been declared previously.
 
+With such methods, we can write code like the following:
+Here we get access to the objClass `ObjPoint`.
 
-With such methods, we can write code like the following one that looks for the class of the class `ObjPoint`.
-
-```testcase=true
+```testcase=false
 Obj giveClassNamed: #ObjPoint
 >>> #(#ObjClass 'ObjPoint' #ObjObject #(class x y) #(:x :y) ... )
 ```
 
+Then we can access some of its state.  For example we access the instance variables of the class as follows: 
+
+```testcase=true
+(Obj giveClassNamed: #ObjPoint) objIVs
+>>>  #(class x y)
+```
 
 To make class access less heavy, we also implemented a shortcut:
 We trap messages not understood sent to `Obj` and look into the defined class dictionary.
@@ -122,9 +143,6 @@ Obj ObjPoint
 ```
 
 Now you are ready to start.
-
-
-
 
 
 ### Structure and primitives
