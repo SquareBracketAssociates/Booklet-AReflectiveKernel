@@ -98,7 +98,7 @@ As we will see:
 
 
 ### Facilitating objClass class access
-
+@giveclass
 In the previous chapter, we wrote some expressions using some objClass such as `ObjPoint objIVs` that returns the instance variables of the objClass `ObjPoint`.
 
 If you simply execute this expression in Pharo you will get an error. 
@@ -239,7 +239,7 @@ Every object keeps the identifier of its class (its name). For example, an insta
 
 #### Your job.
 
-Using the primitive `giveClassNamed: aSymbol` defined at the class level of Obj, define the primitive `objClass` in the protocol `'object-structure primitive'` that returns the `objInstance` that represents its class (classes are objects too in ObjVLisp).
+Using the primitive `giveClassNamed: aSymbol` defined at the class level of Obj (See Section *@giveclass@*), define the primitive `objClass` in the protocol `'object-structure primitive'` that returns the `objInstance` that represents its class (classes are objects too in ObjVLisp).
 
 Make sure that you execute the test method: `testClassAccess`
 
