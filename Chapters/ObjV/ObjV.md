@@ -1,7 +1,7 @@
-## Building a minimal reflective class-based kernel
+## Getting started
 
 
-During the previous chapter, you saw the main conceptual points of the ObjVLisp model, now you will implement it. The objective of this chapter is to help you to implement step by step the model. 
+During the previous chapters, you saw the main conceptual points of the ObjVLisp model, now you will implement it. The objective of this chapter is to help you to implement step by step the model. 
 To do so, we offer a skeleton of the implementation where key method bodies have been removed and replaced with an indication that you should implement them. In addition, a set of tests specifies the methods that are missing and that you should implement.
 Making the tests pass will guide you during your implementation. 
 
@@ -140,9 +140,14 @@ Obj ObjPoint
 
 Now you are ready to start.
 
+## Primitives for a minimal reflective class-based kernel
+
+Now that all the infrastructure has been explained you are ready to start.
+The first tasks are to define how we will manipulate objObjects. We will define Pharo methods that will act
+as primitive functionalities to build later the language kernel.
+Such primitives could be written in C, assembly or any other languages. They are the low-level  functionalities on top of which we will build the object model of ObjVLisp: mainly the class `ObjObject` and `ObjClass`.
 
 ### Structure and primitives
-
 
 The first issue is how to represent objects. We have to agree on an initial representation. In this implementation, we chose to represent the objInstances as arrays (instances of `Obj` a subclass of `Array`). In the following, we use the term 'array' for talking about instances of the class `Obj`.
 
@@ -170,11 +175,11 @@ It means that the objClass `ObjPoint` is an instance of `ObjClass`, is named `#O
 
 ![Class structure representation.](figures/ClassRepresentationAsArray.pdf width=50&label=fig:structure)
 
-To avoid manipulating numbers we defined a couple Pharo methods returning some 
+To avoid manipulating numbers we defined some  Pharo methods returning the corresponding 
 constants of the object and class structure. These methods start with the `offset` term.
 We have `offsetForClassId`, `offsetForName`, `offsetOfSuperclassId`.... Figure *@fig:offset@* shows how offsets are used to access the information of an objClass.
 
-Here is the definition of `offsetForName`: It just define that given an objobject representing a an objclass the name of the class is located at the second position.
+Here is the definition of `offsetForName`: It just defines that given an objobject representing a an objclass the name of the class is located at the second position.
 
 ```
 Obj >> offsetForName
@@ -187,6 +192,14 @@ as follows:
 Obj >> objName
 	^ self at: self offsetForName
 ```	
+
+The corresponding setter `objName:` is then defined as follows:
+
+```
+Obj >> objName: aString 
+	^ self at: self offsetForName put: aString
+```	
+
 
 ![Using offset to access information.](figures/AccessObjName.pdf width=45&label=fig:offset)
 
@@ -534,7 +547,7 @@ method has been found it executes it, else `lookup:` returns nil and we raise a 
 ```
 Obj >> basicSend: selector withArguments: arguments from: aClass
    "Execute the method found starting from aClass and whose name is selector.
-   The core of the sending a message, reused for both a normal send or a super one."
+   The core of message sending reused for both a normal send or a super one."
 
    | methodOrNil |
    methodOrNil := aClass lookup: selector.
@@ -665,7 +678,7 @@ Obj >> basicSend: selector withArguments: arguments from: aClass
 ```
 
 
-It should be noted that the objVlisp method is defined as follows in the `ObjObject` class (see the bootstrap method on the class side of Obj). The obj `error` method expects a single parameter: an array of arguments whose first element is the selector of the not understood message.
+It should be noted that the obj method is defined as follows in the `ObjObject` class (see the bootstrap method on the class side of the class `Obj`). The obj `error` method expects a single parameter: an array of arguments whose first element is the selector of the not understood message.
 
 ```
 objObject
@@ -684,23 +697,36 @@ Obj >> sendError: selector withArgs: arguments
 
 
 Make sure that you read and execute the test method: `testSendErrorRaisesErrorSendWhenErrorInLookup`.
-Have a look at the implementation of the `#error` method defined in `ObjObject` and in the `assembleObjectClass` of the ObjTest class.
+Have a look at the implementation of the `#error` method defined in `ObjObject` and in the `assembleObjectClass` of the `ObjTest` class.
 
 
 
-### Bootstrapping the system
 
 
-Now you have implemented all the behavior we need, you are ready to bootstrap the system: this means creating the kernel consisting of  `ObjObject` and `ObjClass` classes from themselves. The idea of a smart bootstrap is to be as lazy as possible and to use the system to create itself by creating fast a fake but working first class with which we will build the rest.
-
-Three steps compose the ObjVlisp bootstrap,
-1. we create by hand the minimal part of  the objClass `ObjClass`  and then
-1. we use it to create normally `ObjObject` objClass and then
-1. we recreate normally and completely `ObjClass`.
 
 
-These three steps are described by the following bootstrap method of Obj class.
-Note the bootstrap is defined as class methods of the class Obj.
+## Defining  the language kernel
+
+
+Now you have implemented all the primitives we need, you are ready to define the two classes that represent the ObjVLisp kernel: `ObjClass` and `ObjObject`. 
+Once such classes will exist we will be able to code using ObjVLisp and not in Pharo anymore.
+The moment where we go from the low-level world (here Pharo) to the high-level one (here ObjVLisp) is generally called the bootstrap of the language. Indeed after this last phase, our new language exists.
+
+To implement these two classes we could them by manipulating low-level primitives and doing all the plumbing ourselves as what we did in the test `setUp` methods. But there is something better to do. We can use the high level language to use itself to define itself. This is what we will explain in this chapter. 
+
+
+### About bootstrap
+
+ to bootstrap the system: this means creating the kernel consisting of  `ObjObject` and `ObjClass` classes from themselves. The idea of a smart bootstrap is to be as lazy as possible and to use the system to create itself by creating a fake but working first class with which we will build the rest.
+
+Three steps compose the ObjVlisp bootstrap:
+1. Create by hand the minimal part of  the objClass `ObjClass`  and then
+1. Use it to create normally `ObjObject` objClass and then
+1. Recreate normally and completely `ObjClass`.
+
+
+These three steps are described by the following bootstrap method of `Obj` class.
+Note the bootstrap is defined as class methods of the class `Obj`.
 
 ```
 Obj class >> bootstrap
@@ -719,7 +745,6 @@ Read them.
 
 ### Manually creating ObjClass
 
-
 The first step is to create manually the class `ObjClass`. By manually we mean create an array (because we chose an array to represent instances and classes in particular) that represents the objClass `ObjClass`, then define its methods. You will implement/read this in the primitive `manuallyCreateObjClass` as shown below:
 
 ```
@@ -734,7 +759,7 @@ Obj class >> manuallyCreateObjClass
    self defineNewMethodIn: class.
    ^ class
 ```
-
+We will comment some of the methods called in `manuallyCreateObjClass`.
 
 
 
@@ -775,10 +800,9 @@ Obj class >> defineManualInitializeMethodIn: class
 ```
 
 
-Note that this method works without inheritance since the class `ObjObject` does not
-exist yet.
+Note that this method works without inheritance since the class `ObjObject` does not exist yet.
 
-The primitive `defineAllocateMethodIn: anObjClass` defines in anObjClass passed as argument the objMethod `allocate`. `allocate` takes only one argument: the class for which a new instance is created as shown below:
+The primitive `defineAllocateMethodIn: anObjClass` defines in anObjClass passed as argument the objMethod `allocate`. This `allocate` method takes only one argument: the class for which a new instance is created as shown below:
 
 ```
 defineAllocateMethodIn: class
@@ -787,9 +811,9 @@ defineAllocateMethodIn: class
       addUnaryMethod: #allocate
       withBody: 'objself allocateAnInstance'
 ```
+Its definition is simple, it just calls the primitive `allocateAnInstance`.
 
-
-Following the same principle, define the primitive `defineNewMethodIn: anObjClass` that defines in anObjClass passed as argument the objMethod `new`. `new` takes two arguments: a class and an initargs-list. It should invoke the objMethod `allocate` and `initialize`.
+Following the same principle, define the primitive `defineNewMethodIn: anObjClass` that defines in anObjClass passed as argument the objMethod `new`. `new` takes two arguments: a class and an initargs-list. It invokes the objMethod `allocate` and `initialize`.
 
 #### Your job.
 
@@ -799,16 +823,15 @@ Make sure that you read and execute the test method: `testManuallyCreateObjClass
 #### Remarks
 
 Read carefully the following remarks below and the code.
-- In the objMethod `manualObjClassStructure`, the instance variable inheritance is simulated. Indeed the instance variable array contains `#class` that should normally be inherited from `ObjObject` as we will see in the third phase of the bootstrap.
+- In the objMethod `manualObjClassStructure`, the instance variable inheritance is simulated. Indeed the instance variable array (that represents the instance variable of the class) contains `#class` that should normally be inherited from `ObjObject` as we will see in the third phase of the bootstrap.
 
 - Note that the class is declared into the class repository using the method `declareClass:`.
 
-- Note the method `#initialize` is method of the metaclass `ObjClass`: when you create a class the initialize method is invoked on a class! The `initialize` objMethod defines on `ObjClass` has two aspects: the first one deals with the initialization of the class like any other instance (first line). This behavior is normally done using a super call to invoke the `initialize` method defined in `ObjObject`. The final version of the `initialize` method will do it using perform. The second one deals with the initialization of classes: performing the instance variable inheritance, then computing the keywords of the newly created class. Note in this final step that the keyword array does not contain the `#class:` keyword because we do not want to let the user modify the class of an object.
+- Note the method `#initialize` is method of the metaclass `ObjClass`: when you create a class the initialize method is invoked on a class! The `initialize` objMethod defined on `ObjClass` has two aspects: the first one deals with the initialization of the class like any other instance (first line). This behavior is normally done using a super call to invoke the `initialize` method defined in `ObjObject`. The final version of the `initialize` method will do it using perform. The second one deals with the initialization of classes: it performs the instance variable inheritance, then computes the keywords of the newly created class. Note in this final step that the keyword array does not contain the `#class:` keyword because we do not want to let the user modify the class of an object.
 
 
 
 ### Creation of ObjObject
-
 
 Now you are in the situation where you can create the first real and normal class of the system: the class `ObjObject`. To do that you send the message `new` to class `ObjClass` specifying that the class you are creating is named `#ObjObject` and
 only has one instance variable called `class`. Then you will add the methods defining the behavior shared by all the objects.
@@ -825,7 +848,7 @@ Obj class >> objObjectStructure
       withArguments: #(#(#name: #ObjObject #iv: #(#class)))
 ```
 
-The class `ObjObject` is named `ObjObject`, has only one instance variable `class` and does not have a superclass because it is the inheritance graph root.
+The class `ObjObject` is named `ObjObject`, has only one instance variable `class`, and does not have a superclass because it is the root of the inheritance graph.
 
 #### Your job: createObjObject
 
@@ -857,7 +880,7 @@ Implement the following methods in `ObjObject`
 
 Make sure that you read and execute the test method: `testCreateObjObjectStructure`
 
-In particular notice that this class does not implement the class method `new` because it is not a metaclass but does implement the instance method `initialize` because any object should be initialized.
+In particular, notice that this class does not implement the class method `new` because it is not a metaclass but does implement the instance method `initialize` because any object should be initialized.
 
 #### Your job: run the tests
 
@@ -866,7 +889,7 @@ In particular notice that this class does not implement the class method `new` b
 
 ### Creation of ObjClass
 
-Following the same approach, you can now recreate completely the class `ObjClass`. The primitive `createObjClass` is responsible for creating the final class `ObjClass`. So you will implement it and define all the primitive it needs. Now we only define what is specific to classes, the rest is inherited from the superclass of the class `ObjClass`, the class `ObjObject`.
+Following the same approach, you can now recreate completely the class `ObjClass`. The primitive `createObjClass` is responsible for creating the final class `ObjClass`. So you will implement it and define all the primitives it needs. Now we only define what is specific to classes, the rest is inherited from the superclass of the class `ObjClass`, the class `ObjObject`.
 
 ```
 Obj class >> createObjClass
@@ -890,7 +913,7 @@ Obj class >> createObjClass
 ```
 
 
-To make the method `createObjClass` working we should implement the method it calls. Implement then:
+To make the method `createObjClass` work we should implement the method it calls. Implement then:
 
 - the primitive `objClassStructure` that creates the `ObjClass` class by invoking the `new` message to the class `ObjClass`. Note that during this method the `ObjClass` symbol refers to two different entities because the new class that is created using the old one is declared in the class dictionary with the same name.
 
@@ -1081,9 +1104,6 @@ aColoredPoint send: #x withArguments: #().
 aColoredPoint send: #color withArguments: #().
 aColoredPoint send: #display withArguments: #()
 ```
-
-
-
 
 
 ### A First User Metaclass: ObjAbstract

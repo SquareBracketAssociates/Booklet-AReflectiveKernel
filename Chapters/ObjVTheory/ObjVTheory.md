@@ -566,6 +566,15 @@ There is a difference between the method `initialize:` executed on any instance 
 
 - The class `initialize:` method is executed when a new instance representing a class is executed. The message `initialize:` is sent to the newly created object but its specialization for classes will be found during method lookup and it will be executed. Usually, this method invokes the default ones, because the class parameter should be extracted from the argument list and set in their corresponding instance variables. But in addition, instance variable inheritance and class declaration in the class namespace is performed.
 
+## Conclusion 
+
+At this stage you saw all the concepts of this minimal object-oriented kernel where classes are themselves instances of other classes.
+In the following chapter, we explore more metaclasses and we encourage you to read it because it will shed an interesting light on the model.
+
+
+## First Metaclasses
+
+In this chapter we will study how all the concepts explained in the previous chapter fit together to let us define powerful metaclasses. Studying such entities will reinforce your understanding of the instantiation and inheritance relationships as well as their interplay. At the end of the chapter we will explain why the sixth predicates of ObjVLisp is wrong and propose a solution that elegantly fits the model.
 
 
 ### Defining a new Metaclass
