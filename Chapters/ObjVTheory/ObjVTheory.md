@@ -3,12 +3,12 @@
 
 _The difference between classes and objects has been repeatedly emphasized. In the view presented here, these concepts belong to different worlds: the program text only contains classes; at run-time, only objects exist. This is not the only approach. One of the subcultures of object-oriented programming, influenced by Lisp and exemplified by Smalltalk, views classes as object themselves, which still have an existence at run-time._ — B. Meyer, Object-Oriented Software Construction
 
-As this quote expresses it, there is a realm where classes are true objects, instances of other classes. In such systems such as Smalltalk, Pharo, CLOS, classes are described by other classes and form often reflective architectures each one describing the previous level. In this chapter, we will explore a minimal reflective class-based kernel, inspired from ObjVlisp. In the following chapter you will implement step by step such a kernel with less than 30 methods.
+As this quote expresses it, there is a realm where classes are true objects, instances of other classes. In such systems such as Smalltalk, Pharo {!citation|ref=Blac09a!}, CLOS {!citation|ref=Stee90a!}, classes are described by other classes and form often reflective architectures each one describing the previous level. In this chapter, we will explore a minimal reflective class-based kernel, inspired from ObjVlisp. In the following chapter you will implement step by step such a kernel with less than 30 methods.
 
 ### ObjVlisp inspiration
 
 
-ObjVlisp was published the first time in 1986 when the foundation of object-oriented programming was still emerging. ObjVlisp has explicit metaclasses and supports metaclass reuse. It was inspired from the kernel of Smalltalk-78. The IBM SOM-DSOM kernel is similar to ObjVLisp while implemented in C++. ObjVlisp is a subset of the reflective kernel of CLOS (Common Lisp Object System) since CLOS reifies instance variables, generic functions, and method combination. In comparison to ObjVlisp, Smalltalk and Pharo have implicit metaclasses and no metaclass reuse except by basic inheritance. However, they are more stable as explained by Bouraqadi et al.
+ObjVlisp was published the first time in 1987 when the foundation of object-oriented programming was still emerging {!citation|ref=Coin87a!}. ObjVlisp has explicit metaclasses and supports metaclass reuse. It was inspired from the kernel of Smalltalk-78. The IBM SOM-DSOM kernel is similar to ObjVLisp while implemented in C++ {!citation|ref=Form99a!}. ObjVlisp is a subset of the reflective kernel of CLOS (Common Lisp Object System) since CLOS reifies instance variables, generic functions, and method combination. It is equivalent of the Closette implementation {!citation|ref=Kicz91a!}. In comparison to ObjVlisp, Smalltalk and Pharo have implicit metaclasses and no metaclass reuse except by basic inheritance. However, they are more stable as explained by Bouraqadi et al  {!citation|ref=Bour98a!}.
 
 Studying this kernel is really worth it, since it has the following properties:
 - It unifies class and instances (there is only one data structure to represent all objects, classes included).
@@ -21,7 +21,7 @@ Just remember that this kernel is self-described. We will start to explain some 
 
 ### ObjVLisp's six postulates
 
-The original ObjVlisp kernel is defined by six postulates. Some of them look a bit dated by modern standards, and the 6th postulate is simply wrong as we will explain later (a solution is simple to design and implement).
+The original ObjVlisp kernel is defined by six postulates {!citation|ref=Coin87a!}. Some of them look a bit dated by modern standards, and the 6th postulate is simply wrong as we will explain later (a solution is simple to design and implement).
 
 Here are the six postulates as stated in the paper for the sake of historical perspective.
 
