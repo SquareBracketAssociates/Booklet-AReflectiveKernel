@@ -253,7 +253,7 @@ lookup (selector class receiver):
 
 
 
-#### Handling errors
+### Handling unknown messages
 
 
 When the method is not found, the message `error` is sent as shown in Figure *@fig:LookupWithError@*. Sending a message instead of simply reporting an error using a trace or an exception is a key design decision. In Pharo, this is done via the `doesNotUnderstand:` message, and it is an important reflective hook. Indeed classes can define their own implementation of the method `error` and perform specific actions to the case of messages that are not understood.  For example, it is possible to implement proxies \(objects representing other remote objects\) or compile code on the fly by redefining such a message locally.
@@ -338,7 +338,7 @@ A class is also an object \(i.e., it should understand the minimal behavior\) so
 
 
 
-#### Remark.
+#### Remark
 
 In Pharo, the class `Object` is not the root of inheritance. The root is in fact `ProtoObject`, and `Object` inherits from it. Most of the classes still inherit from `Object`. The design goal of `ProtoObject` is special: to generate as many as errors as possible. Such errors can be then captured via redefinition of `doesNotUnderstand:`
 and can support different scenarios such as implementing a proxy.
@@ -583,7 +583,7 @@ At this stage you saw all the concepts of this minimal object-oriented kernel wh
 In the following chapter, we explore more metaclasses and we encourage you to read it because it will shed an interesting light on the model.
 
 
-## First Metaclasses
+## First metaclasses
 
 In this chapter we will study how all the concepts explained in the previous chapter fit together to let us define powerful metaclasses. Studying such entities will reinforce your understanding of the instantiation and inheritance relationships as well as their interplay. At the end of the chapter we will explain why the sixth predicates of ObjVLisp is wrong and propose a solution that elegantly fits the model.
 
