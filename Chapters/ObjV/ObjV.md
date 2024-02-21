@@ -1,4 +1,4 @@
-## Getting started
+## Getting started with the implementation
 
 
 During the previous chapters, you saw the main conceptual points of the ObjVLisp model, now you will implement it. The objective of this chapter is to help you to implement step by step the model. 
@@ -140,7 +140,7 @@ Obj ObjPoint
 
 Now you are ready to start.
 
-## Primitives for a minimal reflective class-based kernel
+## Primitives for a reflective class-based kernel
 
 Now that all the infrastructure has been explained you are ready to start.
 The first tasks are to define how we will manipulate objObjects. We will define Pharo methods that will act

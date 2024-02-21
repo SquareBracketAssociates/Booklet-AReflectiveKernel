@@ -64,6 +64,17 @@ Figure *@fig:kernel2@* illustrates two main cases:
 - When we send a message to `BigMac` or `Minna`, the corresponding method is looked up in their corresponding classes `Workstation` or `SpecialWorkstation` and follows the inheritance link up to `Object`.
 - When we send a message to the classes `Workstation` or `SpecialWorkstation`, the corresponding method is looked up in their class, the class `Class` and up to `Object`.
 
+### Conclusion
+
+ObjVLisp is a minimal kernel with its two main classes. It uses the infrastructure of the underlying language (integers, strings, booleans...). When the language is fully reflective such as Pharo all such infrastructure has to be defined at the same level as the class `Object` and `Class` but the model principles stay the same.
+
+
+
+## Diving into the kernel
+
+In this chapter we will describe one by one all the aspects of the kernel. 
+We will cover instance shapes, methods,  instance and inheritance relationship interplay, object allocation, object and class initialization...
+
 
 ### Instances
 
