@@ -566,7 +566,7 @@ There is a difference between the method `initialize:` executed on any instance 
 
 - The class `initialize:` method is executed when a new instance representing a class is executed. The message `initialize:` is sent to the newly created object but its specialization for classes will be found during method lookup and it will be executed. Usually, this method invokes the default ones, because the class parameter should be extracted from the argument list and set in their corresponding instance variables. But in addition, instance variable inheritance and class declaration in the class namespace is performed.
 
-## Conclusion 
+### Conclusion 
 
 At this stage you saw all the concepts of this minimal object-oriented kernel where classes are themselves instances of other classes.
 In the following chapter, we explore more metaclasses and we encourage you to read it because it will shed an interesting light on the model.
