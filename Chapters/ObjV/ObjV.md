@@ -254,7 +254,7 @@ Now we will be ready to manipulate objInstances via proper API. We will now use 
 
 ### Accessing object instance variable values
 
-![Instance variable offset asked to the class.](figures/offsetFromClass.pdf width=60&label=fig:offset2)
+![Instance variable offset asked to the class.](figures/offsetFromClass.pdf width=40&label=fig:offset2)
 
 #### A first simple method.
 Now you will implement a primitive that when sent to an objClass returns the offset of the instance variable represented by the symbol. It returns 0 if the variable is not defined.
@@ -276,10 +276,10 @@ In the protocol `'iv management'` define a method called `ivClassOffset: aSymbol
 
 Hints: Use the Pharo method `indexOf:`. Pay attention that such a primitive is applied to an objClass as shown in the test.
 
-![Instance variable offset asked to the instance itself.](figures/offsetFromObject.pdf width=60&label=fig:offset3)
+![Instance variable offset asked to the instance itself.](figures/offsetFromObject.pdf width=50&label=fig:offset3)
 
 #### Two simple methods.
-Now that we know from the class the offset for a given instance variables, we can define a primitive that performs a similar behavior but that is sent to an instance and not a class. Using it we can easily get access to the value of an instance variable of an instance.
+Now that we know from the class the offset for a given instance variable, we can define a primitive that performs a similar behavior but that is sent to an instance and not a class. Using it we can easily get access to the value of an instance variable of an instance.
 
 The following test illustrates the expected behavior:
 
