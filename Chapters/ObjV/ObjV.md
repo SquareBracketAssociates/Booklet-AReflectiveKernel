@@ -177,9 +177,10 @@ It means that the objClass `ObjPoint` is an instance of `ObjClass`, is named `#O
 
 To avoid manipulating numbers we defined some  Pharo methods returning the corresponding 
 constants of the object and class structure. These methods start with the `offset` term.
-We have `offsetForClassId`, `offsetForName`, `offsetOfSuperclassId`.... Figure *@fig:offset@* shows how offsets are used to access the information of an objClass.
+We have `offsetForClassIdId`, `offsetForName`, `offsetOfSuperclassId`, and more. 
+Figure *@fig:offset@* shows how offsets are used to access the information of an objClass.
 
-Here is the definition of `offsetForName`: It just defines that given an objobject representing a an objclass the name of the class is located at the second position.
+Here is the definition of `offsetForName`: It just defines that given an objobject representing an objclass the name of the class is located at the second position.
 
 ```
 Obj >> offsetForName
@@ -218,18 +219,18 @@ RawObjTest >> testPrimitiveStructureObjIVs
 
 #### Access of ClassId for any objects.
 
-Using the method `offsetForClassId`, implement in protocol `'object structure primitives'` the primitives `objClassId` and `objClassId: aSymbol`. The receiver is an `objObject`. This means that this primitive can be applied on any objInstances (be it a class or an instance such as a point objObject) to get its class identifier. 
+Using the method `offsetForClassIdId`, implement in protocol `'object structure primitives'` the primitives `objClassId` and `objClassId: aSymbol`. The receiver is an `objObject`. This means that this primitive can be applied on any objInstances (be it a class or an instance such as a point objObject) to get its class identifier. 
 Execute the test method `testPrimitiveStructureObjClassId`.
 
 #### Class structure access.
 Now we can focus on the other primitives that give access to class information.
 
 Implement in protocol `'class structure primitives'` the primitives that manage:
-- the class name: `objName`, `objName: aSymbol`. The receiver is an `objClass`. Execute test method  `testPrimitiveStructureObjName`.
-- the superclass: `objSuperclassId`, `objSuperclassId: aSymbol`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjSuperclassId`
-- the instance variables: `objIVs`, `objIVs: anOrderedCollection`. The receiver is an `objClass`. Execute test method  `testPrimitiveStructureObjIVs`.
-- the keyword list: `objKeywords`, `objKeywords: anOrderedCollection`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjKeywords`.
-- the method dictionary: `objMethodDict`, `objMethodDict: anIdentityDictionary`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjMethodDict`.
+- the class name. Methods `objName` and`objName: aSymbol`. The receiver is an `objClass`. Execute test method  `testPrimitiveStructureObjName`.
+- the superclass. Methods `objSuperclassId` and `objSuperclassId: aSymbol`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjSuperclassId`
+- the instance variables. Methods `objIVs` and `objIVs: anOrderedCollection`. The receiver is an `objClass`. Execute test method  `testPrimitiveStructureObjIVs`.
+- the keyword list. Methods `objKeywords` and `objKeywords: anOrderedCollection`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjKeywords`.
+- the method dictionary. Methods `objMethodDict` and `objMethodDict: anIdentityDictionary`. The receiver is an `objClass`. Execute test method `testPrimitiveStructureObjMethodDict`.
 
 
 
