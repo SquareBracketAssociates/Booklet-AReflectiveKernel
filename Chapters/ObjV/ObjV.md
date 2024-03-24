@@ -258,21 +258,21 @@ Now we will be ready to manipulate objInstances via proper API. We will now use 
 
 #### A first simple method.
 Now you will implement a primitive that when sent to an objClass returns the offset of the instance variable represented by the symbol. It returns 0 if the variable is not defined.
-The following test illustrates the behavior of this primitive `offsetFromClassOfInstanceVariable:` (It could have been named `classOffsetForIV:`)
+The following test illustrates the behavior of this primitive `ivClassOffset:` (It could have been named `classOffsetForIV:`)
 
 ```
 ObjTest >> testIVOffset
    self 
-   	assert: (pointClass offsetFromClassOfInstanceVariable: #x) 
+   	assert: (pointClass ivClassOffset: #x) 
    	equals: 2.
    self 
-   	assert: (pointClass offsetFromClassOfInstanceVariable: #lulu) 
+   	assert: (pointClass ivClassOffset: #lulu) 
    	equals: 0
 ```
 
 #### Your job.
 
-In the protocol `'iv management'` define a method called `offsetFromClassOfInstanceVariable: aSymbol`  Look at the tests `#testIVOffset` of the class `ObjTest`.  Make sure that you execute the test method: `testIVOffset`.
+In the protocol `'iv management'` define a method called `ivClassOffset: aSymbol`  Look at the tests `#testIVOffset` of the class `ObjTest`.  Make sure that you execute the test method: `testIVOffset`.
 
 Hints: Use the Pharo method `indexOf:`. Pay attention that such a primitive is applied to an objClass as shown in the test.
 
@@ -287,7 +287,7 @@ The following test illustrates the expected behavior:
 ObjTest >> testIVOffsetAndValue
 
    self 
-   	assert: (aPoint offsetFromObjectOfInstanceVariable: #x) 
+   	assert: (aPoint ivOffset: #x) 
 	equals: 2.
    self 
    	assert: (aPoint valueOfInstanceVariable: #x) 
@@ -299,10 +299,10 @@ ObjTest >> testIVOffsetAndValue
 #### Your job.
 
 Using the previous method, define in the protocol `'iv management'`:
-1. When sent to an objObject, the primitive `offsetFromObjectOfInstanceVariable: aSymbol` that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset3@*). (It could have been named `objectOffsetForIV:`).
+1. When sent to an objObject, the primitive `ivOffset: aSymbol` that returns the offset of the instance variable. Note that this time the method is applied to an objInstance presenting an instance and not a class (as shown in Figure *@fig:offset3@*). (It could have been named `objectOffsetForIV:`).
 1. the method `valueOfInstanceVariable: aSymbol` that returns the value of this instance variable in the given object as shown in the test below.
 
-Note that for the method `offsetFromObjectOfInstanceVariable:` you can check that the instance variable exists in the class of the object and else raise an error using the Pharo method `error:`.
+Note that for the method `ivOffset:` you can check that the instance variable exists in the class of the object and else raise an error using the Pharo method `error:`.
 
 Make sure that you execute the test method: `testIVOffsetAndValue` and it passes.
 
@@ -436,7 +436,7 @@ ObjTest >> testInstanceVariableInheritance
 
 #### Side remark
 
-You could think that keeping the same order of the instance variables between a superclass and its subclass is not an issue. This is partly true in this simple implementation because the instance variable accessors compute each time the corresponding offset to access an instance variable using the primitive `offsetFromClassOfInstanceVariable:`.  However, the structure (instance variable order) of a class is hardcoded by the primitives. That's why your implementation of the primitive `computeNewIVFrom:with:` should take care of that aspect.
+You could think that keeping the same order of the instance variables between a superclass and its subclass is not an issue. This is partly true in this simple implementation because the instance variable accessors compute each time the corresponding offset to access an instance variable using the primitive `ivClassOffset:`.  However, the structure (instance variable order) of a class is hardcoded by the primitives. That's why your implementation of the primitive `computeNewIVFrom:with:` should take care of that aspect.
 In real language, compilers will try to ensure that a method defined in a superclass can be applied to instances of the subclasses.
 
 ### Method management
