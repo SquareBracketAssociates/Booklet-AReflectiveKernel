@@ -1,14 +1,14 @@
 ## A minimal reflective class-based kernel
 
 
-_The difference between classes and objects has been repeatedly emphasized. In the view presented here, these concepts belong to different worlds: the program text only contains classes; at run-time, only objects exist. This is not the only approach. One of the subcultures of object-oriented programming, influenced by Lisp and exemplified by Smalltalk, views classes as object themselves, which still have an existence at run-time._ — B. Meyer, Object-Oriented Software Construction
+_The difference between classes and objects has been repeatedly emphasized. In the view presented here, these concepts belong to different worlds: the program text only contains classes; at run-time, only objects exist. This is not the only approach. One of the subcultures of object-oriented programming, influenced by Lisp and exemplified by Smalltalk, views classes as object themselves, which still have an existence at run-time._ — B. Meyer, Object-Oriented Software Construction  {!citation|ref=Meye88b!}
 
 As this quote expresses it, there is a realm where classes are true objects, instances of other classes. In such systems such as Smalltalk, Pharo {!citation|ref=Blac09a!}, CLOS {!citation|ref=Stee90a!}, classes are described by other classes and form often reflective architectures each one describing the previous level. In this chapter, we will explore a minimal reflective class-based kernel, inspired from ObjVlisp. In the following chapter you will implement step by step such a kernel with less than 30 methods.
 
 ### ObjVlisp inspiration
 
 
-ObjVlisp was published the first time in 1987 when the foundation of object-oriented programming was still emerging {!citation|ref=Coin87a!}. ObjVlisp has explicit metaclasses and supports metaclass reuse. It was inspired from the kernel of Smalltalk-78. The IBM SOM-DSOM kernel is similar to ObjVLisp while implemented in C++ {!citation|ref=Form99a!}. ObjVlisp is a subset of the reflective kernel of CLOS (Common Lisp Object System) since CLOS reifies instance variables, generic functions, and method combination. It is equivalent of the Closette implementation {!citation|ref=Kicz91a!}. In comparison to ObjVlisp, Smalltalk and Pharo have implicit metaclasses and no metaclass reuse except by basic inheritance. However, they are more stable as explained by Bouraqadi et al  {!citation|ref=Bour98a!}.
+ObjVlisp was published for the first time in 1987 when the foundation of object-oriented programming was still emerging {!citation|ref=Coin87a!}. ObjVlisp has explicit metaclasses and supports metaclass reuse. It was inspired by the kernel of Smalltalk-78. The IBM SOM-DSOM kernel is similar to ObjVLisp while implemented in C++ {!citation|ref=Form99a!}. ObjVlisp is a subset of the reflective kernel of CLOS (Common Lisp Object System) since CLOS reifies instance variables, generic functions, and method combination. It is the equivalent of the Closette implementation {!citation|ref=Kicz91a!}. In comparison to ObjVlisp, Smalltalk and Pharo have implicit metaclasses and no metaclass reuse except by basic inheritance. However, they are more stable as explained by Bouraqadi et al  {!citation|ref=Bour98a!}.
 
 Studying this kernel is really worth it, since it has the following properties:
 - It unifies class and instances (there is only one data structure to represent all objects, classes included).
@@ -25,12 +25,12 @@ The original ObjVlisp kernel is defined by six postulates {!citation|ref=Coin87a
 
 Here are the six postulates as stated in the paper for the sake of historical perspective.
 
-1. An object represents a piece of knowledge and a set of capabilities.
-1. The only protocol to activate an object is message passing: a message specifies which procedure to apply (denoted by its name, the selector) and its arguments.
-1. Every object belongs to a class that specifies its data (attributes called fields) and its behavior (procedures called methods). Objects will be dynamically generated from this model; they are called instances of the class. Following Plato, all instances of a class have same structure and shape, but differ through the values of their common instance variables.
-1. A class is also an object, instantiated by another class, called its metaclass. Consequently (P3), to each class is associated a metaclass which describes its behavior as an object. The initial primitive metaclass is the class `Class`, built as its own instance.
-1. A class can be defined as a subclass of one (or many) other class(es). This subclassing mechanism allows sharing of instance variables and methods, and is called inheritance. The class `Object` represents the most common behavior shared by all objects.
-1. If the instance variables owned by an object define a local environment, there are also class variables defining a global environment shared by all the instances of a same class. These class variables are defined at the metaclass level according to the following equation: class variable \[an-object\] = instance variable \[an-object’s class\].
+- P1. An object represents a piece of knowledge and a set of capabilities.
+ -P2 . The only protocol to activate an object is message passing: a message specifies which procedure to apply (denoted by its name, the selector) and its arguments.
+- P3. Every object belongs to a class that specifies its data (attributes called fields) and its behavior (procedures called methods). Objects will be dynamically generated from this model; they are called instances of the class. Following Plato, all instances of a class have same structure and shape, but differ through the values of their common instance variables.
+- P4. A class is also an object, instantiated by another class, called its metaclass. Consequently (P3), to each class is associated a metaclass which describes its behavior as an object. The initial primitive metaclass is the class `Class`, built as its own instance.
+- P5. A class can be defined as a subclass of one (or many) other class(es). This subclassing mechanism allows sharing of instance variables and methods, and is called inheritance. The class `Object` represents the most common behavior shared by all objects.
+- P6. If the instance variables owned by an object define a local environment, there are also class variables defining a global environment shared by all the instances of a same class. These class variables are defined at the metaclass level according to the following equation: class variable \[an-object\] = instance variable \[an-object’s class\].
 
 
 
@@ -124,9 +124,9 @@ Indeed not all the objects are classes. In particular, the sole difference betwe
 
 The model does not really bring anything new about instance structure when compared with languages such as Pharo or Java.
 
-Instance variables are an ordered sequence of instance variables defined by a class. Such
+Instance variables are represented as a list of instance variable defined by a class. Such
 instance variables are shared by all instances.
-The values of such instance variables are specific to each instance.
+The _values_ of such instance variables are specific to each instance.
 Figure *@fig:Ref-Instances@* shows that instances of `Workstation` have two values: a name and a next node.
 
 
