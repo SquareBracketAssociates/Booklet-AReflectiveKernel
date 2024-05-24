@@ -15,7 +15,7 @@ In addition, it describes the design and the consequences of having a self-descr
 
 By doing so we will learn deeply about objects, object creation instantiation, message lookup, delegation, inheritance, and much more.
 
-I would like to thank Christopher Fuhrman for his large copy-edit pass and kksubbu and René-Paul for their suggestions.
+I would like to thank Christopher Fuhrman for his large copy-edit pass and kksubbu, Imen Sayar, and René-Paul for their suggestions.
 
 — Stéphane Ducasse
 

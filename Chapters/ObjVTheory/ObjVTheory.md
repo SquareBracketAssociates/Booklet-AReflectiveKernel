@@ -159,7 +159,7 @@ Here is the minimal information that a class should have:
 
 This minimal state is similar to that of Pharo: the Pharo `Behavior` class has a format (compact description of instance variables), a method dictionary, and a superclass link.
 
-In ObjVLisp,  we have a name to identify the class. As an instance factory, the metaclass Class possesses four instance variables that describe a class:
+In ObjVLisp,  we have a name to identify the class. As an instance factory, the metaclass `Class` possesses four instance variables that describe a class:
 - name, the class name,
 - superclass, its superclass (we limit to single inheritance),
 - iv, the list of its instance variables, and
@@ -170,21 +170,21 @@ Since a class is an object, a class has the instance variable `class` inherited 
 
 ![`Point` class as an object.](figures/Ref-PointClassAsObject.pdf width=70&label=fig:PointClassAsObject)
 
-#### Example: class Point
+#### Example 1: class Point
 
 
 Figure *@fig:PointClassAsObject@* shows the instance variable values for the class `Point` as declared by the programmer and before class initialization and inheritance take place.
 - It is an instance of class `Class`: indeed this is a class.
 - It is named `'Point'`.
 - It inherits from class `Object`.
-- It has two instance variables: `x` and `y`. After inheritance it will be three instance variables: `class`, `x`, and `y`.
+- It has two instance variables: `x` and `y`. Once the static inheritance of instance variables occurs, it will be three instance variables: `class`, `x`, and `y`.
 - It has a method dictionary.
 
 
 
 ![`Class` as an object.](figures/Ref-ClassClassAsObject.pdf width=70&label=fig:ClassClassAsObject)
 
-#### Example: class Class
+#### Example 2: class Class
 
 
 Figure *@fig:ClassClassAsObject@* describes the class `Class` itself. Indeed it is also an object.
@@ -340,7 +340,7 @@ A class is also an object \(i.e., it should understand the minimal behavior\) so
 
 #### Remark
 
-In Pharo, the class `Object` is not the root of inheritance. The root is in fact `ProtoObject`, and `Object` inherits from it. Most of the classes still inherit from `Object`. The design goal of `ProtoObject` is special: to generate as many as errors as possible. Such errors can be then captured via redefinition of `doesNotUnderstand:`
+In Pharo, the class `Object` is not the root of inheritance. The root is in fact `ProtoObject`, and `Object` inherits from it. Most of the classes still inherit from `Object`. The design goal of `ProtoObject` is special: to generate as many as errors as possible. Such errors can be captured via redefinition of the message `doesNotUnderstand:`
 and can support different scenarios such as implementing a proxy.
 
 ### Inheritance and instantiation together
@@ -366,7 +366,7 @@ Since our experience showed us that even some book authors got the essential sem
 As explained in Section *@sec_message@*, sending a message to an object always starts the lookup the corresponding method in the class of the receiver.
 
 Now we should distinguish two cases: `self` and `super`.
-In the body of a method, both **self** \(also called **this** in languages like Java\) and **super** always represent the receiver of the message. Yes you read it well, both **self** and **super** always represent the receiver!
+In the body of a method, both `self` (also called `this` in languages like Java) and `super` always represent the receiver of the message. Yes you read it well, both `self` and `super` always represent the receiver!
 
 The difference lies in the class from where the lookup starts:
 
@@ -422,7 +422,7 @@ As a conclusion, we can say that `self` is dynamic and `super` static. Let us ex
 
 ### Object creation
 
-Now we are ready to understand the creation of objects. In this model there is only one way to create instances: we should send the message `new` to the class with a specification of the instance variable values as argument.
+Now we are ready to understand the creation of objects. In this model, there is only one way to create instances: we should send the message `new` to the class with a specification of the instance variable values as arguments.
 
 ### Creation of instances of the class Point
 
@@ -436,7 +436,8 @@ Point new :y 6 :x 24
 ```
 
 
-When there is no value specified, the value of an instance variable is initialized to nil. CLOS provides the notion of default values for instance variable initialization. It can be added to ObjVlisp as an exercise and does not bring conceptual difficulties.
+When there is no value specified, the value of an instance variable is initialized to nil. 
+It is worth to see that in CLOS (Common Lisp Object System) {!citation|ref=Stee90a!}  provides the notion of default values for instance variable initialization. It can be added to ObjVlisp as an exercise and does not bring conceptual difficulties.
 
 ```testcase=true
 Point new
@@ -476,7 +477,7 @@ An implementation could have two different messages to create instances and clas
 
 The following diagram (Figure *@fig:metaclassrole@*) shows that despite what one might expect when we create a terminal instance the metaclass `Class` is involved in the process. Indeed, we send the message `new` to the class, to resolve this message, the system will look for the method in the class of the receiver (here `Workstation`) which is the metaclass `Class`. The method `new` is found in the metaclass and applied to the receiver, the class `Workstation`. Its effect is to create an instance of the class `Workstation`.
 
-![Metaclass role during instance creation: Applying plain message resolution.](figures/Ref-InstanceCreationMetaclassRole.pdf width=65&label=fig:metaclassrole)
+![Metaclass role during instance creation: Applying plain message resolution. Right: situation before - Left: situation after the instance creation.](figures/Ref-InstanceCreationMetaclassRole.pdf width=65&label=fig:metaclassrole)
 
 The same happens when creating a class. Figure *@fig:ClassCreation@* shows the process. We send a message, now this time, to the class `Class`. The system makes no exception and to resolve the message, it looks for the method in the class of the receiver. The class of the receiver is itself, so the method `new` found in `Class` is applied to `Class` (the receiver of the message), and a new class is created.
 
@@ -495,7 +496,7 @@ aClass new: args = (aClass allocate) initialize: args
 We should see the following:
 - The message `new` is a message sent to a class. The method `new` is a class method.
 - The message `allocate` is a message sent to a class. The method `allocate` is a class method.
-- The message `initialize:` will be executed on any newly created instance. If it is sent to a class, a class `initialize:` method will be involved. If it is sent to a terminal object, an instance `initialize:` method will be executed \(defined in `Object`\).
+- The message `initialize:` will be executed on any newly created instance. If it is sent to a class, a class `initialize:` method will be invoked. If it is sent to a terminal object, an instance `initialize:` method will be executed \(defined in `Object`\).
 
 
 
@@ -508,7 +509,7 @@ Object allocation should return a newly created instance with:
 - an identifier to its class.
 
 
-In our model, the marking of an object as an instance of a class is performed by setting the value of the instance variable `class` inherited from `Object`. In Pharo, this information is not recorded as an instance variable but encoded in the internal object representation in the virtual machine.
+In the ObjVLisp model, the marking of an object as an instance of a class is performed by setting the value of the instance variable `class` inherited from `Object`. In Pharo, this information is not recorded as an instance variable but encoded in the internal object representation in the virtual machine.
 
 The `allocate` method is defined on the metaclass `Class`. Here are some examples of allocation.
 
@@ -525,14 +526,17 @@ Class allocate
 ```
 
 
-The allocation for an object representing a class allocates six slots: one for class and one for each of the class instance variables: name, super, iv, keywords, and methodDict.
+The allocation for an object representing a class allocates six slots: one for class and one for each of the class instance variables: `name`, `super`, `iv`, `keywords` (see below), and `methodDict`.
 
 #### Object initialization
 
 Object initialization is the process of passing arguments as key/value pairs and assigning the value(s) to the corresponding instance variable\(s\).
 
 This is illustrated in the following snippet. An instance of class `Point` is created and the key/value pairs (:y 6) and (:x 24) are
-specified. The instance is created and it receives the `initialize:` message with the key/value pairs.
+specified. In the following snippet `:y` and `:x` are keywords in ObjVLisp parlance. 
+They are built automatically from the instance variables and are used to uniquely identify values. 
+
+In the following snippet, the instance is created and it receives the `initialize:` message with the key/value pairs.
 The `initialize:` method is responsible for setting the corresponding variables in the receiver.
 
 ```
@@ -583,9 +587,28 @@ At this stage you saw all the concepts of this minimal object-oriented kernel wh
 In the following chapter, we explore more metaclasses and we encourage you to read it because it will shed an interesting light on the model.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## First metaclasses
 
-In this chapter we will study how all the concepts explained in the previous chapter fit together to let us define powerful metaclasses. Studying such entities will reinforce your understanding of the instantiation and inheritance relationships as well as their interplay. At the end of the chapter we will explain why the sixth predicates of ObjVLisp is wrong and propose a solution that elegantly fits the model.
+In this chapter, we will study how all the concepts explained in the previous chapter fit together to let us define powerful metaclasses. Studying such entities will reinforce your understanding of the instantiation and inheritance relationships as well as their interplay. At the end of the chapter, we will explain why the sixth predicate of ObjVLisp is wrong and propose a solution that elegantly fits the model.
 
 
 ### Defining a new Metaclass
@@ -593,12 +616,12 @@ In this chapter we will study how all the concepts explained in the previous cha
 Now we can study how we can add new metaclasses and see how the system handles them.
 To create a new metaclass is simple; it is enough to inherit from an existing one. Maybe this is obvious to you, but this is what we will check now.
 
-![Abstract metaclass: its instance (i.e., the class Node) are abstract.](figures/Ref-Abstract.pdf width=60&label=fig:Abstract)
+![Abstract metaclass: its instance (i.e., the class Node) is abstract.](figures/Ref-Abstract.pdf width=60&label=fig:Abstract)
 
 #### Abstract
 
 Imagine that we want to define abstract classes. We state that a class is abstract if it cannot create instances.
-To control the creation of instances of a class, we should define a new metaclass which forbids it.
+To control the creation of instances of a class, we should define a new metaclass that forbids it.
 Therefore we will define a metaclass whose instances (abstract classes) cannot create instances.
 
 We create a new metaclass named `AbstractMetaclass` which inherits from `Class` and we redefine the method `new` in this metaclass to raise an error (as shown in Figure *@fig:Abstract@*). The following code snippet defines this new metaclass.
@@ -622,11 +645,13 @@ Two facts describe the relations between this metaclass and the class `Class`:
 - `AbstractMetaclass` defines class behavior: It inherits from `Class`.
 
 
-![Abstract metaclass at work.](figures/Ref-AbstractLookup.pdf width=60&label=fig:AbstractLookup)
-Now we can define an abstract class `Node`.
+![Abstract metaclass at work: Using message passing as a key to navigate the graph.](figures/Ref-AbstractLookup.pdf width=60&label=fig:AbstractLookup)
+Now we can define an abstract class `Node` in ObjVLisp syntax:
 
 ```
-AbstractMetaclass new :name 'Node' :super 'Object'
+AbstractMetaclass new 
+	:name 'Node' 
+	:super 'Object'
 ```
 
 
@@ -665,7 +690,7 @@ There are several questions that still should be asked and answered.
 #### Instance variable of WithSingleton
 
 
-As with any class, a subclass gets its instance variables as well as the instance variables of its superclass. Hence `WithSingleton` instance variables are the same as the one of `Class`, and it also has `unique` *@fig:RefSing2@*.
+As with any class, a subclass gets its instance variables as well as the instance variables of its superclass. Hence `WithSingleton` instance variables are the same as the one of `Class`, and it also has `unique` instance variable as shown in Fig. *@fig:RefSing2@*.
 
 ```
 Singleton objIVs
@@ -679,7 +704,7 @@ Singleton objIVs
 
 
 Each class instance of `WithSingleton` will have an additional value after its method dictionary. This is where the actual singleton of the class is stored.
-The class `Node` and `Processor` are instances of the metaclass `WithSingleton`. Therefore they have
+The class `Node` and `Process` are instances of the metaclass `WithSingleton`. Therefore they have
 one extra field in their structure to hold the unique instance variable values.
 Each instance of `WithSingleton` will have its own value: the instance of class playing the singleton role.
 
@@ -687,9 +712,9 @@ Each instance of `WithSingleton` will have its own value: the instance of class 
 
 ### About the 6th postulate
 
-
 As mentioned at the start of this chapter, the 6th postulate of ObjVLisp is wrong. Let us read it again:
-_If the instance variables owned by an object define a local environment, there are also class variables defining a global environment shared by all the instances of a same class. These class variables are defined at the metaclass level according to the following equation: class variable \[an-object\] = instance variable \[an-object’s class\]._
+
+_"If the instance variables owned by an object define a local environment, there are also class variables defining a global environment shared by all the instances of a same class. These class variables are defined at the metaclass level according to the following equation: class variable \[an-object\] = instance variable \[an-object’s class\]."_
 
 This says that class instance variables are equivalent to shared variables between instances, and this is wrong. Let us study this. According to the 6th postulate, a shared variable between instances is equal to an instance variable of the class. The definition is not totally clear so let us look at an example given in the article.
 
