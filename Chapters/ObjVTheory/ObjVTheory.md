@@ -47,18 +47,18 @@ Figure *@fig:ObjVlisp@* shows the two core classes of the kernel:
 - `Class` is the first class and root of the instantiation tree and instance of itself as we will see later.
 
 
-![The ObjVlisp kernel: a minimal class-based kernel.](figures/ObjVlispMore.pdf width=60&label=fig:ObjVlisp)
+![The ObjVlisp kernel: a minimal class-based kernel. % width=60&label=fig:ObjVlisp](figures/ObjVlispMore.pdf)
 
 
 Figure *@withSing@* shows that the class `Workstation` is an instance of the class `Class` since it is a class and it inherits from `Object` the default behavior objects should exhibit. The class `WithSingleton` is an instance of the class `Class` but in addition, it inherits from `Class`, since this is a metaclass: its instances are classes. As such, it changes the behavior of classes. The class `SpecialWorkstation` is an instance of the class `WithSingleton` and inherits from `Workstation`, since its instances exhibit the same behavior as `Workstation`.
 
- ![The kernel with specialized metaclasses.](figures/ObjVlispSingleton.pdf width=70&label=withSing)
+ ![The kernel with specialized metaclasses. % width=70&label=withSing](figures/ObjVlispSingleton.pdf)
 
 The two diagrams *@fig:ObjVlisp@* and *@withSing@* will be explained step by step throughout this chapter.
 
 !!note The key point of understanding such a reflective architecture is that message passing always looks up methods in the class of the receiver of the message and then follows the inheritance chain (See Figure *@fig:kernel2@*).
 
-![Understanding metaclasses using message passing.](figures/ObjVlispSingleton2.pdf width=90&label=fig:kernel2)
+![Understanding metaclasses using message passing. % width=90&label=fig:kernel2](figures/ObjVlispSingleton2.pdf)
 
 Figure *@fig:kernel2@* illustrates two main cases:
 - When we send a message to `BigMac` or `Minna`, the corresponding method is looked up in their corresponding classes `Workstation` or `SpecialWorkstation` and follows the inheritance link up to `Object`.
@@ -522,7 +522,7 @@ A point allocation allocates three slots: one for the class and two for x and y 
 
 ```testcase=true
 Class allocate
->>>#(Class nil nil nil nil nil)
+>>> #(Class nil nil nil nil nil)
 ```
 
 
@@ -678,7 +678,7 @@ Imagine that we define a metaclass `WithSingleton` whose instances are classes t
 is executed. 
 If the unique instance variable is nil, it invokes the behavior defined in `Class` and stores it in the unique instance variable, and returns it.
 
-![A WithSingleton metaclass: its instances can only have one instance.](figures/Ref-Singleton.pdf width=55&label=fig:RefSing)
+![A WithSingleton metaclass: its instances can only have one instance. %width=55&label=fig:RefSing](figures/Ref-Singleton.pdf )
 
 There are several questions that still should be asked and answered.
 
@@ -698,7 +698,7 @@ Singleton objIVs
 ```
 
 
-![Storing unique instance.](figures/Ref-SingletonTwo.pdf width=55&label=fig:RefSing2)
+![Storing unique instance. %width=55&label=fig:RefSing2](figures/Ref-SingletonTwo.pdf)
 
 #### Where is the singleton stored?
 
