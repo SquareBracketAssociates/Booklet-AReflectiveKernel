@@ -70,9 +70,21 @@ ObjVLisp is a minimal kernel with its two main classes. It uses the infrastructu
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 ## Diving into the kernel
 
-In this chapter we will describe one by one all the aspects of the kernel. 
+In this chapter, we will describe one by one all the aspects of the kernel. 
 We will cover instance shapes, methods,  instance and inheritance relationship interplay, object allocation, object and class initialization...
 
 
@@ -82,12 +94,12 @@ We will cover instance shapes, methods,  instance and inheritance relationship i
 In this kernel, there is only one instantiation link; it is applied at all levels as shown by Figure  *@fig:Instantiation@*:
 % +Simple instances.>file://figures/Ref-Instances.png|width=50|label=fig:Instances+
 - Terminal instances are objects: a workstation named `mac1` is an instance of the class `Workstation`, a point `10@20` is an instance of the class `Point`.
-- Classes are also objects \(instances\) of other classes: the class `Workstation` is an instance of the class `Class`, and the class `Point` is an instance of the class `Class`.
+- Classes are also objects (instances) of other classes: the class `Workstation` is an instance of the class `Class`, and the class `Point` is an instance of the class `Class`.
 
 
-![Chain of instantiation: classes are objects, too.](figures/Ref-InstantiationLink.pdf width=72&label=fig:Instantiation)
+![Chain of instantiation: classes are objects, too. % width=80&label=fig:Instantiation](figures/Ref-InstantiationLink.pdf)
 
-In our diagrams, we represent objects \(mainly terminal instances\) as rounded rectangles with the list of instance variable values.
+In our diagrams, we represent objects (mainly terminal instances) as rounded rectangles with the list of instance variable values.
 Since classes are objects, _when we want to stress that classes are objects_ we use the same graphical convention as shown in Figure *@fig:PointClassAsObject@*.
 
 
@@ -117,7 +129,7 @@ At the implementation level, there is only one kind of entity: objects. There is
 This unification between instances and classes does not mean that objects and classes have the same distinction.
 Indeed not all the objects are classes. In particular, the sole difference between a class and an instance is the ability to respond to the creation message: `new`. Only a class knows how to respond to it. Then, metaclasses are just classes whose instances are classes as shown in Figure *@fig:InstantiationPap@*.
 
-![Everything is an object. Classes are just objects that can create other objects, and metaclasses are just classes whose instances are classes.](figures/instancePatatoid.pdf width=45&label=fig:InstantiationPap)
+![Everything is an object. Classes are just objects that can create other objects, and metaclasses are just classes whose instances are classes. %width=45&label=fig:InstantiationPap](figures/instancePatatoid.pdf )
 
 
 ### Instance structure
@@ -130,7 +142,7 @@ The _values_ of such instance variables are specific to each instance.
 Figure *@fig:Ref-Instances@* shows that instances of `Workstation` have two values: a name and a next node.
 
 
-![Instances of `Workstation` have two values: their names and their next node.](figures/Ref-Instances.pdf width=60&label=fig:Ref-Instances)
+![Instances of `Workstation` have two values: their names and their next node.%width=60&label=fig:Ref-Instances](figures/Ref-Instances.pdf )
 
 In addition, we note that an object has a pointer to its class. As we will see when we discuss inheritance later on, every object possesses an instance variable class (inherited from `Object`) that points to its class.
 
@@ -195,15 +207,15 @@ Figure *@fig:ClassClassAsObject@* describes the class `Class` itself. Indeed it 
 - It has a method dictionary.
 
 
-![Through the prism of objects.](figures/Ref-InstanceGlobalPicture.pdf width=70&label=fig:Instanceshier)
+![Through the prism of objects. % width=70&label=fig:Instanceshier](figures/Ref-InstanceGlobalPicture.pdf)
 
 #### Everything is an object
 
 
 Figure *@fig:Instanceshier@* describes a typical situation of terminal instances, class and metaclasses when viewed from an object perspective.
-We see three levels of instances: terminal objects \(`mac1` and `mac2` which are instances of `Workstation`\), class objects \(`Workstation` and `Point` which are instances of `Class`\) and the metaclass \(`Class` which is instance of itself\).
+We see three levels of instances: terminal objects (`mac1` and `mac2` which are instances of `Workstation`), class objects (`Workstation` and `Point` which are instances of `Class`) and the metaclass (`Class` which is instance of itself).
 
-![Sending a message is two-step process: method lookup and execution.](figures/InheritanceDiagram-sendingMessage.pdf width=45&label=fig:ToSteps)
+![Sending a message is two-step process: method lookup and execution. % width=45&label=fig:ToSteps](figures/InheritanceDiagram-sendingMessage.pdf)
 
 
 ### Sending a message
@@ -230,12 +242,12 @@ sending a message (receiver argument)
 
 Now the lookup process is conceptually defined as follows:
 1. The lookup starts in the **class** of the **receiver**.
-1. If the method is defined in that class \(i.e., if the method is defined in the method dictionary\), it is returned.
+1. If the method is defined in that class (i.e., if the method is defined in the method dictionary), it is returned.
 1. Otherwise the search continues in the superclass of the currently explored class.
-1. If no method is found and there is no superclass to explore \(if we are in the class `Object`\), this is an error \(i.e., the method is not defined\).
+1. If no method is found and there is no superclass to explore (if we are in the class `Object`), this is an error (i.e., the method is not defined).
 
 
-![Looking for a method is two-step process: first go to the class of receiver then follow inheritance.](figures/Ref-LookupNoError.pdf width=55&label=fig:LookupNoError)
+![Looking for a method is two-step process: first go to the class of receiver then follow inheritance. % width=55&label=fig:LookupNoError](figures/Ref-LookupNoError.pdf)
 
 The method lookup walks through the inheritance graph one class at a time using the superclass link. Here is a possible description of the lookup algorithm that will be used for both instance and class methods.
 
@@ -249,14 +261,14 @@ lookup (selector class receiver):
 ```
 
 
-![When a message is not found, another message is sent to the receiver supporting reflective operation.](figures/Ref-LookupWithError.pdf width=70&label=fig:LookupWithError)
+![When a message is not found, another message is sent to the receiver supporting reflective operation. % width=70&label=fig:LookupWithError](figures/Ref-LookupWithError.pdf)
 
 
 
 ### Handling unknown messages
 
 
-When the method is not found, the message `error` is sent as shown in Figure *@fig:LookupWithError@*. Sending a message instead of simply reporting an error using a trace or an exception is a key design decision. In Pharo, this is done via the `doesNotUnderstand:` message, and it is an important reflective hook. Indeed classes can define their own implementation of the method `error` and perform specific actions to the case of messages that are not understood.  For example, it is possible to implement proxies \(objects representing other remote objects\) or compile code on the fly by redefining such a message locally.
+When the method is not found, the message `error` is sent as shown in Figure *@fig:LookupWithError@*. Sending a message instead of simply reporting an error using a trace or an exception is a key design decision. In Pharo, this is done via the `doesNotUnderstand:` message, and it is an important reflective hook. Indeed classes can define their own implementation of the method `error` and perform specific actions to the case of messages that are not understood.  For example, it is possible to implement proxies (objects representing other remote objects) or compile code on the fly by redefining such a message locally.
 
 Now it should be noted that the previous algorithm has a limitation when a missing method has an arbitrary number of arguments. They are not passed to the `error` message. A better way to handle this is to decompose the algorithm differently as follows:
 
@@ -285,7 +297,7 @@ sending a message (receiver argument)
 
 This lookup is conceptually the same as in Pharo where all methods are public and virtual. There are no statically bound methods; even class methods are looked up dynamically. This allows defining very elegant and dynamic registration mechanisms.
 
-While the lookup happens at runtime, it is often cached. Languages usually have several systems of caches, e.g., global \(class, selector\), one per call site, etc.
+While the lookup happens at runtime, it is often cached. Languages usually have several systems of caches, e.g., global (class, selector), one per call site, etc.
 
 ### Inheritance
 
@@ -313,7 +325,7 @@ instance-variables(aClass) =
 ```
 
 
-A word about union: when the implementation of the language is based on offsets to access instance variables, the union should make sure that the location of inherited instance variables are kept ordered compared to the superclass. In general we want to be able to apply methods of the superclass to subclasses without copying them down and recompiling them. Indeed if a method uses a variable at a given position in the instance variable lists, applying this method to instances of subclasses should work.
+A word about union: when the implementation of the language is based on offsets to access instance variables, the union should make sure that the locations of inherited instance variables are kept ordered compared to the superclass. In general, we want to be able to apply methods of the superclass to subclasses without copying them down and recompiling them. Indeed if a method uses a variable at a given position in the instance variable lists, applying this method to instances of subclasses should work.
 In the implementation proposed next chapter, we will use accessors and will not support direct access to instance variables from a method body.
 
 #### Method lookup
@@ -330,11 +342,11 @@ Contrary to instance variable inheritance, this part of inheritance is dynamic, 
 This is why `Object` is the root of the hierarchy. Depending on the language, `Object` can be complex. In our kernel it is kept minimal as we will show in the implementation chapter.
 
 Figure *@fig:inheritancegraph@* shows the inheritance graph without the presence of instantiation.
-A Workstation is an object \(i.e., it should at least understand the minimal behavior\), so the class `Workstation` inherits directly or indirectly from the class `Object`.
-A class is also an object \(i.e., it should understand the minimal behavior\) so the class `Class` inherits from class `Object`. In particular, the `class` \(note the lowercase\) instance variable is inherited from `Object` class.
+A Workstation is an object (i.e., it should at least understand the minimal behavior), so the class `Workstation` inherits directly or indirectly from the class `Object`.
+A class is also an object (i.e., it should understand the minimal behavior) so the class `Class` inherits from class `Object`. In particular, the `class` (note the lowercase) instance variable is inherited from `Object` class.
 
 
-![Full inheritance graph: Every class ultimately inherits from `Object`.](figures/Ref-InheritanceGraph.pdf width=45&label=fig:inheritancegraph)
+![Full inheritance graph: Every class ultimately inherits from `Object`. %width=45&label=fig:inheritancegraph](figures/Ref-InheritanceGraph.pdf )
 
 
 
@@ -354,7 +366,7 @@ Figure *@fig:kernel22@* shows the graphs and in particular how such graphs are u
 
 This process is the same when we send messages to the classes themselves. There is no difference between sending a message to an object or a class. The system _always_ performs the same steps.
 
-![Kernel with instantiation and inheritance link.](figures/Ref-KernelTwo.pdf width=60&label=fig:kernel22)
+![Kernel with instantiation and inheritance link. % width=60&label=fig:kernel22](figures/Ref-KernelTwo.pdf)
 
 
 
@@ -378,7 +390,7 @@ When a message is sent to `super`, the lookup starts in the superclass of the me
 - For **super**. When a message is sent to `super`, the method lookup starts in the superclass of the class containing the super expression.
 
 
-This distinction between **self** and **super** is required to handle the case where a method is redefined locally in a class but that you need to invoke the behavior defined in its superclasses. Note that the superclass method may be defined not in a direct superclass but one of the class ancestor, so there is a need for a method lookup and this method lookup should start above the method redefined it \(here the method containing the **super** expression\). Hence the name **super**.
+This distinction between **self** and **super** is required to handle the case where a method is redefined locally in a class but that you need to invoke the behavior defined in its superclasses. Note that the superclass method may be defined not in a direct superclass but one of the class ancestor, so there is a need for a method lookup and this method lookup should start above the method redefined it (here the method containing the **super** expression). Hence the name **super**.
 
 Note that the lookup of a method in the case of `super` does not look in the superclass of the class of the receiver, since this would mean that it may loop forever in the case of inheritance tree with three classes.
 
@@ -398,14 +410,14 @@ B new bar
 ```
 
 
-![self always represents the receiver.](figures/LookupWithSelfInSuperclassMethod.pdf width=40&label=fig:LookupWithSelfInSuperclassMethod)
+![self always represents the receiver. %width=40&label=fig:LookupWithSelfInSuperclassMethod](figures/LookupWithSelfInSuperclassMethod.pdf)
 
 ![Sequence diagram of self always represents the receiver.](figures/SelfLookupSequenceDiagram.pdf width=60&label=fig:SelfLookupSequenceDiagram)
 
 
-For `super`, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses@* shows that `super` represents the receiver, but that when `super` is the receiver of a message, the method is looked up differently \(starting from the superclass of the class using super\) hence `R new bar` returns 100, but neither 20 nor 60.
+For `super`, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses@* shows that `super` represents the receiver, but that when `super` is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence `R new bar` returns 100, but neither 20 nor 60.
 
-![super represents the receiver, but the method lookup starts in the superclass of the class of the method using super. ](figures/LookupWithSuperInSuperclassMethodThreeClasses2.pdf width=40&label=fig:LookupWithSuperInSuperclassMethodThreeClasses)
+![super represents the receiver, but the method lookup starts in the superclass of the class of the method using super. %width=40&label=fig:LookupWithSuperInSuperclassMethodThreeClasses](figures/LookupWithSuperInSuperclassMethodThreeClasses2.pdf)
 
 ```
 Q new bar
@@ -481,13 +493,13 @@ The following diagram (Figure *@fig:metaclassrole@*) shows that despite what one
 
 The same happens when creating a class. Figure *@fig:ClassCreation@* shows the process. We send a message, now this time, to the class `Class`. The system makes no exception and to resolve the message, it looks for the method in the class of the receiver. The class of the receiver is itself, so the method `new` found in `Class` is applied to `Class` (the receiver of the message), and a new class is created.
 
-![Metaclass role during class creation: Applying plain message resolution - the self instantiation link is followed.](figures/Ref-ClassCreation.pdf width=65&label=fig:ClassCreation)
+![Metaclass role during class creation: Applying plain message resolution - the self instantiation link is followed. % width=65&label=fig:ClassCreation](figures/Ref-ClassCreation.pdf)
 
 #### new = allocate and initialize
 
 Creating an instance is the composition of two actions: a memory allocation `allocate` message and an object initialization message `initialize`.
 
-In Pharo syntax it means:
+In Pharo syntax, it means:
 ```
 aClass new: args = (aClass allocate) initialize: args
 ```
@@ -496,7 +508,7 @@ aClass new: args = (aClass allocate) initialize: args
 We should see the following:
 - The message `new` is a message sent to a class. The method `new` is a class method.
 - The message `allocate` is a message sent to a class. The method `allocate` is a class method.
-- The message `initialize:` will be executed on any newly created instance. If it is sent to a class, a class `initialize:` method will be invoked. If it is sent to a terminal object, an instance `initialize:` method will be executed \(defined in `Object`\).
+- The message `initialize:` will be executed on any newly created instance. If it is sent to a class, a class `initialize:` method will be invoked. If it is sent to a terminal object, an instance `initialize:` method will be executed (defined in `Object`).
 
 
 
@@ -530,7 +542,7 @@ The allocation for an object representing a class allocates six slots: one for c
 
 #### Object initialization
 
-Object initialization is the process of passing arguments as key/value pairs and assigning the value(s) to the corresponding instance variable\(s\).
+Object initialization is the process of passing arguments as key/value pairs and assigning the value(s) to the corresponding instance variable(s).
 
 This is illustrated in the following snippet. An instance of class `Point` is created and the key/value pairs (:y 6) and (:x 24) are
 specified. In the following snippet `:y` and `:x` are keywords in ObjVLisp parlance. 
@@ -616,7 +628,7 @@ In this chapter, we will study how all the concepts explained in the previous ch
 Now we can study how we can add new metaclasses and see how the system handles them.
 To create a new metaclass is simple; it is enough to inherit from an existing one. Maybe this is obvious to you, but this is what we will check now.
 
-![Abstract metaclass: its instance (i.e., the class Node) is abstract.](figures/Ref-Abstract.pdf width=60&label=fig:Abstract)
+![Abstract metaclass: its instance (i.e., the class Node) is abstract. %width=60&label=fig:Abstract](figures/Ref-Abstract.pdf)
 
 #### Abstract
 
@@ -645,7 +657,7 @@ Two facts describe the relations between this metaclass and the class `Class`:
 - `AbstractMetaclass` defines class behavior: It inherits from `Class`.
 
 
-![Abstract metaclass at work: Using message passing as a key to navigate the graph.](figures/Ref-AbstractLookup.pdf width=60&label=fig:AbstractLookup)
+![Abstract metaclass at work: Using message passing as a key to navigate the graph. %width=60&label=fig:AbstractLookup](figures/Ref-AbstractLookup.pdf)
 Now we can define an abstract class `Node` in ObjVLisp syntax:
 
 ```
@@ -720,9 +732,9 @@ This says that class instance variables are equivalent to shared variables betwe
 
 #### Illustrating the problem
 
-Imagine that we would like the constant character '*' to be a class variable shared by all the points of a same class.
-We redefine the `Point` class as before, but metaclass of which \(let us call it `MetaPoint`\) specifies this common character
-For example if a point has a shared variable named `char`, this instance variable should be defined in the class of the class `Point` called `MetaPoint`. The author proposes to define a new metaclass `MetaPoint` to hold a new instance variable to represent a shared variable between points.
+Imagine that we would like the constant character '*' to be a class variable shared by all the points of the same class.
+We redefine the `Point` class as before, but metaclass of which (let us call it `MetaPoint`) specifies this common character
+For example, if a point has a shared variable named `char`, this instance variable should be defined in the class of the class `Point` called `MetaPoint`. The author proposes to define a new metaclass `MetaPoint` to hold a new instance variable to represent a shared variable between points.
 
 ```
 Class new

@@ -1,15 +1,17 @@
-Back in the early 90's, when I was a master student, we learned meta object programming and we were using Common Lisp Object Systems \(CLOS\) to program.
-I loved the lecture and I realized that it was quite advanced.
-At that time I built a theorem proving system in CLOS.
-However, deep inside me, I knew that I did not fully understand what was the class `Object` or what is really a metaclass; of course, I could repeat the lecture and look smart, but there was this little voice telling me that I wasn't 100\% sure.
-Then by accident, I found the article of Pierre Cointe and I was blasted by the simplicity of the model.
-I spent 3 days reimplementing the model like mad because it was too much fun.
-For me, it was key to my comprehension of class-based reflective systems.
-Once I finished I went to see my teacher and told her that she must teach it and she told me to do it.
+Back in the early 90's, when I was a student, built a theorem proving system in Common Lisp Object System.
+It was a fun first contact with object-oriented programming, even if at the time I did not master all the aspects. 
+The following year, we got an excellent lecture on meta-object programming by M. Blay Fornarino. 
+I loved the lecture where we program metaclasses and mixins.  I realize now that it was quite advanced.
+
+However, deep inside me, I knew that I did not fully understand what was the class `Object` or what was really a metaclass. Of course, I could repeat the lecture and look smart, but there was this little voice telling me that I wasn't 100\% sure. Then, I read the article of Pierre Cointe on ObjVlisp. I got blasted by the simplicity of the model.
+I spent the next 2 days reimplementing the model because it was too much fun.
+For me, it is the key to my deep understanding of class-based reflective systems.
+Once I finished implementing it, I went to see my teacher and told her that she must teach it. She told me to do it.
 Since then I've been teaching it.
 
-Note that while the project is historically named ObjVLisp, it has nothing to do with LISP.
-ObjVlisp is just a little conceptual framework but it provides a condensed view and explains the forces present in larger systems such as Pharo that share the _everything is an object_ mantra I love so much.
+Note that while the project is historically named ObjVlisp, it has not much to do with LISP. This kernel is similar to the one of Smalltalk-78 with explicit metaclasses. 
+ObjVlisp is just a little conceptual framework but it provides a condensed view and explains the forces present in larger systems such as Pharo that share the _everything is an object_ mantra I love so much. 
+
 This book explains the consequence of having classes as objects.
 In addition, it describes the design and the consequences of having a self-described reflective minimal kernel.
 
