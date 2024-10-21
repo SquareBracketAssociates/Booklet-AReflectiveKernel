@@ -1,17 +1,17 @@
 ## A minimal reflective class-based kernel
 
 
-_The difference between classes and objects has been repeatedly emphasized. In the view presented here, these concepts belong to different worlds: the program text only contains classes; at run-time, only objects exist. This is not the only approach. One of the subcultures of object-oriented programming, influenced by Lisp and exemplified by Smalltalk, views classes as object themselves, which still have an existence at run-time._ — B. Meyer, Object-Oriented Software Construction  {!citation|ref=Meye88b!}
+_The difference between classes and objects has been repeatedly emphasized. In the view presented here, these concepts belong to different worlds: the program text only contains classes; at run-time, only objects exist. This is not the only approach. One of the subcultures of object-oriented programming, influenced by Lisp and exemplified by Smalltalk, views classes as objects themselves, which still have an existence at run-time._ — B. Meyer, Object-Oriented Software Construction  {!citation|ref=Meye88b!}
 
-As this quote expresses it, there is a realm where classes are true objects, instances of other classes. In such systems such as Smalltalk, Pharo {!citation|ref=Blac09a!}, CLOS {!citation|ref=Stee90a!}, classes are described by other classes and form often reflective architectures each one describing the previous level. In this chapter, we will explore a minimal reflective class-based kernel, inspired from ObjVlisp. In the following chapter you will implement step by step such a kernel with less than 30 methods.
+As this quote expresses it, there is a realm where classes are true objects, instances of other classes. In such systems as Smalltalk, Pharo {!citation|ref=Blac09a!}, CLOS {!citation|ref=Stee90a!}, classes are described by other classes and form often reflective architectures each one describing the previous level. In this chapter, we will explore a minimal reflective class-based kernel, inspired by ObjVlisp. In the following chapter, you will implement step by step such a kernel with less than 30 methods.
 
 ### ObjVlisp inspiration
 
 
-ObjVlisp was published for the first time in 1987 when the foundation of object-oriented programming was still emerging {!citation|ref=Coin87a!}. ObjVlisp has explicit metaclasses and supports metaclass reuse. It was inspired by the kernel of Smalltalk-78. The IBM SOM-DSOM kernel is similar to ObjVLisp while implemented in C++ {!citation|ref=Form99a!}. ObjVlisp is a subset of the reflective kernel of CLOS (Common Lisp Object System) since CLOS reifies instance variables, generic functions, and method combination. It is the equivalent of the Closette implementation {!citation|ref=Kicz91a!}. In comparison to ObjVlisp, Smalltalk and Pharo have implicit metaclasses and no metaclass reuse except by basic inheritance. However, they are more stable as explained by Bouraqadi et al  {!citation|ref=Bour98a!}.
+ObjVlisp was published for the first time in 1987 when the foundation of object-oriented programming was still emerging {!citation|ref=Coin87a!}. ObjVlisp has explicit metaclasses and supports metaclass reuse. It was inspired by the kernel of Smalltalk-78. The IBM SOM-DSOM kernel is similar to ObjVLisp while implemented in C++ {!citation|ref=Form99a!}. ObjVlisp is a subset of the reflective kernel of CLOS (Common Lisp Object System) since CLOS reifies instance variables, generic functions, and method combinations. It is the equivalent of the Closette implementation {!citation|ref=Kicz91a!}. In comparison to ObjVlisp, Smalltalk, and Pharo have implicit metaclasses and no metaclass reuse except by basic inheritance. However, they are more stable as explained by Bouraqadi et al  {!citation|ref=Bour98a!}.
 
-Studying this kernel is really worth it, since it has the following properties:
-- It unifies class and instances (there is only one data structure to represent all objects, classes included).
+Studying this kernel is really worth it since it has the following properties:
+- It unifies classes and instances (there is only one data structure to represent all objects, classes included).
 - It is composed of only two classes `Class` and `Object` (it relies on existing elements such as booleans, arrays, and strings of the underlying implementation language).
 - It raises the question of meta-circularity infinite regression (a class is an instance of another class that is an instance of yet another class, etc.) and how to resolve it.
 - It requires consideration of allocation, class, and object initialization, message passing as well as the bootstrap process.
@@ -27,10 +27,10 @@ Here are the six postulates as stated in the paper for the sake of historical pe
 
 - P1. An object represents a piece of knowledge and a set of capabilities.
  -P2 . The only protocol to activate an object is message passing: a message specifies which procedure to apply (denoted by its name, the selector) and its arguments.
-- P3. Every object belongs to a class that specifies its data (attributes called fields) and its behavior (procedures called methods). Objects will be dynamically generated from this model; they are called instances of the class. Following Plato, all instances of a class have same structure and shape, but differ through the values of their common instance variables.
-- P4. A class is also an object, instantiated by another class, called its metaclass. Consequently (P3), to each class is associated a metaclass which describes its behavior as an object. The initial primitive metaclass is the class `Class`, built as its own instance.
-- P5. A class can be defined as a subclass of one (or many) other class(es). This subclassing mechanism allows sharing of instance variables and methods, and is called inheritance. The class `Object` represents the most common behavior shared by all objects.
-- P6. If the instance variables owned by an object define a local environment, there are also class variables defining a global environment shared by all the instances of a same class. These class variables are defined at the metaclass level according to the following equation: class variable \[an-object\] = instance variable \[an-object’s class\].
+- P3. Every object belongs to a class that specifies its data (attributes called fields) and its behavior (procedures called methods). Objects will be dynamically generated from this model; they are called instances of the class. Following Plato, all instances of a class have the same structure and shape but differ through the values of their common instance variables.
+- P4. A class is also an object, instantiated by another class, called its metaclass. Consequently (P3), to each class is associated with a metaclass which describes its behavior as an object. The initial primitive metaclass is the class `Class`, built as its own instance.
+- P5. A class can be defined as a subclass of one (or many) other class(es). This subclassing mechanism allows the sharing of instance variables and methods and is called inheritance. The class `Object` represents the most common behavior shared by all objects.
+- P6. If the instance variables owned by an object define a local environment, there are also class variables defining a global environment shared by all the instances of the same class. These class variables are defined at the metaclass level according to the following equation: class variable \[an-object\] = instance variable \[an-object’s class\].
 
 
 
@@ -99,7 +99,7 @@ In this kernel, there is only one instantiation link; it is applied at all level
 
 ![Chain of instantiation: classes are objects, too. % width=80&label=fig:Instantiation](figures/Ref-InstantiationLink.pdf)
 
-In our diagrams, we represent objects (mainly terminal instances) as rounded rectangles with the list of instance variable values.
+In our diagrams, we represent objects (mainly terminal instances) as rounded rectangles with a list of instance variable values.
 Since classes are objects, _when we want to stress that classes are objects_ we use the same graphical convention as shown in Figure *@fig:PointClassAsObject@*.
 
 
@@ -113,7 +113,7 @@ In ObjVLisp:
 - `Class` is an instance of itself, and, directly or indirectly, all other metaclasses are instances of `Class`.
 
 
-We will see later the implication of this self instantiation at the level of the class structure itself.
+We will see later the implication of this self-instantiation at the level of the class structure itself.
 
 ### Understanding metaclasses
 
@@ -180,7 +180,7 @@ In ObjVLisp,  we have a name to identify the class. As an instance factory, the 
 
 Since a class is an object, a class has the instance variable `class` inherited from `Object` that refers to its class as any object.
 
-![`Point` class as an object.](figures/Ref-PointClassAsObject.pdf width=70&label=fig:PointClassAsObject)
+![`Point` class as an object. % width=70&label=fig:PointClassAsObject](figures/Ref-PointClassAsObject.pdf)
 
 #### Example 1: class Point
 
@@ -194,7 +194,7 @@ Figure *@fig:PointClassAsObject@* shows the instance variable values for the cla
 
 
 
-![`Class` as an object.](figures/Ref-ClassClassAsObject.pdf width=70&label=fig:ClassClassAsObject)
+![`Class` as an object. % width=70&label=fig:ClassClassAsObject](figures/Ref-ClassClassAsObject.pdf)
 
 #### Example 2: class Class
 
@@ -212,10 +212,10 @@ Figure *@fig:ClassClassAsObject@* describes the class `Class` itself. Indeed it 
 #### Everything is an object
 
 
-Figure *@fig:Instanceshier@* describes a typical situation of terminal instances, class and metaclasses when viewed from an object perspective.
-We see three levels of instances: terminal objects (`mac1` and `mac2` which are instances of `Workstation`), class objects (`Workstation` and `Point` which are instances of `Class`) and the metaclass (`Class` which is instance of itself).
+Figure *@fig:Instanceshier@* describes a typical situation of terminal instances, classes, and metaclasses when viewed from an object perspective.
+We see three levels of instances: terminal objects (`mac1` and `mac2` which are instances of `Workstation`), class objects (`Workstation` and `Point` which are instances of `Class`) and the metaclass (`Class` which is an instance of itself).
 
-![Sending a message is two-step process: method lookup and execution. % width=45&label=fig:ToSteps](figures/InheritanceDiagram-sendingMessage.pdf)
+![Sending a message is a two-step process: method lookup and execution. % width=48&label=fig:ToSteps](figures/InheritanceDiagram-sendingMessage.pdf)
 
 
 ### Sending a message
@@ -247,7 +247,7 @@ Now the lookup process is conceptually defined as follows:
 1. If no method is found and there is no superclass to explore (if we are in the class `Object`), this is an error (i.e., the method is not defined).
 
 
-![Looking for a method is two-step process: first go to the class of receiver then follow inheritance. % width=55&label=fig:LookupNoError](figures/Ref-LookupNoError.pdf)
+![Looking for a method is a two-step process: first, go to the class of receiver then follow inheritance. % width=58&label=fig:LookupNoError](figures/Ref-LookupNoError.pdf)
 
 The method lookup walks through the inheritance graph one class at a time using the superclass link. Here is a possible description of the lookup algorithm that will be used for both instance and class methods.
 
@@ -261,7 +261,7 @@ lookup (selector class receiver):
 ```
 
 
-![When a message is not found, another message is sent to the receiver supporting reflective operation. % width=70&label=fig:LookupWithError](figures/Ref-LookupWithError.pdf)
+![When a message is not found, another message is sent to the receiver supporting reflective operation. % width=65&label=fig:LookupWithError](figures/Ref-LookupWithError.pdf)
 
 
 
@@ -288,14 +288,14 @@ And then we redefined sending a message as follows:
 sending a message (receiver argument)
    methodOrNil = lookup (selector classof(receiver)).
    if methodOrNil is nil
-      then return send the message error to the receiver
+      then send the message error to the receiver
       else return apply(methodOrNil receiver arguments)
 ```
 
 
 #### Remarks
 
-This lookup is conceptually the same as in Pharo where all methods are public and virtual. There are no statically bound methods; even class methods are looked up dynamically. This allows defining very elegant and dynamic registration mechanisms.
+This lookup is conceptually the same as in Pharo where all methods are public and virtual. There are no statically bound methods; even class methods are looked up dynamically. This allows for defining very elegant and dynamic registration mechanisms.
 
 While the lookup happens at runtime, it is often cached. Languages usually have several systems of caches, e.g., global (class, selector), one per call site, etc.
 
@@ -314,7 +314,7 @@ Let's look at these two aspects.
 
 #### Instance variable inheritance
 
-Instance variable inheritance is done at class creation time. From that perspective it is static and performed once.
+Instance variable inheritance is done at class creation time. From that perspective, it is static and performed once.
 When a class `C` is created, its instance variables are the union of the instance variables of its superclass
 and the instance variables defined locally in class `C`.
 Each language defines the exact semantics of instance variable inheritance, for example, if they accept instance variables with the same name or not. In our model, we decide to use the simplest way: there should be no duplicate names.
@@ -325,7 +325,7 @@ instance-variables(aClass) =
 ```
 
 
-A word about union: when the implementation of the language is based on offsets to access instance variables, the union should make sure that the locations of inherited instance variables are kept ordered compared to the superclass. In general, we want to be able to apply methods of the superclass to subclasses without copying them down and recompiling them. Indeed if a method uses a variable at a given position in the instance variable lists, applying this method to instances of subclasses should work.
+A word about the union of instance variables: when the implementation of the language is based on offsets to access instance variables, the union should make sure that the locations of inherited instance variables are kept ordered compared to the superclass. In general, we want to be able to apply methods of the superclass to subclasses without copying them down and recompiling them. Indeed if a method uses a variable at a given position in the instance variable lists, applying this method to instances of subclasses should work.
 In the implementation proposed next chapter, we will use accessors and will not support direct access to instance variables from a method body.
 
 #### Method lookup
@@ -343,7 +343,7 @@ This is why `Object` is the root of the hierarchy. Depending on the language, `O
 
 Figure *@fig:inheritancegraph@* shows the inheritance graph without the presence of instantiation.
 A Workstation is an object (i.e., it should at least understand the minimal behavior), so the class `Workstation` inherits directly or indirectly from the class `Object`.
-A class is also an object (i.e., it should understand the minimal behavior) so the class `Class` inherits from class `Object`. In particular, the `class` (note the lowercase) instance variable is inherited from `Object` class.
+A class is also an object (i.e., it should understand the minimal behavior) so the class `Class` inherits from the class `Object`. In particular, the `class` (note the lowercase) instance variable is inherited from `Object` class.
 
 
 ![Full inheritance graph: Every class ultimately inherits from `Object`. %width=45&label=fig:inheritancegraph](figures/Ref-InheritanceGraph.pdf )
@@ -352,8 +352,8 @@ A class is also an object (i.e., it should understand the minimal behavior) so t
 
 #### Remark
 
-In Pharo, the class `Object` is not the root of inheritance. The root is in fact `ProtoObject`, and `Object` inherits from it. Most of the classes still inherit from `Object`. The design goal of `ProtoObject` is special: to generate as many as errors as possible. Such errors can be captured via redefinition of the message `doesNotUnderstand:`
-and can support different scenarios such as implementing a proxy.
+In Pharo, the class `Object` is not the root of inheritance. The root is in fact `ProtoObject`, and `Object` inherits from it. Most of the classes still inherit from `Object`. The design goal of `ProtoObject` is special: It supports the maximum generation of errors. Such errors can be captured via redefinition of the message `doesNotUnderstand:`
+and can support different scenarios such as implementing proxies.
 
 ### Inheritance and instantiation together
 
@@ -412,7 +412,7 @@ B new bar
 
 ![self always represents the receiver. %width=40&label=fig:LookupWithSelfInSuperclassMethod](figures/LookupWithSelfInSuperclassMethod.pdf)
 
-![Sequence diagram of self always represents the receiver.](figures/SelfLookupSequenceDiagram.pdf width=60&label=fig:SelfLookupSequenceDiagram)
+![Sequence diagram of self always represents the receiver. %width=60&label=fig:SelfLookupSequenceDiagram](figures/SelfLookupSequenceDiagram.pdf )
 
 
 For `super`, the situation depicted in Figure *@fig:LookupWithSuperInSuperclassMethodThreeClasses@* shows that `super` represents the receiver, but that when `super` is the receiver of a message, the method is looked up differently (starting from the superclass of the class using super) hence `R new bar` returns 100, but neither 20 nor 60.
@@ -489,7 +489,7 @@ An implementation could have two different messages to create instances and clas
 
 The following diagram (Figure *@fig:metaclassrole@*) shows that despite what one might expect when we create a terminal instance the metaclass `Class` is involved in the process. Indeed, we send the message `new` to the class, to resolve this message, the system will look for the method in the class of the receiver (here `Workstation`) which is the metaclass `Class`. The method `new` is found in the metaclass and applied to the receiver, the class `Workstation`. Its effect is to create an instance of the class `Workstation`.
 
-![Metaclass role during instance creation: Applying plain message resolution. Right: situation before - Left: situation after the instance creation.](figures/Ref-InstanceCreationMetaclassRole.pdf width=65&label=fig:metaclassrole)
+![Metaclass role during instance creation: Applying plain message resolution. Right: situation before - Left: situation after the instance creation.% width=65&label=fig:metaclassrole](figures/Ref-InstanceCreationMetaclassRole.pdf)
 
 The same happens when creating a class. Figure *@fig:ClassCreation@* shows the process. We send a message, now this time, to the class `Class`. The system makes no exception and to resolve the message, it looks for the method in the class of the receiver. The class of the receiver is itself, so the method `new` found in `Class` is applied to `Class` (the receiver of the message), and a new class is created.
 
@@ -628,7 +628,7 @@ In this chapter, we will study how all the concepts explained in the previous ch
 Now we can study how we can add new metaclasses and see how the system handles them.
 To create a new metaclass is simple; it is enough to inherit from an existing one. Maybe this is obvious to you, but this is what we will check now.
 
-![Abstract metaclass: its instance (i.e., the class Node) is abstract. %width=60&label=fig:Abstract](figures/Ref-Abstract.pdf)
+![Abstract metaclass: its instance (i.e., the class Node) is abstract. %width=64&label=fig:Abstract](figures/Ref-Abstract.pdf)
 
 #### Abstract
 
@@ -657,7 +657,7 @@ Two facts describe the relations between this metaclass and the class `Class`:
 - `AbstractMetaclass` defines class behavior: It inherits from `Class`.
 
 
-![Abstract metaclass at work: Using message passing as a key to navigate the graph. %width=60&label=fig:AbstractLookup](figures/Ref-AbstractLookup.pdf)
+![Abstract metaclass at work: Using message passing as a key to navigate the graph. %width=64&label=fig:AbstractLookup](figures/Ref-AbstractLookup.pdf)
 Now we can define an abstract class `Node` in ObjVLisp syntax:
 
 ```
@@ -690,9 +690,9 @@ Imagine that we define a metaclass `WithSingleton` whose instances are classes t
 is executed. 
 If the unique instance variable is nil, it invokes the behavior defined in `Class` and stores it in the unique instance variable, and returns it.
 
-![A WithSingleton metaclass: its instances can only have one instance. %width=55&label=fig:RefSing](figures/Ref-Singleton.pdf )
+![A WithSingleton metaclass: its instances can only have one instance. %width=72&label=fig:RefSing](figures/Ref-Singleton.pdf )
 
-There are several questions that still should be asked and answered.
+Several questions still should be asked and answered.
 
 - What is the instance variable list for the `WithSingleton` metaclass?
 - Where is the unique instance of the class `Node` or `Process` actually stored?
@@ -710,7 +710,7 @@ Singleton objIVs
 ```
 
 
-![Storing unique instance. %width=55&label=fig:RefSing2](figures/Ref-SingletonTwo.pdf)
+![Storing unique instance. %width=68&label=fig:RefSing2](figures/Ref-SingletonTwo.pdf)
 
 #### Where is the singleton stored?
 
