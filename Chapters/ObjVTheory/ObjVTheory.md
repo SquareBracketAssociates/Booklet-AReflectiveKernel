@@ -489,7 +489,7 @@ An implementation could have two different messages to create instances and clas
 
 The following diagram (Figure *@fig:metaclassrole@*) shows that despite what one might expect when we create a terminal instance the metaclass `Class` is involved in the process. Indeed, we send the message `new` to the class, to resolve this message, the system will look for the method in the class of the receiver (here `Workstation`) which is the metaclass `Class`. The method `new` is found in the metaclass and applied to the receiver, the class `Workstation`. Its effect is to create an instance of the class `Workstation`.
 
-![Metaclass role during instance creation: Applying plain message resolution. Right: situation before - Left: situation after the instance creation.% width=65&label=fig:metaclassrole](figures/Ref-InstanceCreationMetaclassRole.pdf)
+![Metaclass role during instance creation: Applying plain message resolution. Right: situation before - Left: situation after the instance creation.% width=68&label=fig:metaclassrole](figures/Ref-InstanceCreationMetaclassRole.pdf)
 
 The same happens when creating a class. Figure *@fig:ClassCreation@* shows the process. We send a message, now this time, to the class `Class`. The system makes no exception and to resolve the message, it looks for the method in the class of the receiver. The class of the receiver is itself, so the method `new` found in `Class` is applied to `Class` (the receiver of the message), and a new class is created.
 
@@ -658,6 +658,7 @@ Two facts describe the relations between this metaclass and the class `Class`:
 
 
 ![Abstract metaclass at work: Using message passing as a key to navigate the graph. %width=64&label=fig:AbstractLookup](figures/Ref-AbstractLookup.pdf)
+
 Now we can define an abstract class `Node` in ObjVLisp syntax:
 
 ```
