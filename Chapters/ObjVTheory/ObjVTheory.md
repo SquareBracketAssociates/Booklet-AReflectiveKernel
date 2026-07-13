@@ -26,7 +26,7 @@ The original ObjVlisp kernel is defined by six postulates {!citation|ref=Coin87a
 Here are the six postulates as stated in the paper for the sake of historical perspective.
 
 - P1. An object represents a piece of knowledge and a set of capabilities.
- -P2 . The only protocol to activate an object is message passing: a message specifies which procedure to apply (denoted by its name, the selector) and its arguments.
+- P2. The only protocol to activate an object is message passing: a message specifies which procedure to apply (denoted by its name, the selector) and its arguments.
 - P3. Every object belongs to a class that specifies its data (attributes called fields) and its behavior (procedures called methods). Objects will be dynamically generated from this model; they are called instances of the class. Following Plato, all instances of a class have the same structure and shape but differ through the values of their common instance variables.
 - P4. A class is also an object, instantiated by another class, called its metaclass. Consequently (P3), to each class is associated with a metaclass which describes its behavior as an object. The initial primitive metaclass is the class `Class`, built as its own instance.
 - P5. A class can be defined as a subclass of one (or many) other class(es). This subclassing mechanism allows the sharing of instance variables and methods and is called inheritance. The class `Object` represents the most common behavior shared by all objects.
